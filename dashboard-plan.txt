@@ -1,0 +1,114 @@
+DASHBOARD PLAN — Kayu & Co. Furniture Sdn Bhd, demo-workbook.xlsx
+Written 2026-09-05. Built from demo-workbook.xlsx, tabs: Revenue, Costs, AR aging, Cash,
+Ads, Posts. Data range: Sep 2025 to Aug 2026 (Ads from Mar 2026, Posts from Jun 2026).
+Receivables are a snapshot as at 31 Aug 2026.
+Output file: kayu-operations.html. Policy input: credit-terms.md, how-our-business-works.md.
+
+THE SHEET
+Revenue (144 rows): Month (YYYY-MM), Channel (Dealers / Showroom PJ / Online),
+  Category (Sofas / Dining / Bedroom / Office), Units (count), Revenue (RM).
+Costs (99 rows): Month, Cost category (9 of them), Amount (RM).
+AR aging (83 rows, 40 dealers): Dealer, Region, Terms (30 or 45 days), Credit limit (RM),
+  Invoice no, Invoice date, Due date, Amount (RM), Days overdue as at 2026-08-31,
+  Bucket (Current / 1-30 / 31-60 / 61-90 / 90+), Last contact, Note.
+Cash (12 rows): Month, Opening, Receipts from dealers, Receipts showroom and online,
+  Payments to suppliers, Payroll, Other payments, Closing. All RM.
+Ads (97 rows, weekly): Week starting, Campaign (5), Platform (Meta / Google / TikTok),
+  Spend (RM), Impressions, Clicks, Leads, CTR (%), Cost per lead (RM).
+Posts (48 rows): Date, Platform, Format, Hook, Reach, Likes, Comments, Saves, Shares,
+  Link clicks.
+
+Known problems and how we handled them:
+- Shah Alam Home Depot has a BLANK credit limit. Treated as "unknown", never as zero.
+  It can never fire the over-limit rule; instead it gets its own LOW/Data card (R6).
+- INV-261462, Port Dickson Home, is NEGATIVE: -RM 4,800, "Credit note CN-0231, returned
+  dining set". It is netted into that dealer's balance and into the Current bucket.
+  Summing the bucket without it overstates receivables by RM 4,800.
+- INV-261416, Borneo Living KK, RM 187,400, 95 days, note "Disputes delivery damage on
+  2 sofas". Per credit-terms.md a dispute is NOT chased but DOES count against the credit
+  limit. So: excluded from the chase rules R1-R4, included in the R5 limit calculation,
+  included in the "past 60 days" number, and given its own LOW/Dispute card (R7).
+- Checked and clean: no total rows in any tab, one date format (YYYY-MM-DD / YYYY-MM),
+  one currency (RM), CTR is a percent (0.72 to 3.13) not a fraction.
+- Last contact is blank for every Current-bucket row. Expected, not a defect.
+
+THE THREE NUMBERS
+N1. Cash closing balance, latest month = Cash tab, Closing balance column, row 2026-08.
+    One cell. Latest value: RM 1,510,000 (Aug 2026), -1.3% on Jul 2026.
+N2. Receivables past 60 days = AR aging tab, sum of Amount where Days overdue > 60.
+    Latest value: RM 487,900 across 7 invoices and 5 dealers, as at 31 Aug 2026.
+    Includes the disputed RM 187,400: still owed, just not chased.
+N3. Office revenue, latest month vs three months ago = Revenue tab, sum of Revenue where
+    Category = Office, all channels, for 2026-08 and 2026-05 (6 rows each).
+    Latest value: RM 327,900 vs RM 238,200 = +37.7%.
+
+THE CHARTS
+C1. Revenue by month, stacked by channel: Month on x, RM on y, three series from
+    Revenue tab (Dealers, Showroom PJ, Online). Sep 2025 to Aug 2026. Not filtered.
+C2. Revenue by category, by month: line per category from Revenue tab, Office in orange
+    and thickened. Obeys the channel filter.
+C3. AR aging by bucket: bucket on x, RM outstanding on y, from AR aging tab, all 83
+    invoices, net of the credit note. 61-90 and 90+ drawn red, 31-60 amber.
+C4. Cost by month for the selected category (default All), from Costs tab. A bar is drawn
+    red when it is more than 25% above the prior three-month average (rule R8).
+C5. Cost per lead by campaign, weekly: Spend / Leads per campaign per week from Ads tab,
+    Mar to Aug 2026. Plus a second chart, CTR by campaign weekly, on the same page.
+Also on their pages: closing balance by month and receipts by source (Cash tab), reach by
+platform (Posts tab).
+
+THE QUEUE RULES
+R1. Undisputed invoice more than 90 days past due -> HIGH, managing director. Director
+    letter, consider credit insurance or legal. [credit-terms.md chase sequence]
+R2. Undisputed invoice 61-90 days past due -> HIGH, finance manager + sales director.
+    Meeting or call with the owner, payment plan if needed. [credit-terms.md]
+R3. Undisputed invoice 31-60 days past due -> MEDIUM, finance manager. New shipments on
+    hold, phone call then written notice. [credit-terms.md]
+R4. Dealer with invoices 1-30 days past due -> LOW, accounts. ONE CARD PER DEALER, not per
+    invoice, because a statement of account covers the account. 1-7 days is a statement,
+    8-30 is a chase email. [credit-terms.md]
+R5. Dealer balance over its credit limit -> HIGH, finance manager. Hold new orders until
+    approved. Disputed invoices still count. [credit-terms.md terms]
+R6. Credit limit blank in the sheet -> LOW/Data, finance manager. [our decision, move 1]
+R7. Invoice noted as disputed -> LOW/Dispute, finance manager. A person calls, never a
+    template. Excluded from R1-R4. [credit-terms.md, what stays human]
+R8. A cost category more than 25% above its prior three-month average, in the last three
+    months -> LOW/Costs, finance manager. [DEFAULT: no cost threshold exists in the
+    documents. Change this if the business has a real one.]
+R9. A revenue category up more than 25% over two months -> GOOD, sales director.
+    [DEFAULT, same caveat.]
+
+Card count on this build: 42 total — 12 HIGH, 12 MEDIUM, 17 LOW, 1 GOOD.
+By rule: R1 1, R2 5, R3 12, R4 14, R5 6, R6 1, R7 1, R8 1, R9 1.
+
+THE PAGES
+Overview: three number tiles with a source line under each, C1, and the top four cards.
+Needs attention: every card, high to low then oldest first; a "The rules" panel listing
+  R1-R9 with their source and card count; a Handled section (ticks in localStorage).
+Revenue: filters channel + category; C1 and C2; monthly table, click a month for its
+  channel and category split.
+Receivables: filters bucket + region + dealer search; four stat boxes; C3; dealer table
+  with a credit-limit usage bar, click a dealer for its invoices.
+Cash: closing balance line, receipts stacked by source, 12-row table, click for movement.
+Costs: category filter; C4 with the R8 spike bars; monthly table, click for the
+  category breakdown and each category's share.
+Marketing: filters campaign + platform; C5 and the CTR chart; campaign table, click for
+  the weekly rows.
+Posts: filters platform + format; reach by platform; post table, click for the breakdown.
+The plan: this text, and the Monday instruction.
+
+WHAT THE PAGE NEVER DOES
+No fetch, no external script, no external font, no login, no send. Every button either
+navigates inside the page, copies a prompt to the clipboard, or ticks a box that lives in
+that browser's localStorage on that laptop. It opens with Wi-Fi off.
+
+HOW TO REBUILD
+1. New chat inside the Project. Upload the new version of the sheet.
+2. Paste this file. Say: "Rebuild the operations app from this plan. Report any column
+   that has changed before you build. Same pages, same rules, same file name."
+3. Check N1, N2, N3 against the sheet by hand, then open one queue card and check its
+   number and its rule against the AR aging tab.
+4. Replace kayu-operations.html in the Project with the new one. Keep the file name.
+
+OWNER
+<name>, finance manager. Refresh day: Monday.
+Nothing here updates on its own. The page is a snapshot of one upload.

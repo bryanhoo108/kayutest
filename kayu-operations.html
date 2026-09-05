@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kayu &amp; Co. Operations</title>
+<style>
+:root{
+--bg:#F2EFE7;--panel:#FFFFFF;--soft:#FAF9F5;--hover:#F5F2EA;--sel:#F0EDE3;--track:#EFECE4;
+--line:#DCD7CB;--grid:#ECE8DE;
+--ink:#0E0E0E;--ink2:#52514E;--ink3:#8A877F;
+--accent:#FF4519;
+--s1:#2A78D6;--s2:#EB6834;--s3:#1BAF7A;--s4:#7A5AD6;--s5:#B98C00;--mut:#C9C4B8;
+--good:#0CA30C;--warn:#FAB219;--critical:#D03B3B;
+--cc-bg:#FDECEC;--cc-bd:#F3C4C4;--cc-fg:#8E2323;
+--cw-bg:#FFF7E0;--cw-bd:#F3DFA0;--cw-fg:#7A5A00;
+--cg-bg:#E9F7E9;--cg-bd:#BFE3BF;--cg-fg:#1F6B1F;
+--ci-bg:#EEF4FC;--ci-bd:#C6D9F3;--ci-fg:#1E4D8C;
+--hi-bg:#FFF6F6;--hi-bd:#F3C4C4;--md-bg:#FFFBEC;--md-bd:#F3DFA0;--gd-bg:#F4FBF4;--gd-bd:#CFE8CF;
+--tipbg:#0E0E0E;--tipfg:#FFFFFF;--hb:rgba(14,14,14,.05)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+--bg:#16140F;--panel:#1F1C16;--soft:#262219;--hover:#2A2519;--sel:#302A1E;--track:#2B271F;
+--line:#3A352B;--grid:#2C2820;
+--ink:#F2EFE7;--ink2:#B7B1A2;--ink3:#8B8576;
+--accent:#FF6338;
+--s1:#5B9DF0;--s2:#F2905E;--s3:#3FCB98;--s4:#A78BEA;--s5:#D8B23F;--mut:#5C574A;
+--good:#43C24A;--warn:#E8AE33;--critical:#E75C5C;
+--cc-bg:#2E1A1A;--cc-bd:#5C3030;--cc-fg:#F2A8A8;
+--cw-bg:#2B2412;--cw-bd:#5A4B22;--cw-fg:#E8CB7A;
+--cg-bg:#16281B;--cg-bd:#2F5233;--cg-fg:#8FD79A;
+--ci-bg:#16223A;--ci-bd:#2C4470;--ci-fg:#9FC2F0;
+--hi-bg:#2A1616;--hi-bd:#5C3030;--md-bg:#272012;--md-bd:#544721;--gd-bg:#152317;--gd-bd:#2C4C30;
+--tipbg:#0B0A07;--tipfg:#F2EFE7;--hb:rgba(242,239,231,.07)}}
+:root[data-theme="dark"]{
+--bg:#16140F;--panel:#1F1C16;--soft:#262219;--hover:#2A2519;--sel:#302A1E;--track:#2B271F;
+--line:#3A352B;--grid:#2C2820;
+--ink:#F2EFE7;--ink2:#B7B1A2;--ink3:#8B8576;
+--accent:#FF6338;
+--s1:#5B9DF0;--s2:#F2905E;--s3:#3FCB98;--s4:#A78BEA;--s5:#D8B23F;--mut:#5C574A;
+--good:#43C24A;--warn:#E8AE33;--critical:#E75C5C;
+--cc-bg:#2E1A1A;--cc-bd:#5C3030;--cc-fg:#F2A8A8;
+--cw-bg:#2B2412;--cw-bd:#5A4B22;--cw-fg:#E8CB7A;
+--cg-bg:#16281B;--cg-bd:#2F5233;--cg-fg:#8FD79A;
+--ci-bg:#16223A;--ci-bd:#2C4470;--ci-fg:#9FC2F0;
+--hi-bg:#2A1616;--hi-bd:#5C3030;--md-bg:#272012;--md-bd:#544721;--gd-bg:#152317;--gd-bd:#2C4C30;
+--tipbg:#0B0A07;--tipfg:#F2EFE7;--hb:rgba(242,239,231,.07)}
+*{box-sizing:border-box}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+.app{display:grid;grid-template-columns:236px 1fr;min-height:100vh}
+aside{background:var(--panel);border-right:1px solid var(--line);padding:16px 12px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;margin-bottom:14px;font-weight:600}
+.brand i{width:26px;height:26px;border-radius:50%;background:var(--accent);display:inline-block;flex:0 0 auto}
+.grp{font-size:11px;letter-spacing:.06em;color:var(--ink3);text-transform:uppercase;margin:16px 10px 6px}
+nav button{display:flex;width:100%;text-align:left;gap:10px;align-items:center;padding:9px 10px;border:1px solid transparent;border-radius:8px;background:none;color:var(--ink);font:inherit;cursor:pointer}
+nav button:hover{background:var(--hover)}
+nav button.on{border-color:var(--line);background:var(--soft);font-weight:600}
+nav button .n{margin-left:auto;font-size:12px;color:var(--ink2);background:var(--track);border-radius:10px;padding:1px 8px}
+nav button .n.hot{background:var(--cc-bg);color:var(--cc-fg)}
+main{padding:22px 30px 60px;min-width:0}
+.crumb{font-size:12px;color:var(--ink2);margin-bottom:12px}
+h1{font-size:29px;margin:0 0 4px;letter-spacing:-.3px}
+.lead{color:var(--ink2);margin:0 0 4px}
+.sub{color:var(--ink3);font-size:12px;margin:0 0 18px}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink)}
+.btn:hover{background:var(--soft)}
+.btn.sm{padding:4px 9px;font-size:12px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.tile .t{font-size:15px;font-weight:600}
+.tile .v{font-size:31px;font-weight:700;letter-spacing:-.5px;margin:10px 0 2px;font-variant-numeric:tabular-nums}
+.tile .sc{font-size:11px;color:var(--ink3);line-height:1.4;margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 8px;border-radius:20px;border:1px solid var(--line);color:var(--ink2);white-space:nowrap}
+.chip.c{background:var(--cc-bg);border-color:var(--cc-bd);color:var(--cc-fg)}
+.chip.w{background:var(--cw-bg);border-color:var(--cw-bd);color:var(--cw-fg)}
+.chip.g{background:var(--cg-bg);border-color:var(--cg-bd);color:var(--cg-fg)}
+.chip.i{background:var(--ci-bg);border-color:var(--ci-bd);color:var(--ci-fg)}
+.cols2{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px;min-width:0}
+.panel h2{font-size:18px;margin:0 0 2px}
+.panel .d{color:var(--ink2);font-size:12px;margin-bottom:12px}
+.stat4{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:8px;margin-bottom:14px;background:var(--panel)}
+.stat4 div{padding:9px 12px;border-right:1px solid var(--line)}
+.stat4 div:last-child{border:0}
+.stat4 small{display:block;color:var(--ink2);font-size:11px}
+.stat4 b{font-size:18px;font-variant-numeric:tabular-nums}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;background:var(--panel)}
+.card.HIGH{background:var(--hi-bg);border-color:var(--hi-bd)}
+.card.MEDIUM{background:var(--md-bg);border-color:var(--md-bd)}
+.card.GOOD{background:var(--gd-bg);border-color:var(--gd-bd)}
+.card.done{opacity:.55}
+.card .h{display:flex;gap:10px;align-items:center;font-size:11px;color:var(--ink2);margin-bottom:5px;flex-wrap:wrap}
+.card .h b{letter-spacing:.06em}
+.card .h b.HIGH{color:var(--cc-fg)}.card .h b.MEDIUM{color:var(--cw-fg)}.card .h b.GOOD{color:var(--cg-fg)}.card .h b.LOW{color:var(--ink2)}
+.card .ti{font-weight:600;margin-bottom:3px}
+.card p{margin:0 0 8px;color:var(--ink2);font-size:13px}
+.card .rule{font-size:11px;color:var(--ink3);margin-bottom:8px}
+.card .act{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.card label{font-size:12px;color:var(--ink2);margin-left:auto;display:flex;gap:6px;align-items:center;cursor:pointer}
+.filters{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.filters select,.filters input{font:inherit;font-size:13px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink)}
+.filters .lbl{font-size:12px;color:var(--ink2)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;cursor:pointer;user-select:none;white-space:nowrap}
+th.on:after{content:" \25BE"}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
+tr.row{cursor:pointer}tr.row:hover td{background:var(--soft)}tr.sel td{background:var(--sel)}
+tr.det td{background:var(--soft);padding:12px 14px}
+.tbl{overflow-x:auto}
+svg{width:100%;height:auto;display:block}
+svg text{font-size:11px;fill:var(--ink2)}
+svg .grid{stroke:var(--grid)}svg .ax{stroke:var(--line)}
+svg .hb{fill:transparent}svg .hb:hover{fill:var(--hb)}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--ink2);margin-top:8px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.tip{position:fixed;pointer-events:none;background:var(--tipbg);color:var(--tipfg);font-size:12px;padding:8px 10px;border-radius:8px;display:none;z-index:9;max-width:280px;line-height:1.45}
+.tip b{font-size:13px}.tip i{display:inline-block;width:10px;height:2px;margin-right:6px;vertical-align:middle}
+pre.plan{white-space:pre-wrap;font:12.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:16px;overflow-x:auto}
+.note{font-size:12.5px;color:var(--ink2);border-left:3px solid var(--accent);padding:5px 10px;margin:10px 0}
+.rules li{margin-bottom:6px;font-size:13px;color:var(--ink2)}
+.rules li b{color:var(--ink)}
+.kv{font-size:13px;color:var(--ink2)}.kv b{color:var(--ink);font-variant-numeric:tabular-nums}
+.bar{height:8px;background:var(--track);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--s1)}
+.bar i.over{background:var(--critical)}
+@media(max-width:1000px){.app{grid-template-columns:1fr}aside{position:static;height:auto}.tiles,.stat4{grid-template-columns:1fr 1fr}.cols2{grid-template-columns:1fr}}
+</style></head><body>
+<div class="tip" id="tip"></div>
+<div class="app">
+<aside>
+  <div class="brand"><i></i>Kayu &amp; Co.</div>
+  <div class="grp">Workspace</div><nav id="nav1"></nav>
+  <div class="grp">Operations</div><nav id="nav2"></nav>
+  <div class="grp">Monday</div><nav id="nav3"></nav>
+</aside>
+<main id="view"></main>
+</div>
+<script>
+const D = {"revenue":[{"m":"2025-09","ch":"Dealers","cat":"Sofas","u":135,"rev":350600.0},{"m":"2025-09","ch":"Dealers","cat":"Dining","u":125,"rev":237900.0},{"m":"2025-09","ch":"Dealers","cat":"Bedroom","u":111,"rev":255600.0},{"m":"2025-09","ch":"Dealers","cat":"Office","u":106,"rev":148500.0},{"m":"2025-09","ch":"Showroom PJ","cat":"Sofas","u":44,"rev":113200.0},{"m":"2025-09","ch":"Showroom PJ","cat":"Dining","u":37,"rev":71200.0},{"m":"2025-09","ch":"Showroom PJ","cat":"Bedroom","u":34,"rev":78800.0},{"m":"2025-09","ch":"Showroom PJ","cat":"Office","u":31,"rev":43600.0},{"m":"2025-09","ch":"Online","cat":"Sofas","u":30,"rev":77200.0},{"m":"2025-09","ch":"Online","cat":"Dining","u":32,"rev":60800.0},{"m":"2025-09","ch":"Online","cat":"Bedroom","u":23,"rev":53600.0},{"m":"2025-09","ch":"Online","cat":"Office","u":25,"rev":34500.0},{"m":"2025-10","ch":"Dealers","cat":"Sofas","u":130,"rev":337100.0},{"m":"2025-10","ch":"Dealers","cat":"Dining","u":126,"rev":239400.0},{"m":"2025-10","ch":"Dealers","cat":"Bedroom","u":120,"rev":276900.0},{"m":"2025-10","ch":"Dealers","cat":"Office","u":106,"rev":149000.0},{"m":"2025-10","ch":"Showroom PJ","cat":"Sofas","u":44,"rev":115400.0},{"m":"2025-10","ch":"Showroom PJ","cat":"Dining","u":40,"rev":75700.0},{"m":"2025-10","ch":"Showroom PJ","cat":"Bedroom","u":38,"rev":86300.0},{"m":"2025-10","ch":"Showroom PJ","cat":"Office","u":35,"rev":49100.0},{"m":"2025-10","ch":"Online","cat":"Sofas","u":35,"rev":92200.0},{"m":"2025-10","ch":"Online","cat":"Dining","u":35,"rev":66700.0},{"m":"2025-10","ch":"Online","cat":"Bedroom","u":27,"rev":63200.0},{"m":"2025-10","ch":"Online","cat":"Office","u":25,"rev":35000.0},{"m":"2025-11","ch":"Dealers","cat":"Sofas","u":158,"rev":411600.0},{"m":"2025-11","ch":"Dealers","cat":"Dining","u":161,"rev":305000.0},{"m":"2025-11","ch":"Dealers","cat":"Bedroom","u":135,"rev":309900.0},{"m":"2025-11","ch":"Dealers","cat":"Office","u":132,"rev":184100.0},{"m":"2025-11","ch":"Showroom PJ","cat":"Sofas","u":47,"rev":121000.0},{"m":"2025-11","ch":"Showroom PJ","cat":"Dining","u":49,"rev":93300.0},{"m":"2025-11","ch":"Showroom PJ","cat":"Bedroom","u":40,"rev":93000.0},{"m":"2025-11","ch":"Showroom PJ","cat":"Office","u":37,"rev":51200.0},{"m":"2025-11","ch":"Online","cat":"Sofas","u":39,"rev":102500.0},{"m":"2025-11","ch":"Online","cat":"Dining","u":41,"rev":77200.0},{"m":"2025-11","ch":"Online","cat":"Bedroom","u":31,"rev":70700.0},{"m":"2025-11","ch":"Online","cat":"Office","u":30,"rev":42600.0},{"m":"2025-12","ch":"Dealers","cat":"Sofas","u":177,"rev":459000.0},{"m":"2025-12","ch":"Dealers","cat":"Dining","u":165,"rev":313100.0},{"m":"2025-12","ch":"Dealers","cat":"Bedroom","u":143,"rev":327800.0},{"m":"2025-12","ch":"Dealers","cat":"Office","u":140,"rev":195400.0},{"m":"2025-12","ch":"Showroom PJ","cat":"Sofas","u":50,"rev":130300.0},{"m":"2025-12","ch":"Showroom PJ","cat":"Dining","u":50,"rev":95700.0},{"m":"2025-12","ch":"Showroom PJ","cat":"Bedroom","u":46,"rev":105900.0},{"m":"2025-12","ch":"Showroom PJ","cat":"Office","u":45,"rev":62600.0},{"m":"2025-12","ch":"Online","cat":"Sofas","u":48,"rev":124400.0},{"m":"2025-12","ch":"Online","cat":"Dining","u":46,"rev":87300.0},{"m":"2025-12","ch":"Online","cat":"Bedroom","u":38,"rev":87100.0},{"m":"2025-12","ch":"Online","cat":"Office","u":35,"rev":49600.0},{"m":"2026-01","ch":"Dealers","cat":"Sofas","u":136,"rev":353800.0},{"m":"2026-01","ch":"Dealers","cat":"Dining","u":134,"rev":255300.0},{"m":"2026-01","ch":"Dealers","cat":"Bedroom","u":121,"rev":279400.0},{"m":"2026-01","ch":"Dealers","cat":"Office","u":121,"rev":169100.0},{"m":"2026-01","ch":"Showroom PJ","cat":"Sofas","u":43,"rev":112000.0},{"m":"2026-01","ch":"Showroom PJ","cat":"Dining","u":46,"rev":88300.0},{"m":"2026-01","ch":"Showroom PJ","cat":"Bedroom","u":39,"rev":90500.0},{"m":"2026-01","ch":"Showroom PJ","cat":"Office","u":35,"rev":48600.0},{"m":"2026-01","ch":"Online","cat":"Sofas","u":37,"rev":96800.0},{"m":"2026-01","ch":"Online","cat":"Dining","u":41,"rev":77000.0},{"m":"2026-01","ch":"Online","cat":"Bedroom","u":34,"rev":78900.0},{"m":"2026-01","ch":"Online","cat":"Office","u":33,"rev":46200.0},{"m":"2026-02","ch":"Dealers","cat":"Sofas","u":177,"rev":459900.0},{"m":"2026-02","ch":"Dealers","cat":"Dining","u":161,"rev":306800.0},{"m":"2026-02","ch":"Dealers","cat":"Bedroom","u":125,"rev":288400.0},{"m":"2026-02","ch":"Dealers","cat":"Office","u":141,"rev":197000.0},{"m":"2026-02","ch":"Showroom PJ","cat":"Sofas","u":52,"rev":135600.0},{"m":"2026-02","ch":"Showroom PJ","cat":"Dining","u":54,"rev":103100.0},{"m":"2026-02","ch":"Showroom PJ","cat":"Bedroom","u":45,"rev":103100.0},{"m":"2026-02","ch":"Showroom PJ","cat":"Office","u":43,"rev":60300.0},{"m":"2026-02","ch":"Online","cat":"Sofas","u":46,"rev":118600.0},{"m":"2026-02","ch":"Online","cat":"Dining","u":43,"rev":80800.0},{"m":"2026-02","ch":"Online","cat":"Bedroom","u":39,"rev":88700.0},{"m":"2026-02","ch":"Online","cat":"Office","u":37,"rev":51500.0},{"m":"2026-03","ch":"Dealers","cat":"Sofas","u":165,"rev":428400.0},{"m":"2026-03","ch":"Dealers","cat":"Dining","u":152,"rev":289000.0},{"m":"2026-03","ch":"Dealers","cat":"Bedroom","u":133,"rev":306700.0},{"m":"2026-03","ch":"Dealers","cat":"Office","u":126,"rev":176700.0},{"m":"2026-03","ch":"Showroom PJ","cat":"Sofas","u":53,"rev":137800.0},{"m":"2026-03","ch":"Showroom PJ","cat":"Dining","u":52,"rev":99100.0},{"m":"2026-03","ch":"Showroom PJ","cat":"Bedroom","u":41,"rev":94000.0},{"m":"2026-03","ch":"Showroom PJ","cat":"Office","u":39,"rev":54500.0},{"m":"2026-03","ch":"Online","cat":"Sofas","u":46,"rev":120600.0},{"m":"2026-03","ch":"Online","cat":"Dining","u":47,"rev":90100.0},{"m":"2026-03","ch":"Online","cat":"Bedroom","u":35,"rev":81500.0},{"m":"2026-03","ch":"Online","cat":"Office","u":34,"rev":48100.0},{"m":"2026-04","ch":"Dealers","cat":"Sofas","u":141,"rev":365600.0},{"m":"2026-04","ch":"Dealers","cat":"Dining","u":121,"rev":229300.0},{"m":"2026-04","ch":"Dealers","cat":"Bedroom","u":113,"rev":259600.0},{"m":"2026-04","ch":"Dealers","cat":"Office","u":102,"rev":143000.0},{"m":"2026-04","ch":"Showroom PJ","cat":"Sofas","u":44,"rev":114200.0},{"m":"2026-04","ch":"Showroom PJ","cat":"Dining","u":38,"rev":71400.0},{"m":"2026-04","ch":"Showroom PJ","cat":"Bedroom","u":34,"rev":77800.0},{"m":"2026-04","ch":"Showroom PJ","cat":"Office","u":34,"rev":48200.0},{"m":"2026-04","ch":"Online","cat":"Sofas","u":38,"rev":98800.0},{"m":"2026-04","ch":"Online","cat":"Dining","u":39,"rev":73200.0},{"m":"2026-04","ch":"Online","cat":"Bedroom","u":30,"rev":70100.0},{"m":"2026-04","ch":"Online","cat":"Office","u":33,"rev":46800.0},{"m":"2026-05","ch":"Dealers","cat":"Sofas","u":133,"rev":346800.0},{"m":"2026-05","ch":"Dealers","cat":"Dining","u":119,"rev":225900.0},{"m":"2026-05","ch":"Dealers","cat":"Bedroom","u":104,"rev":238700.0},{"m":"2026-05","ch":"Dealers","cat":"Office","u":105,"rev":147500.0},{"m":"2026-05","ch":"Showroom PJ","cat":"Sofas","u":39,"rev":101500.0},{"m":"2026-05","ch":"Showroom PJ","cat":"Dining","u":38,"rev":72500.0},{"m":"2026-05","ch":"Showroom PJ","cat":"Bedroom","u":34,"rev":77300.0},{"m":"2026-05","ch":"Showroom PJ","cat":"Office","u":32,"rev":44500.0},{"m":"2026-05","ch":"Online","cat":"Sofas","u":37,"rev":96100.0},{"m":"2026-05","ch":"Online","cat":"Dining","u":36,"rev":68800.0},{"m":"2026-05","ch":"Online","cat":"Bedroom","u":30,"rev":68300.0},{"m":"2026-05","ch":"Online","cat":"Office","u":33,"rev":46200.0},{"m":"2026-06","ch":"Dealers","cat":"Sofas","u":114,"rev":295600.0},{"m":"2026-06","ch":"Dealers","cat":"Dining","u":117,"rev":222000.0},{"m":"2026-06","ch":"Dealers","cat":"Bedroom","u":100,"rev":230400.0},{"m":"2026-06","ch":"Dealers","cat":"Office","u":88,"rev":122500.0},{"m":"2026-06","ch":"Showroom PJ","cat":"Sofas","u":36,"rev":94400.0},{"m":"2026-06","ch":"Showroom PJ","cat":"Dining","u":33,"rev":63600.0},{"m":"2026-06","ch":"Showroom PJ","cat":"Bedroom","u":28,"rev":64400.0},{"m":"2026-06","ch":"Showroom PJ","cat":"Office","u":31,"rev":43900.0},{"m":"2026-06","ch":"Online","cat":"Sofas","u":35,"rev":90300.0},{"m":"2026-06","ch":"Online","cat":"Dining","u":34,"rev":65300.0},{"m":"2026-06","ch":"Online","cat":"Bedroom","u":30,"rev":69600.0},{"m":"2026-06","ch":"Online","cat":"Office","u":30,"rev":42400.0},{"m":"2026-07","ch":"Dealers","cat":"Sofas","u":134,"rev":349600.0},{"m":"2026-07","ch":"Dealers","cat":"Dining","u":126,"rev":240100.0},{"m":"2026-07","ch":"Dealers","cat":"Bedroom","u":94,"rev":215700.0},{"m":"2026-07","ch":"Dealers","cat":"Office","u":124,"rev":173800.0},{"m":"2026-07","ch":"Showroom PJ","cat":"Sofas","u":42,"rev":108800.0},{"m":"2026-07","ch":"Showroom PJ","cat":"Dining","u":35,"rev":66600.0},{"m":"2026-07","ch":"Showroom PJ","cat":"Bedroom","u":32,"rev":73100.0},{"m":"2026-07","ch":"Showroom PJ","cat":"Office","u":42,"rev":58600.0},{"m":"2026-07","ch":"Online","cat":"Sofas","u":43,"rev":112400.0},{"m":"2026-07","ch":"Online","cat":"Dining","u":39,"rev":74800.0},{"m":"2026-07","ch":"Online","cat":"Bedroom","u":32,"rev":74400.0},{"m":"2026-07","ch":"Online","cat":"Office","u":40,"rev":56000.0},{"m":"2026-08","ch":"Dealers","cat":"Sofas","u":142,"rev":368400.0},{"m":"2026-08","ch":"Dealers","cat":"Dining","u":132,"rev":250100.0},{"m":"2026-08","ch":"Dealers","cat":"Bedroom","u":109,"rev":249600.0},{"m":"2026-08","ch":"Dealers","cat":"Office","u":148,"rev":206800.0},{"m":"2026-08","ch":"Showroom PJ","cat":"Sofas","u":38,"rev":100000.0},{"m":"2026-08","ch":"Showroom PJ","cat":"Dining","u":39,"rev":74600.0},{"m":"2026-08","ch":"Showroom PJ","cat":"Bedroom","u":33,"rev":76900.0},{"m":"2026-08","ch":"Showroom PJ","cat":"Office","u":41,"rev":56800.0},{"m":"2026-08","ch":"Online","cat":"Sofas","u":44,"rev":114700.0},{"m":"2026-08","ch":"Online","cat":"Dining","u":45,"rev":85200.0},{"m":"2026-08","ch":"Online","cat":"Bedroom","u":35,"rev":81100.0},{"m":"2026-08","ch":"Online","cat":"Office","u":46,"rev":64300.0}],"costs":[{"m":"2025-09","cat":"Materials","amt":702400.0},{"m":"2025-09","cat":"Factory wages and EPF","amt":340000.0},{"m":"2025-09","cat":"Logistics","amt":109800.0},{"m":"2025-09","cat":"Marketing","amt":46000.0},{"m":"2025-09","cat":"Showroom rent and utilities","amt":28500.0},{"m":"2025-09","cat":"Admin and office","amt":70000.0},{"m":"2025-09","cat":"Bank loan and hire purchase","amt":42000.0},{"m":"2025-09","cat":"Dealer rebates and returns","amt":45800.0},{"m":"2025-10","cat":"Materials","amt":740300.0},{"m":"2025-10","cat":"Factory wages and EPF","amt":340000.0},{"m":"2025-10","cat":"Logistics","amt":107900.0},{"m":"2025-10","cat":"Marketing","amt":46000.0},{"m":"2025-10","cat":"Showroom rent and utilities","amt":28500.0},{"m":"2025-10","cat":"Admin and office","amt":72400.0},{"m":"2025-10","cat":"Bank loan and hire purchase","amt":42000.0},{"m":"2025-10","cat":"Dealer rebates and returns","amt":47600.0},{"m":"2025-11","cat":"Materials","amt":838500.0},{"m":"2025-11","cat":"Factory wages and EPF","amt":340000.0},{"m":"2025-11","cat":"Logistics","amt":135100.0},{"m":"2025-11","cat":"Marketing","amt":78000.0},{"m":"2025-11","cat":"Showroom rent and utilities","amt":28500.0},{"m":"2025-11","cat":"Admin and office","amt":72400.0},{"m":"2025-11","cat":"Bank loan and hire purchase","amt":42000.0},{"m":"2025-11","cat":"Dealer rebates and returns","amt":55900.0},{"m":"2025-11","cat":"Tax instalment and bonus","amt":85000.0},{"m":"2025-12","cat":"Materials","amt":943500.0},{"m":"2025-12","cat":"Factory wages and EPF","amt":340000.0},{"m":"2025-12","cat":"Logistics","amt":146300.0},{"m":"2025-12","cat":"Marketing","amt":82000.0},{"m":"2025-12","cat":"Showroom rent and utilities","amt":28500.0},{"m":"2025-12","cat":"Admin and office","amt":72400.0},{"m":"2025-12","cat":"Bank loan and hire purchase","amt":42000.0},{"m":"2025-12","cat":"Dealer rebates and returns","amt":61100.0},{"m":"2025-12","cat":"Tax instalment and bonus","amt":120000.0},{"m":"2026-01","cat":"Materials","amt":775000.0},{"m":"2026-01","cat":"Factory wages and EPF","amt":340000.0},{"m":"2026-01","cat":"Logistics","amt":122200.0},{"m":"2026-01","cat":"Marketing","amt":52000.0},{"m":"2026-01","cat":"Showroom rent and utilities","amt":28500.0},{"m":"2026-01","cat":"Admin and office","amt":71200.0},{"m":"2026-01","cat":"Bank loan and hire purchase","amt":42000.0},{"m":"2026-01","cat":"Dealer rebates and returns","amt":50900.0},{"m":"2026-02","cat":"Materials","amt":917400.0},{"m":"2026-02","cat":"Factory wages and EPF","amt":340000.0},{"m":"2026-02","cat":"Logistics","amt":138900.0},{"m":"2026-02","cat":"Marketing","amt":74000.0},{"m":"2026-02","cat":"Showroom rent and utilities","amt":28500.0},{"m":"2026-02","cat":"Admin and office","amt":70000.0},{"m":"2026-02","cat":"Bank loan and hire purchase","amt":42000.0},{"m":"2026-02","cat":"Dealer rebates and returns","amt":59800.0},{"m":"2026-03","cat":"Materials","amt":865200.0},{"m":"2026-03","cat":"Factory wages and EPF","amt":340000.0},{"m":"2026-03","cat":"Logistics","amt":129300.0},{"m":"2026-03","cat":"Marketing","amt":80000.0},{"m":"2026-03","cat":"Showroom rent and utilities","amt":28500.0},{"m":"2026-03","cat":"Admin and office","amt":71200.0},{"m":"2026-03","cat":"Bank loan and hire purchase","amt":42000.0},{"m":"2026-03","cat":"Dealer rebates and returns","amt":57800.0},{"m":"2026-04","cat":"Materials","amt":714000.0},{"m":"2026-04","cat":"Factory wages and EPF","amt":340000.0},{"m":"2026-04","cat":"Logistics","amt":114900.0},{"m":"2026-04","cat":"Marketing","amt":52000.0},{"m":"2026-04","cat":"Showroom rent and utilities","amt":28500.0},{"m":"2026-04","cat":"Admin and office","amt":70000.0},{"m":"2026-04","cat":"Bank loan and hire purchase","amt":42000.0},{"m":"2026-04","cat":"Dealer rebates and returns","amt":47900.0},{"m":"2026-05","cat":"Materials","amt":704900.0},{"m":"2026-05","cat":"Factory wages and EPF","amt":340000.0},{"m":"2026-05","cat":"Logistics","amt":107800.0},{"m":"2026-05","cat":"Marketing","amt":52000.0},{"m":"2026-05","cat":"Showroom rent and utilities","amt":28500.0},{"m":"2026-05","cat":"Admin and office","amt":71200.0},{"m":"2026-05","cat":"Bank loan and hire purchase","amt":42000.0},{"m":"2026-05","cat":"Dealer rebates and returns","amt":46000.0},{"m":"2026-05","cat":"Tax instalment and bonus","amt":85000.0},{"m":"2026-06","cat":"Materials","amt":648000.0},{"m":"2026-06","cat":"Factory wages and EPF","amt":340000.0},{"m":"2026-06","cat":"Logistics","amt":94800.0},{"m":"2026-06","cat":"Marketing","amt":52000.0},{"m":"2026-06","cat":"Showroom rent and utilities","amt":28500.0},{"m":"2026-06","cat":"Admin and office","amt":72400.0},{"m":"2026-06","cat":"Bank loan and hire purchase","amt":42000.0},{"m":"2026-06","cat":"Dealer rebates and returns","amt":42100.0},{"m":"2026-07","cat":"Materials","amt":749300.0},{"m":"2026-07","cat":"Factory wages and EPF","amt":340000.0},{"m":"2026-07","cat":"Logistics","amt":156600.0},{"m":"2026-07","cat":"Marketing","amt":52000.0},{"m":"2026-07","cat":"Showroom rent and utilities","amt":28500.0},{"m":"2026-07","cat":"Admin and office","amt":70000.0},{"m":"2026-07","cat":"Bank loan and hire purchase","amt":42000.0},{"m":"2026-07","cat":"Dealer rebates and returns","amt":48100.0},{"m":"2026-08","cat":"Materials","amt":812800.0},{"m":"2026-08","cat":"Factory wages and EPF","amt":340000.0},{"m":"2026-08","cat":"Logistics","amt":118800.0},{"m":"2026-08","cat":"Marketing","amt":52000.0},{"m":"2026-08","cat":"Showroom rent and utilities","amt":28500.0},{"m":"2026-08","cat":"Admin and office","amt":71200.0},{"m":"2026-08","cat":"Bank loan and hire purchase","amt":42000.0},{"m":"2026-08","cat":"Dealer rebates and returns","amt":51900.0}],"ar":[{"dealer":"Tawau Living","region":"Sabah","terms":30,"limit":200000.0,"inv":"INV-261470","idate":"2026-04-19","ddate":"2026-05-19","amt":8800.0,"days":104,"bucket":"90+","contact":"2026-08-25","note":"No reply since July"},{"dealer":"Borneo Living KK","region":"Sabah","terms":30,"limit":150000.0,"inv":"INV-261416","idate":"2026-04-28","ddate":"2026-05-28","amt":187400.0,"days":95,"bucket":"90+","contact":"2026-08-25","note":"Disputes delivery damage on 2 sofas"},{"dealer":"Tawau Living","region":"Sabah","terms":30,"limit":200000.0,"inv":"INV-261471","idate":"2026-05-07","ddate":"2026-06-06","amt":87000.0,"days":86,"bucket":"61-90","contact":"2026-08-25","note":""},{"dealer":"Borneo Living KK","region":"Sabah","terms":30,"limit":150000.0,"inv":"INV-261417","idate":"2026-05-10","ddate":"2026-06-09","amt":14300.0,"days":83,"bucket":"61-90","contact":"2026-08-25","note":""},{"dealer":"Ipoh Home Gallery","region":"Perak","terms":30,"limit":250000.0,"inv":"INV-261409","idate":"2026-05-22","ddate":"2026-06-21","amt":78200.0,"days":71,"bucket":"61-90","contact":"2026-08-17","note":""},{"dealer":"Segamat Furniture House","region":"Johor","terms":30,"limit":120000.0,"inv":"INV-261434","idate":"2026-05-27","ddate":"2026-06-26","amt":49600.0,"days":66,"bucket":"61-90","contact":"2026-08-25","note":""},{"dealer":"Perabot Seri Indah","region":"Johor","terms":30,"limit":300000.0,"inv":"INV-261401","idate":"2026-05-31","ddate":"2026-06-30","amt":62600.0,"days":62,"bucket":"61-90","contact":"2026-08-17","note":"Promised payment 20 Aug, not received"},{"dealer":"Ipoh Home Gallery","region":"Perak","terms":30,"limit":250000.0,"inv":"INV-261410","idate":"2026-06-03","ddate":"2026-07-03","amt":64600.0,"days":59,"bucket":"31-60","contact":"2026-08-17","note":""},{"dealer":"Tawau Living","region":"Sabah","terms":30,"limit":200000.0,"inv":"INV-261472","idate":"2026-06-06","ddate":"2026-07-06","amt":13700.0,"days":56,"bucket":"31-60","contact":"2026-08-25","note":""},{"dealer":"Johor Bahru Home Point","region":"Johor","terms":30,"limit":300000.0,"inv":"INV-261458","idate":"2026-06-10","ddate":"2026-07-10","amt":72900.0,"days":52,"bucket":"31-60","contact":"2026-08-17","note":""},{"dealer":"Cheras Living Space","region":"KL / Selangor","terms":45,"limit":200000.0,"inv":"INV-261428","idate":"2026-05-30","ddate":"2026-07-14","amt":28800.0,"days":48,"bucket":"31-60","contact":"2026-08-28","note":""},{"dealer":"Segamat Furniture House","region":"Johor","terms":30,"limit":120000.0,"inv":"INV-261435","idate":"2026-06-14","ddate":"2026-07-14","amt":49600.0,"days":48,"bucket":"31-60","contact":"2026-08-25","note":""},{"dealer":"Borneo Living KK","region":"Sabah","terms":30,"limit":150000.0,"inv":"INV-261418","idate":"2026-06-15","ddate":"2026-07-15","amt":58800.0,"days":47,"bucket":"31-60","contact":"2026-08-25","note":""},{"dealer":"Rawang Home Studio","region":"KL / Selangor","terms":30,"limit":150000.0,"inv":"INV-261477","idate":"2026-06-18","ddate":"2026-07-18","amt":41100.0,"days":44,"bucket":"31-60","contact":"2026-08-25","note":""},{"dealer":"Miri Furniture Gallery","region":"Sarawak","terms":45,"limit":250000.0,"inv":"INV-261447","idate":"2026-06-06","ddate":"2026-07-21","amt":46300.0,"days":41,"bucket":"31-60","contact":"2026-08-25","note":""},{"dealer":"Kuching Home Style","region":"Sarawak","terms":30,"limit":300000.0,"inv":"INV-261419","idate":"2026-06-24","ddate":"2026-07-24","amt":22900.0,"days":38,"bucket":"31-60","contact":"2026-08-17","note":""},{"dealer":"Perabot Seri Indah","region":"Johor","terms":30,"limit":300000.0,"inv":"INV-261402","idate":"2026-06-24","ddate":"2026-07-24","amt":56400.0,"days":38,"bucket":"31-60","contact":"2026-08-17","note":""},{"dealer":"Taiping Furniture Hub","region":"Perak","terms":30,"limit":150000.0,"inv":"INV-261440","idate":"2026-06-27","ddate":"2026-07-27","amt":48400.0,"days":35,"bucket":"31-60","contact":"2026-08-28","note":""},{"dealer":"Butterworth Furnish","region":"Penang","terms":45,"limit":150000.0,"inv":"INV-261463","idate":"2026-06-14","ddate":"2026-07-29","amt":28400.0,"days":33,"bucket":"31-60","contact":"2026-08-28","note":""},{"dealer":"Perabot Seri Indah","region":"Johor","terms":30,"limit":300000.0,"inv":"INV-261403","idate":"2026-07-06","ddate":"2026-08-05","amt":33700.0,"days":26,"bucket":"1-30","contact":"2026-08-17","note":""},{"dealer":"Cheras Living Space","region":"KL / Selangor","terms":45,"limit":200000.0,"inv":"INV-261429","idate":"2026-06-23","ddate":"2026-08-07","amt":19200.0,"days":24,"bucket":"1-30","contact":"2026-08-28","note":""},{"dealer":"Kuching Home Style","region":"Sarawak","terms":30,"limit":300000.0,"inv":"INV-261420","idate":"2026-07-12","ddate":"2026-08-11","amt":65700.0,"days":20,"bucket":"1-30","contact":"2026-08-17","note":""},{"dealer":"Rawang Home Studio","region":"KL / Selangor","terms":30,"limit":150000.0,"inv":"INV-261478","idate":"2026-07-12","ddate":"2026-08-11","amt":8700.0,"days":20,"bucket":"1-30","contact":"2026-08-25","note":""},{"dealer":"Rawang Home Studio","region":"KL / Selangor","terms":30,"limit":150000.0,"inv":"INV-261479","idate":"2026-07-12","ddate":"2026-08-11","amt":74500.0,"days":20,"bucket":"1-30","contact":"2026-08-25","note":""},{"dealer":"Miri Furniture Gallery","region":"Sarawak","terms":45,"limit":250000.0,"inv":"INV-261448","idate":"2026-06-30","ddate":"2026-08-14","amt":55300.0,"days":17,"bucket":"1-30","contact":"2026-08-25","note":""},{"dealer":"Butterworth Furnish","region":"Penang","terms":45,"limit":150000.0,"inv":"INV-261464","idate":"2026-07-02","ddate":"2026-08-16","amt":73200.0,"days":15,"bucket":"1-30","contact":"2026-08-28","note":""},{"dealer":"Kuching Home Style","region":"Sarawak","terms":30,"limit":300000.0,"inv":"INV-261421","idate":"2026-07-18","ddate":"2026-08-17","amt":81600.0,"days":14,"bucket":"1-30","contact":"2026-08-17","note":""},{"dealer":"Taiping Furniture Hub","region":"Perak","terms":30,"limit":150000.0,"inv":"INV-261441","idate":"2026-07-21","ddate":"2026-08-20","amt":72800.0,"days":11,"bucket":"1-30","contact":"2026-08-28","note":""},{"dealer":"Casa Muar Furniture","region":"Johor","terms":30,"limit":200000.0,"inv":"INV-261406","idate":"2026-07-23","ddate":"2026-08-22","amt":23400.0,"days":9,"bucket":"1-30","contact":"","note":""},{"dealer":"Kluang Home Centre","region":"Johor","terms":30,"limit":250000.0,"inv":"INV-261431","idate":"2026-07-23","ddate":"2026-08-22","amt":17700.0,"days":9,"bucket":"1-30","contact":"","note":""},{"dealer":"Alor Setar Perabot","region":"Kedah","terms":30,"limit":120000.0,"inv":"INV-261422","idate":"2026-07-27","ddate":"2026-08-26","amt":50600.0,"days":5,"bucket":"1-30","contact":"","note":""},{"dealer":"Ampang Living","region":"KL / Selangor","terms":30,"limit":250000.0,"inv":"INV-261481","idate":"2026-07-27","ddate":"2026-08-26","amt":65300.0,"days":5,"bucket":"1-30","contact":"","note":""},{"dealer":"Ayer Keroh Living","region":"Melaka","terms":30,"limit":120000.0,"inv":"INV-261460","idate":"2026-07-27","ddate":"2026-08-26","amt":27000.0,"days":5,"bucket":"1-30","contact":"","note":""},{"dealer":"Kuantan Home Mart","region":"Pahang","terms":30,"limit":200000.0,"inv":"INV-261413","idate":"2026-07-27","ddate":"2026-08-26","amt":8100.0,"days":5,"bucket":"1-30","contact":"","note":""},{"dealer":"Miri Furniture Gallery","region":"Sarawak","terms":45,"limit":250000.0,"inv":"INV-261449","idate":"2026-07-12","ddate":"2026-08-26","amt":40100.0,"days":5,"bucket":"1-30","contact":"2026-08-25","note":""},{"dealer":"Rumahku Design Centre","region":"KL / Selangor","terms":30,"limit":200000.0,"inv":"INV-261407","idate":"2026-07-27","ddate":"2026-08-26","amt":81300.0,"days":5,"bucket":"1-30","contact":"","note":""},{"dealer":"Alor Setar Perabot","region":"Kedah","terms":30,"limit":120000.0,"inv":"INV-261423","idate":"2026-08-20","ddate":"2026-09-19","amt":46300.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Ampang Living","region":"KL / Selangor","terms":30,"limit":250000.0,"inv":"INV-261482","idate":"2026-08-08","ddate":"2026-09-07","amt":28900.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Ayer Keroh Living","region":"Melaka","terms":30,"limit":120000.0,"inv":"INV-261461","idate":"2026-08-20","ddate":"2026-09-19","amt":53400.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Batu Pahat Perabot","region":"Johor","terms":30,"limit":200000.0,"inv":"INV-261430","idate":"2026-08-19","ddate":"2026-09-18","amt":80200.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Bentong Furniture","region":"Pahang","terms":30,"limit":150000.0,"inv":"INV-261468","idate":"2026-08-19","ddate":"2026-09-18","amt":30500.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Bentong Furniture","region":"Pahang","terms":30,"limit":150000.0,"inv":"INV-261469","idate":"2026-08-31","ddate":"2026-09-30","amt":88200.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Bukit Mertajam Living","region":"Penang","terms":30,"limit":150000.0,"inv":"INV-261438","idate":"2026-08-01","ddate":"2026-08-31","amt":29500.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Bukit Mertajam Living","region":"Penang","terms":30,"limit":150000.0,"inv":"INV-261439","idate":"2026-08-19","ddate":"2026-09-18","amt":23500.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Home Living Melaka","region":"Melaka","terms":30,"limit":80000.0,"inv":"INV-261404","idate":"2026-08-01","ddate":"2026-08-31","amt":73700.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Home Living Melaka","region":"Melaka","terms":30,"limit":80000.0,"inv":"INV-261405","idate":"2026-08-19","ddate":"2026-09-18","amt":32100.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Kajang Furnish","region":"KL / Selangor","terms":30,"limit":200000.0,"inv":"INV-261455","idate":"2026-08-01","ddate":"2026-08-31","amt":60100.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Kajang Furnish","region":"KL / Selangor","terms":30,"limit":200000.0,"inv":"INV-261456","idate":"2026-08-19","ddate":"2026-09-18","amt":58600.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Kajang Furnish","region":"KL / Selangor","terms":30,"limit":200000.0,"inv":"INV-261457","idate":"2026-08-25","ddate":"2026-09-24","amt":87000.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Klang Valley Furnish","region":"KL / Selangor","terms":30,"limit":250000.0,"inv":"INV-261424","idate":"2026-08-07","ddate":"2026-09-06","amt":51700.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Klang Valley Furnish","region":"KL / Selangor","terms":30,"limit":250000.0,"inv":"INV-261425","idate":"2026-08-31","ddate":"2026-09-30","amt":49800.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Kluang Home Centre","region":"Johor","terms":30,"limit":250000.0,"inv":"INV-261432","idate":"2026-08-16","ddate":"2026-09-15","amt":18800.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Kluang Home Centre","region":"Johor","terms":30,"limit":250000.0,"inv":"INV-261433","idate":"2026-08-16","ddate":"2026-09-15","amt":10100.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Kota Tinggi Furnish","region":"Johor","terms":30,"limit":250000.0,"inv":"INV-261483","idate":"2026-08-19","ddate":"2026-09-18","amt":35700.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Kuantan Home Mart","region":"Pahang","terms":30,"limit":200000.0,"inv":"INV-261414","idate":"2026-08-08","ddate":"2026-09-07","amt":37000.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Kuantan Home Mart","region":"Pahang","terms":30,"limit":200000.0,"inv":"INV-261415","idate":"2026-08-20","ddate":"2026-09-19","amt":17200.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Kulim Perabot","region":"Kedah","terms":30,"limit":400000.0,"inv":"INV-261476","idate":"2026-08-19","ddate":"2026-09-18","amt":62300.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Northern Living","region":"Penang","terms":45,"limit":400000.0,"inv":"INV-261408","idate":"2026-08-11","ddate":"2026-09-25","amt":55000.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Pontian Perabot","region":"Johor","terms":30,"limit":120000.0,"inv":"INV-261459","idate":"2026-08-13","ddate":"2026-09-12","amt":10100.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Port Dickson Home","region":"N. Sembilan","terms":30,"limit":250000.0,"inv":"INV-261462","idate":"2026-08-26","ddate":"2026-09-25","amt":-4800.0,"days":0,"bucket":"Current","contact":"","note":"Credit note CN-0231, returned dining set"},{"dealer":"Puchong Living Studio","region":"KL / Selangor","terms":30,"limit":250000.0,"inv":"INV-261451","idate":"2026-08-13","ddate":"2026-09-12","amt":16700.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Puchong Living Studio","region":"KL / Selangor","terms":30,"limit":250000.0,"inv":"INV-261452","idate":"2026-08-31","ddate":"2026-09-30","amt":75100.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Rawang Home Studio","region":"KL / Selangor","terms":30,"limit":150000.0,"inv":"INV-261480","idate":"2026-08-29","ddate":"2026-09-28","amt":41100.0,"days":0,"bucket":"Current","contact":"2026-08-25","note":""},{"dealer":"Sandakan Home Living","region":"Sabah","terms":30,"limit":250000.0,"inv":"INV-261445","idate":"2026-08-19","ddate":"2026-09-18","amt":51400.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Sandakan Home Living","region":"Sabah","terms":30,"limit":250000.0,"inv":"INV-261446","idate":"2026-08-31","ddate":"2026-09-30","amt":12700.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Seremban Furnishing","region":"N. Sembilan","terms":30,"limit":120000.0,"inv":"INV-261411","idate":"2026-08-07","ddate":"2026-09-06","amt":24400.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Seremban Furnishing","region":"N. Sembilan","terms":30,"limit":120000.0,"inv":"INV-261412","idate":"2026-08-19","ddate":"2026-09-18","amt":40900.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Shah Alam Home Depot","region":"KL / Selangor","terms":30,"limit":null,"inv":"INV-261453","idate":"2026-08-19","ddate":"2026-09-18","amt":61200.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Shah Alam Home Depot","region":"KL / Selangor","terms":30,"limit":null,"inv":"INV-261454","idate":"2026-08-31","ddate":"2026-09-30","amt":58800.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Sibu Home Gallery","region":"Sarawak","terms":30,"limit":120000.0,"inv":"INV-261473","idate":"2026-08-07","ddate":"2026-09-06","amt":10500.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Sibu Home Gallery","region":"Sarawak","terms":30,"limit":120000.0,"inv":"INV-261474","idate":"2026-08-25","ddate":"2026-09-24","amt":18600.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Sibu Home Gallery","region":"Sarawak","terms":30,"limit":120000.0,"inv":"INV-261475","idate":"2026-08-31","ddate":"2026-09-30","amt":11100.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Subang Home Studio","region":"KL / Selangor","terms":30,"limit":150000.0,"inv":"INV-261426","idate":"2026-08-13","ddate":"2026-09-12","amt":86800.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Subang Home Studio","region":"KL / Selangor","terms":30,"limit":150000.0,"inv":"INV-261427","idate":"2026-08-31","ddate":"2026-09-30","amt":16600.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Sungai Petani Home","region":"Kedah","terms":30,"limit":80000.0,"inv":"INV-261450","idate":"2026-08-19","ddate":"2026-09-18","amt":67600.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Taiping Furniture Hub","region":"Perak","terms":30,"limit":150000.0,"inv":"INV-261442","idate":"2026-08-02","ddate":"2026-09-01","amt":73800.0,"days":0,"bucket":"Current","contact":"2026-08-28","note":""},{"dealer":"Tampin Home Deco","region":"N. Sembilan","terms":30,"limit":300000.0,"inv":"INV-261436","idate":"2026-08-19","ddate":"2026-09-18","amt":24700.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Tampin Home Deco","region":"N. Sembilan","terms":30,"limit":300000.0,"inv":"INV-261437","idate":"2026-08-31","ddate":"2026-09-30","amt":20700.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Teluk Intan Home","region":"Perak","terms":30,"limit":80000.0,"inv":"INV-261465","idate":"2026-08-01","ddate":"2026-08-31","amt":36100.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Teluk Intan Home","region":"Perak","terms":30,"limit":80000.0,"inv":"INV-261466","idate":"2026-08-25","ddate":"2026-09-24","amt":66000.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Teluk Intan Home","region":"Perak","terms":30,"limit":80000.0,"inv":"INV-261467","idate":"2026-08-25","ddate":"2026-09-24","amt":71000.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Temerloh Perabot Jaya","region":"Pahang","terms":30,"limit":250000.0,"inv":"INV-261443","idate":"2026-08-07","ddate":"2026-09-06","amt":9600.0,"days":0,"bucket":"Current","contact":"","note":""},{"dealer":"Temerloh Perabot Jaya","region":"Pahang","terms":30,"limit":250000.0,"inv":"INV-261444","idate":"2026-08-25","ddate":"2026-09-24","amt":89500.0,"days":0,"bucket":"Current","contact":"","note":""}],"cash":[{"m":"2025-09","open":742000.0,"rd":909600.0,"rs":527600.0,"sup":812200.0,"pay":340000.0,"oth":232300.0,"close":794700.0},{"m":"2025-10","open":794700.0,"rd":920900.0,"rs":577800.0,"sup":848200.0,"pay":340000.0,"oth":236500.0,"close":868700.0},{"m":"2025-11","open":868700.0,"rd":905300.0,"rs":645000.0,"sup":973600.0,"pay":340000.0,"oth":361800.0,"close":743600.0},{"m":"2025-12","open":743600.0,"rd":1060400.0,"rs":735500.0,"sup":1089800.0,"pay":340000.0,"oth":406000.0,"close":703700.0},{"m":"2026-01","open":703700.0,"rd":1186200.0,"rs":631900.0,"sup":897200.0,"pay":340000.0,"oth":244600.0,"close":1040000.0},{"m":"2026-02","open":1040000.0,"rd":964300.0,"rs":734300.0,"sup":1056300.0,"pay":340000.0,"oth":274300.0,"close":1068000.0},{"m":"2026-03","open":1068000.0,"rd":1099600.0,"rs":718400.0,"sup":994500.0,"pay":340000.0,"oth":279500.0,"close":1272000.0},{"m":"2026-04","open":1272000.0,"rd":1073200.0,"rs":594500.0,"sup":828900.0,"pay":340000.0,"oth":240400.0,"close":1530400.0},{"m":"2026-05","open":1530400.0,"rd":907100.0,"rs":569400.0,"sup":812700.0,"pay":340000.0,"oth":324700.0,"close":1529500.0},{"m":"2026-06","open":1529500.0,"rd":903600.0,"rs":528600.0,"sup":742800.0,"pay":340000.0,"oth":237000.0,"close":1641900.0},{"m":"2026-07","open":1641900.0,"rd":755700.0,"rs":618500.0,"sup":905900.0,"pay":340000.0,"oth":240600.0,"close":1529600.0},{"m":"2026-08","open":1529600.0,"rd":850500.0,"rs":647100.0,"sup":931600.0,"pay":340000.0,"oth":245600.0,"close":1510000.0}],"ads":[{"w":"2026-03-02","camp":"Sofa Sale","plat":"Meta","spend":3134.0,"imp":284897,"clicks":3751,"leads":131,"ctr":1.32,"cpl":23.92},{"w":"2026-03-02","camp":"Raya Dining","plat":"Meta","spend":3992.0,"imp":362910,"clicks":4801,"leads":144,"ctr":1.32,"cpl":27.72},{"w":"2026-03-02","camp":"Always-on Brand","plat":"Google","spend":1979.0,"imp":109953,"clicks":2792,"leads":56,"ctr":2.54,"cpl":35.34},{"w":"2026-03-02","camp":"Bedroom Reels","plat":"TikTok","spend":1319.0,"imp":188490,"clicks":1842,"leads":33,"ctr":0.98,"cpl":39.98},{"w":"2026-03-09","camp":"Sofa Sale","plat":"Meta","spend":3449.0,"imp":313524,"clicks":3361,"leads":118,"ctr":1.07,"cpl":29.23},{"w":"2026-03-09","camp":"Raya Dining","plat":"Meta","spend":5002.0,"imp":454698,"clicks":6283,"leads":188,"ctr":1.38,"cpl":26.6},{"w":"2026-03-09","camp":"Always-on Brand","plat":"Google","spend":2003.0,"imp":111258,"clicks":2744,"leads":55,"ctr":2.47,"cpl":36.41},{"w":"2026-03-09","camp":"Bedroom Reels","plat":"TikTok","spend":1609.0,"imp":229825,"clicks":2380,"leads":43,"ctr":1.04,"cpl":37.41},{"w":"2026-03-16","camp":"Sofa Sale","plat":"Meta","spend":3444.0,"imp":313050,"clicks":2883,"leads":101,"ctr":0.92,"cpl":34.09},{"w":"2026-03-16","camp":"Raya Dining","plat":"Meta","spend":5045.0,"imp":458636,"clicks":6793,"leads":204,"ctr":1.48,"cpl":24.73},{"w":"2026-03-16","camp":"Always-on Brand","plat":"Google","spend":2036.0,"imp":113121,"clicks":2640,"leads":53,"ctr":2.33,"cpl":38.42},{"w":"2026-03-16","camp":"Bedroom Reels","plat":"TikTok","spend":1654.0,"imp":236332,"clicks":2326,"leads":42,"ctr":0.98,"cpl":39.39},{"w":"2026-03-23","camp":"Sofa Sale","plat":"Meta","spend":3327.0,"imp":302416,"clicks":3670,"leads":128,"ctr":1.21,"cpl":25.99},{"w":"2026-03-23","camp":"Raya Dining","plat":"Meta","spend":4389.0,"imp":399036,"clicks":6562,"leads":197,"ctr":1.64,"cpl":22.28},{"w":"2026-03-23","camp":"Always-on Brand","plat":"Google","spend":1758.0,"imp":97684,"clicks":2213,"leads":44,"ctr":2.27,"cpl":39.96},{"w":"2026-03-23","camp":"Bedroom Reels","plat":"TikTok","spend":1672.0,"imp":238821,"clicks":1801,"leads":32,"ctr":0.75,"cpl":52.24},{"w":"2026-03-30","camp":"Sofa Sale","plat":"Meta","spend":3372.0,"imp":306567,"clicks":3177,"leads":111,"ctr":1.04,"cpl":30.38},{"w":"2026-03-30","camp":"Raya Dining","plat":"Meta","spend":3879.0,"imp":352617,"clicks":4756,"leads":143,"ctr":1.35,"cpl":27.12},{"w":"2026-03-30","camp":"Always-on Brand","plat":"Google","spend":1547.0,"imp":85938,"clicks":2070,"leads":41,"ctr":2.41,"cpl":37.73},{"w":"2026-03-30","camp":"Bedroom Reels","plat":"TikTok","spend":1523.0,"imp":217620,"clicks":1960,"leads":35,"ctr":0.9,"cpl":43.52},{"w":"2026-04-06","camp":"Sofa Sale","plat":"Meta","spend":3442.0,"imp":312910,"clicks":3119,"leads":109,"ctr":1.0,"cpl":31.58},{"w":"2026-04-06","camp":"Raya Dining","plat":"Meta","spend":4817.0,"imp":437934,"clicks":5367,"leads":161,"ctr":1.23,"cpl":29.92},{"w":"2026-04-06","camp":"Always-on Brand","plat":"Google","spend":1807.0,"imp":100411,"clicks":2011,"leads":40,"ctr":2.0,"cpl":45.18},{"w":"2026-04-06","camp":"Bedroom Reels","plat":"TikTok","spend":1633.0,"imp":233260,"clicks":2374,"leads":43,"ctr":1.02,"cpl":37.97},{"w":"2026-04-13","camp":"Sofa Sale","plat":"Meta","spend":3403.0,"imp":309328,"clicks":3025,"leads":106,"ctr":0.98,"cpl":32.1},{"w":"2026-04-13","camp":"Always-on Brand","plat":"Google","spend":1868.0,"imp":103750,"clicks":2496,"leads":50,"ctr":2.41,"cpl":37.35},{"w":"2026-04-13","camp":"Bedroom Reels","plat":"TikTok","spend":1521.0,"imp":217283,"clicks":1831,"leads":33,"ctr":0.84,"cpl":46.09},{"w":"2026-04-20","camp":"Sofa Sale","plat":"Meta","spend":3564.0,"imp":324034,"clicks":4262,"leads":149,"ctr":1.32,"cpl":23.92},{"w":"2026-04-20","camp":"Always-on Brand","plat":"Google","spend":1849.0,"imp":102732,"clicks":1926,"leads":39,"ctr":1.87,"cpl":47.41},{"w":"2026-04-20","camp":"Bedroom Reels","plat":"TikTok","spend":1328.0,"imp":189685,"clicks":1976,"leads":36,"ctr":1.04,"cpl":36.88},{"w":"2026-04-27","camp":"Sofa Sale","plat":"Meta","spend":3343.0,"imp":303868,"clicks":3319,"leads":116,"ctr":1.09,"cpl":28.82},{"w":"2026-04-27","camp":"Always-on Brand","plat":"Google","spend":2025.0,"imp":112500,"clicks":2298,"leads":46,"ctr":2.04,"cpl":44.02},{"w":"2026-04-27","camp":"Bedroom Reels","plat":"TikTok","spend":1331.0,"imp":190203,"clicks":1655,"leads":30,"ctr":0.87,"cpl":44.38},{"w":"2026-05-04","camp":"Sofa Sale","plat":"Meta","spend":3067.0,"imp":278787,"clicks":2955,"leads":103,"ctr":1.06,"cpl":29.77},{"w":"2026-05-04","camp":"Always-on Brand","plat":"Google","spend":1810.0,"imp":100541,"clicks":2352,"leads":47,"ctr":2.34,"cpl":38.51},{"w":"2026-05-04","camp":"Bedroom Reels","plat":"TikTok","spend":1653.0,"imp":236196,"clicks":2336,"leads":42,"ctr":0.99,"cpl":39.37},{"w":"2026-05-11","camp":"Sofa Sale","plat":"Meta","spend":2836.0,"imp":257811,"clicks":2773,"leads":97,"ctr":1.08,"cpl":29.24},{"w":"2026-05-11","camp":"Always-on Brand","plat":"Google","spend":1974.0,"imp":109668,"clicks":2032,"leads":41,"ctr":1.85,"cpl":48.15},{"w":"2026-05-11","camp":"Bedroom Reels","plat":"TikTok","spend":1491.0,"imp":213003,"clicks":2094,"leads":38,"ctr":0.98,"cpl":39.24},{"w":"2026-05-18","camp":"Sofa Sale","plat":"Meta","spend":3407.0,"imp":309742,"clicks":3557,"leads":124,"ctr":1.15,"cpl":27.48},{"w":"2026-05-18","camp":"Always-on Brand","plat":"Google","spend":1965.0,"imp":109158,"clicks":2156,"leads":43,"ctr":1.97,"cpl":45.69},{"w":"2026-05-18","camp":"Bedroom Reels","plat":"TikTok","spend":1521.0,"imp":217311,"clicks":1815,"leads":33,"ctr":0.84,"cpl":46.1},{"w":"2026-05-25","camp":"Sofa Sale","plat":"Meta","spend":2957.0,"imp":268821,"clicks":2607,"leads":91,"ctr":0.97,"cpl":32.49},{"w":"2026-05-25","camp":"Always-on Brand","plat":"Google","spend":2061.0,"imp":114522,"clicks":2308,"leads":46,"ctr":2.02,"cpl":44.81},{"w":"2026-05-25","camp":"Bedroom Reels","plat":"TikTok","spend":1384.0,"imp":197708,"clicks":1847,"leads":33,"ctr":0.93,"cpl":41.94},{"w":"2026-06-01","camp":"Sofa Sale","plat":"Meta","spend":2870.0,"imp":260953,"clicks":2910,"leads":102,"ctr":1.12,"cpl":28.14},{"w":"2026-06-01","camp":"Always-on Brand","plat":"Google","spend":1849.0,"imp":102714,"clicks":2395,"leads":48,"ctr":2.33,"cpl":38.52},{"w":"2026-06-01","camp":"Office Range B2B","plat":"Meta","spend":2846.0,"imp":258698,"clicks":4085,"leads":245,"ctr":1.58,"cpl":11.62},{"w":"2026-06-01","camp":"Bedroom Reels","plat":"TikTok","spend":1642.0,"imp":234534,"clicks":2350,"leads":42,"ctr":1.0,"cpl":39.09},{"w":"2026-06-08","camp":"Sofa Sale","plat":"Meta","spend":3422.0,"imp":311060,"clicks":2748,"leads":96,"ctr":0.88,"cpl":35.64},{"w":"2026-06-08","camp":"Always-on Brand","plat":"Google","spend":2007.0,"imp":111526,"clicks":2164,"leads":43,"ctr":1.94,"cpl":46.69},{"w":"2026-06-08","camp":"Office Range B2B","plat":"Meta","spend":2438.0,"imp":221667,"clicks":3837,"leads":230,"ctr":1.73,"cpl":10.6},{"w":"2026-06-08","camp":"Bedroom Reels","plat":"TikTok","spend":1587.0,"imp":226688,"clicks":2390,"leads":43,"ctr":1.05,"cpl":36.9},{"w":"2026-06-15","camp":"Sofa Sale","plat":"Meta","spend":3184.0,"imp":289458,"clicks":2657,"leads":93,"ctr":0.92,"cpl":34.24},{"w":"2026-06-15","camp":"Always-on Brand","plat":"Google","spend":1993.0,"imp":110720,"clicks":2678,"leads":54,"ctr":2.42,"cpl":36.91},{"w":"2026-06-15","camp":"Office Range B2B","plat":"Meta","spend":2571.0,"imp":233712,"clicks":4164,"leads":250,"ctr":1.78,"cpl":10.28},{"w":"2026-06-15","camp":"Bedroom Reels","plat":"TikTok","spend":1710.0,"imp":244323,"clicks":2517,"leads":45,"ctr":1.03,"cpl":38.01},{"w":"2026-06-22","camp":"Sofa Sale","plat":"Meta","spend":2875.0,"imp":261371,"clicks":2544,"leads":89,"ctr":0.97,"cpl":32.3},{"w":"2026-06-22","camp":"Always-on Brand","plat":"Google","spend":1560.0,"imp":86684,"clicks":1782,"leads":36,"ctr":2.06,"cpl":43.34},{"w":"2026-06-22","camp":"Office Range B2B","plat":"Meta","spend":2522.0,"imp":229281,"clicks":4608,"leads":276,"ctr":2.01,"cpl":9.14},{"w":"2026-06-22","camp":"Bedroom Reels","plat":"TikTok","spend":1492.0,"imp":213115,"clicks":1826,"leads":33,"ctr":0.86,"cpl":45.21},{"w":"2026-06-29","camp":"Sofa Sale","plat":"Meta","spend":3511.0,"imp":319163,"clicks":3693,"leads":129,"ctr":1.16,"cpl":27.22},{"w":"2026-06-29","camp":"Always-on Brand","plat":"Google","spend":1777.0,"imp":98715,"clicks":2522,"leads":50,"ctr":2.56,"cpl":35.54},{"w":"2026-06-29","camp":"Office Range B2B","plat":"Meta","spend":2288.0,"imp":208011,"clicks":3679,"leads":221,"ctr":1.77,"cpl":10.35},{"w":"2026-06-29","camp":"Bedroom Reels","plat":"TikTok","spend":1295.0,"imp":185062,"clicks":1970,"leads":35,"ctr":1.06,"cpl":37.01},{"w":"2026-07-06","camp":"Sofa Sale","plat":"Meta","spend":3493.0,"imp":317528,"clicks":3938,"leads":138,"ctr":1.24,"cpl":25.31},{"w":"2026-07-06","camp":"Always-on Brand","plat":"Google","spend":1886.0,"imp":104770,"clicks":2531,"leads":51,"ctr":2.42,"cpl":36.98},{"w":"2026-07-06","camp":"Office Range B2B","plat":"Meta","spend":2591.0,"imp":235529,"clicks":5899,"leads":354,"ctr":2.5,"cpl":7.32},{"w":"2026-07-06","camp":"Bedroom Reels","plat":"TikTok","spend":1544.0,"imp":220624,"clicks":1877,"leads":34,"ctr":0.85,"cpl":45.42},{"w":"2026-07-13","camp":"Sofa Sale","plat":"Meta","spend":3257.0,"imp":296121,"clicks":3543,"leads":124,"ctr":1.2,"cpl":26.27},{"w":"2026-07-13","camp":"Always-on Brand","plat":"Google","spend":1920.0,"imp":106668,"clicks":2399,"leads":48,"ctr":2.25,"cpl":40.0},{"w":"2026-07-13","camp":"Office Range B2B","plat":"Meta","spend":2379.0,"imp":216275,"clicks":6004,"leads":360,"ctr":2.78,"cpl":6.61},{"w":"2026-07-13","camp":"Bedroom Reels","plat":"TikTok","spend":1722.0,"imp":245945,"clicks":2652,"leads":48,"ctr":1.08,"cpl":35.87},{"w":"2026-07-20","camp":"Sofa Sale","plat":"Meta","spend":2774.0,"imp":252166,"clicks":2394,"leads":84,"ctr":0.95,"cpl":33.02},{"w":"2026-07-20","camp":"Always-on Brand","plat":"Google","spend":1701.0,"imp":94510,"clicks":1789,"leads":36,"ctr":1.89,"cpl":47.26},{"w":"2026-07-20","camp":"Office Range B2B","plat":"Meta","spend":2315.0,"imp":210459,"clicks":4973,"leads":298,"ctr":2.36,"cpl":7.77},{"w":"2026-07-20","camp":"Bedroom Reels","plat":"TikTok","spend":1627.0,"imp":232421,"clicks":1685,"leads":30,"ctr":0.72,"cpl":54.23},{"w":"2026-07-27","camp":"Sofa Sale","plat":"Meta","spend":2762.0,"imp":251104,"clicks":2398,"leads":84,"ctr":0.96,"cpl":32.88},{"w":"2026-07-27","camp":"Always-on Brand","plat":"Google","spend":1838.0,"imp":102092,"clicks":2496,"leads":50,"ctr":2.44,"cpl":36.75},{"w":"2026-07-27","camp":"Office Range B2B","plat":"Meta","spend":2334.0,"imp":212142,"clicks":5700,"leads":342,"ctr":2.69,"cpl":6.82},{"w":"2026-07-27","camp":"Bedroom Reels","plat":"TikTok","spend":1588.0,"imp":226855,"clicks":2252,"leads":41,"ctr":0.99,"cpl":38.73},{"w":"2026-08-03","camp":"Sofa Sale","plat":"Meta","spend":3112.0,"imp":282901,"clicks":3376,"leads":118,"ctr":1.19,"cpl":26.37},{"w":"2026-08-03","camp":"Always-on Brand","plat":"Google","spend":1951.0,"imp":108391,"clicks":2450,"leads":49,"ctr":2.26,"cpl":39.82},{"w":"2026-08-03","camp":"Office Range B2B","plat":"Meta","spend":2420.0,"imp":219977,"clicks":6193,"leads":372,"ctr":2.82,"cpl":6.5},{"w":"2026-08-03","camp":"Bedroom Reels","plat":"TikTok","spend":1663.0,"imp":237500,"clicks":1821,"leads":33,"ctr":0.77,"cpl":50.38},{"w":"2026-08-10","camp":"Sofa Sale","plat":"Meta","spend":3648.0,"imp":331651,"clicks":3228,"leads":113,"ctr":0.97,"cpl":32.28},{"w":"2026-08-10","camp":"Always-on Brand","plat":"Google","spend":2009.0,"imp":111597,"clicks":2091,"leads":42,"ctr":1.87,"cpl":47.83},{"w":"2026-08-10","camp":"Office Range B2B","plat":"Meta","spend":2336.0,"imp":212358,"clicks":6402,"leads":384,"ctr":3.01,"cpl":6.08},{"w":"2026-08-10","camp":"Bedroom Reels","plat":"TikTok","spend":1629.0,"imp":232774,"clicks":2435,"leads":44,"ctr":1.05,"cpl":37.03},{"w":"2026-08-17","camp":"Sofa Sale","plat":"Meta","spend":2754.0,"imp":250363,"clicks":2571,"leads":90,"ctr":1.03,"cpl":30.6},{"w":"2026-08-17","camp":"Always-on Brand","plat":"Google","spend":2022.0,"imp":112354,"clicks":2691,"leads":54,"ctr":2.39,"cpl":37.45},{"w":"2026-08-17","camp":"Office Range B2B","plat":"Meta","spend":2261.0,"imp":205578,"clicks":6436,"leads":386,"ctr":3.13,"cpl":5.86},{"w":"2026-08-17","camp":"Bedroom Reels","plat":"TikTok","spend":1604.0,"imp":229100,"clicks":1851,"leads":33,"ctr":0.81,"cpl":48.6},{"w":"2026-08-24","camp":"Sofa Sale","plat":"Meta","spend":2927.0,"imp":266074,"clicks":3309,"leads":116,"ctr":1.24,"cpl":25.23},{"w":"2026-08-24","camp":"Always-on Brand","plat":"Google","spend":1939.0,"imp":107715,"clicks":2056,"leads":41,"ctr":1.91,"cpl":47.29},{"w":"2026-08-24","camp":"Office Range B2B","plat":"Meta","spend":2648.0,"imp":240701,"clicks":7497,"leads":450,"ctr":3.11,"cpl":5.88},{"w":"2026-08-24","camp":"Bedroom Reels","plat":"TikTok","spend":1490.0,"imp":212872,"clicks":2254,"leads":41,"ctr":1.06,"cpl":36.34}],"posts":[{"d":"2026-06-01","plat":"Instagram","fmt":"Reel","hook":"We rebuilt our best-selling sofa. Here is what changed.","reach":11051,"likes":271,"comments":19,"saves":124,"shares":29,"clicks":152},{"d":"2026-06-03","plat":"TikTok","fmt":"Reel","hook":"POV: your landlord sees the new dining set","reach":31026,"likes":836,"comments":104,"saves":243,"shares":170,"clicks":406},{"d":"2026-06-04","plat":"Instagram","fmt":"Carousel","hook":"Five mistakes people make buying a bed frame","reach":5458,"likes":111,"comments":6,"saves":46,"shares":29,"clicks":38},{"d":"2026-06-07","plat":"Facebook","fmt":"Static","hook":"Raya open house? The 8-seater is back in stock.","reach":5941,"likes":162,"comments":13,"saves":6,"shares":13,"clicks":85},{"d":"2026-06-09","plat":"Instagram","fmt":"Reel","hook":"From Muar workshop to your living room in 9 days","reach":3803,"likes":171,"comments":11,"saves":31,"shares":22,"clicks":27},{"d":"2026-06-11","plat":"TikTok","fmt":"Reel","hook":"Office chair test: 8 hours, one back","reach":27306,"likes":719,"comments":87,"saves":214,"shares":54,"clicks":513},{"d":"2026-06-14","plat":"Instagram","fmt":"Story","hook":"Showroom PJ this weekend: 20% off floor stock","reach":7991,"likes":225,"comments":17,"saves":8,"shares":36,"clicks":144},{"d":"2026-06-16","plat":"Facebook","fmt":"Carousel","hook":"Solid wood vs veneer: an honest comparison","reach":2371,"likes":123,"comments":8,"saves":12,"shares":5,"clicks":20},{"d":"2026-06-17","plat":"Instagram","fmt":"Reel","hook":"The fabric that survived our toddler test","reach":15492,"likes":598,"comments":26,"saves":119,"shares":43,"clicks":298},{"d":"2026-06-18","plat":"TikTok","fmt":"Reel","hook":"Assembling a wardrobe with zero instructions","reach":23714,"likes":1144,"comments":74,"saves":160,"shares":103,"clicks":157},{"d":"2026-06-21","plat":"Instagram","fmt":"Static","hook":"New: the Kluang oak dining range","reach":11756,"likes":365,"comments":35,"saves":12,"shares":61,"clicks":182},{"d":"2026-06-22","plat":"Facebook","fmt":"Static","hook":"Dealer spotlight: Northern Living, Penang","reach":3410,"likes":81,"comments":8,"saves":3,"shares":16,"clicks":30},{"d":"2026-06-23","plat":"Instagram","fmt":"Reel","hook":"How we pack a sofa so it arrives without a scratch","reach":5720,"likes":241,"comments":22,"saves":65,"shares":33,"clicks":113},{"d":"2026-06-25","plat":"TikTok","fmt":"Reel","hook":"Rating office setups from our customers","reach":27928,"likes":1060,"comments":45,"saves":303,"shares":92,"clicks":451},{"d":"2026-06-27","plat":"Instagram","fmt":"Reel","hook":"We rebuilt our best-selling sofa. Here is what changed.","reach":4081,"likes":232,"comments":12,"saves":12,"shares":19,"clicks":21},{"d":"2026-06-28","plat":"TikTok","fmt":"Reel","hook":"POV: your landlord sees the new dining set","reach":15430,"likes":508,"comments":27,"saves":162,"shares":69,"clicks":269},{"d":"2026-06-30","plat":"Instagram","fmt":"Carousel","hook":"Five mistakes people make buying a bed frame","reach":15190,"likes":691,"comments":55,"saves":43,"shares":69,"clicks":176},{"d":"2026-07-02","plat":"Facebook","fmt":"Static","hook":"Raya open house? The 8-seater is back in stock.","reach":3475,"likes":160,"comments":5,"saves":3,"shares":17,"clicks":57},{"d":"2026-07-05","plat":"Instagram","fmt":"Reel","hook":"From Muar workshop to your living room in 9 days","reach":17097,"likes":910,"comments":37,"saves":104,"shares":37,"clicks":259},{"d":"2026-07-07","plat":"TikTok","fmt":"Reel","hook":"Office chair test: 8 hours, one back","reach":50884,"likes":2954,"comments":123,"saves":245,"shares":117,"clicks":252},{"d":"2026-07-10","plat":"Instagram","fmt":"Story","hook":"Showroom PJ this weekend: 20% off floor stock","reach":4023,"likes":197,"comments":12,"saves":4,"shares":15,"clicks":30},{"d":"2026-07-11","plat":"Facebook","fmt":"Carousel","hook":"Solid wood vs veneer: an honest comparison","reach":8425,"likes":405,"comments":28,"saves":96,"shares":10,"clicks":89},{"d":"2026-07-13","plat":"Instagram","fmt":"Reel","hook":"The fabric that survived our toddler test","reach":9587,"likes":447,"comments":25,"saves":76,"shares":24,"clicks":104},{"d":"2026-07-15","plat":"TikTok","fmt":"Reel","hook":"Assembling a wardrobe with zero instructions","reach":10095,"likes":509,"comments":28,"saves":50,"shares":40,"clicks":79},{"d":"2026-07-17","plat":"Instagram","fmt":"Static","hook":"New: the Kluang oak dining range","reach":16831,"likes":398,"comments":55,"saves":17,"shares":65,"clicks":201},{"d":"2026-07-19","plat":"Facebook","fmt":"Static","hook":"Dealer spotlight: Northern Living, Penang","reach":4978,"likes":237,"comments":9,"saves":5,"shares":9,"clicks":76},{"d":"2026-07-21","plat":"Instagram","fmt":"Reel","hook":"How we pack a sofa so it arrives without a scratch","reach":14822,"likes":744,"comments":16,"saves":42,"shares":80,"clicks":285},{"d":"2026-07-22","plat":"TikTok","fmt":"Reel","hook":"Rating office setups from our customers","reach":34984,"likes":1194,"comments":76,"saves":83,"shares":133,"clicks":375},{"d":"2026-07-24","plat":"Instagram","fmt":"Reel","hook":"We rebuilt our best-selling sofa. Here is what changed.","reach":8924,"likes":368,"comments":33,"saves":65,"shares":49,"clicks":128},{"d":"2026-07-25","plat":"TikTok","fmt":"Reel","hook":"POV: your landlord sees the new dining set","reach":23882,"likes":1080,"comments":84,"saves":254,"shares":138,"clicks":345},{"d":"2026-07-27","plat":"Instagram","fmt":"Carousel","hook":"Five mistakes people make buying a bed frame","reach":15107,"likes":416,"comments":49,"saves":77,"shares":32,"clicks":210},{"d":"2026-07-28","plat":"Facebook","fmt":"Static","hook":"Raya open house? The 8-seater is back in stock.","reach":6721,"likes":375,"comments":10,"saves":7,"shares":7,"clicks":51},{"d":"2026-07-31","plat":"Instagram","fmt":"Reel","hook":"From Muar workshop to your living room in 9 days","reach":16879,"likes":674,"comments":50,"saves":94,"shares":101,"clicks":152},{"d":"2026-08-02","plat":"TikTok","fmt":"Reel","hook":"Office chair test: 8 hours, one back","reach":52526,"likes":2595,"comments":112,"saves":396,"shares":224,"clicks":558},{"d":"2026-08-05","plat":"Instagram","fmt":"Story","hook":"Showroom PJ this weekend: 20% off floor stock","reach":11114,"likes":600,"comments":43,"saves":11,"shares":55,"clicks":216},{"d":"2026-08-07","plat":"Facebook","fmt":"Carousel","hook":"Solid wood vs veneer: an honest comparison","reach":7098,"likes":197,"comments":9,"saves":27,"shares":23,"clicks":108},{"d":"2026-08-10","plat":"Instagram","fmt":"Reel","hook":"The fabric that survived our toddler test","reach":15964,"likes":799,"comments":43,"saves":163,"shares":86,"clicks":90},{"d":"2026-08-11","plat":"TikTok","fmt":"Reel","hook":"Assembling a wardrobe with zero instructions","reach":36491,"likes":1836,"comments":130,"saves":126,"shares":198,"clicks":210},{"d":"2026-08-13","plat":"Instagram","fmt":"Static","hook":"New: the Kluang oak dining range","reach":9776,"likes":404,"comments":18,"saves":10,"shares":37,"clicks":86},{"d":"2026-08-15","plat":"Facebook","fmt":"Static","hook":"Dealer spotlight: Northern Living, Penang","reach":6523,"likes":383,"comments":7,"saves":7,"shares":16,"clicks":64},{"d":"2026-08-17","plat":"Instagram","fmt":"Reel","hook":"How we pack a sofa so it arrives without a scratch","reach":7028,"likes":220,"comments":26,"saves":83,"shares":39,"clicks":98},{"d":"2026-08-19","plat":"TikTok","fmt":"Reel","hook":"Rating office setups from our customers","reach":69643,"likes":2964,"comments":123,"saves":754,"shares":376,"clicks":1264},{"d":"2026-08-20","plat":"Instagram","fmt":"Reel","hook":"We rebuilt our best-selling sofa. Here is what changed.","reach":9899,"likes":354,"comments":14,"saves":55,"shares":56,"clicks":52},{"d":"2026-08-23","plat":"TikTok","fmt":"Reel","hook":"POV: your landlord sees the new dining set","reach":17865,"likes":390,"comments":36,"saves":167,"shares":52,"clicks":108},{"d":"2026-08-24","plat":"Instagram","fmt":"Carousel","hook":"Five mistakes people make buying a bed frame","reach":7887,"likes":194,"comments":31,"saves":54,"shares":45,"clicks":58},{"d":"2026-08-27","plat":"Facebook","fmt":"Static","hook":"Raya open house? The 8-seater is back in stock.","reach":5223,"likes":274,"comments":12,"saves":5,"shares":11,"clicks":45},{"d":"2026-08-28","plat":"Instagram","fmt":"Reel","hook":"From Muar workshop to your living room in 9 days","reach":15741,"likes":851,"comments":38,"saves":50,"shares":78,"clicks":78},{"d":"2026-08-30","plat":"TikTok","fmt":"Reel","hook":"Office chair test: 8 hours, one back","reach":41873,"likes":1889,"comments":86,"saves":243,"shares":44,"clicks":636}],"meta":{"built":"2026-09-05","asat":"2026-08-31","source":"demo-workbook.xlsx (Revenue, Costs, AR aging, Cash, Ads, Posts)"}};
+const PLAN_TEXT = `DASHBOARD PLAN — Kayu &amp; Co. Furniture Sdn Bhd, demo-workbook.xlsx
+Written 2026-09-05. Built from demo-workbook.xlsx, tabs: Revenue, Costs, AR aging, Cash,
+Ads, Posts. Data range: Sep 2025 to Aug 2026 (Ads from Mar 2026, Posts from Jun 2026).
+Receivables are a snapshot as at 31 Aug 2026.
+Output file: kayu-operations.html. Policy input: credit-terms.md, how-our-business-works.md.
+
+THE SHEET
+Revenue (144 rows): Month (YYYY-MM), Channel (Dealers / Showroom PJ / Online),
+  Category (Sofas / Dining / Bedroom / Office), Units (count), Revenue (RM).
+Costs (99 rows): Month, Cost category (9 of them), Amount (RM).
+AR aging (83 rows, 40 dealers): Dealer, Region, Terms (30 or 45 days), Credit limit (RM),
+  Invoice no, Invoice date, Due date, Amount (RM), Days overdue as at 2026-08-31,
+  Bucket (Current / 1-30 / 31-60 / 61-90 / 90+), Last contact, Note.
+Cash (12 rows): Month, Opening, Receipts from dealers, Receipts showroom and online,
+  Payments to suppliers, Payroll, Other payments, Closing. All RM.
+Ads (97 rows, weekly): Week starting, Campaign (5), Platform (Meta / Google / TikTok),
+  Spend (RM), Impressions, Clicks, Leads, CTR (%), Cost per lead (RM).
+Posts (48 rows): Date, Platform, Format, Hook, Reach, Likes, Comments, Saves, Shares,
+  Link clicks.
+
+Known problems and how we handled them:
+- Shah Alam Home Depot has a BLANK credit limit. Treated as "unknown", never as zero.
+  It can never fire the over-limit rule; instead it gets its own LOW/Data card (R6).
+- INV-261462, Port Dickson Home, is NEGATIVE: -RM 4,800, "Credit note CN-0231, returned
+  dining set". It is netted into that dealer's balance and into the Current bucket.
+  Summing the bucket without it overstates receivables by RM 4,800.
+- INV-261416, Borneo Living KK, RM 187,400, 95 days, note "Disputes delivery damage on
+  2 sofas". Per credit-terms.md a dispute is NOT chased but DOES count against the credit
+  limit. So: excluded from the chase rules R1-R4, included in the R5 limit calculation,
+  included in the "past 60 days" number, and given its own LOW/Dispute card (R7).
+- Checked and clean: no total rows in any tab, one date format (YYYY-MM-DD / YYYY-MM),
+  one currency (RM), CTR is a percent (0.72 to 3.13) not a fraction.
+- Last contact is blank for every Current-bucket row. Expected, not a defect.
+
+THE THREE NUMBERS
+N1. Cash closing balance, latest month = Cash tab, Closing balance column, row 2026-08.
+    One cell. Latest value: RM 1,510,000 (Aug 2026), -1.3% on Jul 2026.
+N2. Receivables past 60 days = AR aging tab, sum of Amount where Days overdue > 60.
+    Latest value: RM 487,900 across 7 invoices and 5 dealers, as at 31 Aug 2026.
+    Includes the disputed RM 187,400: still owed, just not chased.
+N3. Office revenue, latest month vs three months ago = Revenue tab, sum of Revenue where
+    Category = Office, all channels, for 2026-08 and 2026-05 (6 rows each).
+    Latest value: RM 327,900 vs RM 238,200 = +37.7%.
+
+THE CHARTS
+C1. Revenue by month, stacked by channel: Month on x, RM on y, three series from
+    Revenue tab (Dealers, Showroom PJ, Online). Sep 2025 to Aug 2026. Not filtered.
+C2. Revenue by category, by month: line per category from Revenue tab, Office in orange
+    and thickened. Obeys the channel filter.
+C3. AR aging by bucket: bucket on x, RM outstanding on y, from AR aging tab, all 83
+    invoices, net of the credit note. 61-90 and 90+ drawn red, 31-60 amber.
+C4. Cost by month for the selected category (default All), from Costs tab. A bar is drawn
+    red when it is more than 25% above the prior three-month average (rule R8).
+C5. Cost per lead by campaign, weekly: Spend / Leads per campaign per week from Ads tab,
+    Mar to Aug 2026. Plus a second chart, CTR by campaign weekly, on the same page.
+Also on their pages: closing balance by month and receipts by source (Cash tab), reach by
+platform (Posts tab).
+
+THE QUEUE RULES
+R1. Undisputed invoice more than 90 days past due -> HIGH, managing director. Director
+    letter, consider credit insurance or legal. [credit-terms.md chase sequence]
+R2. Undisputed invoice 61-90 days past due -> HIGH, finance manager + sales director.
+    Meeting or call with the owner, payment plan if needed. [credit-terms.md]
+R3. Undisputed invoice 31-60 days past due -> MEDIUM, finance manager. New shipments on
+    hold, phone call then written notice. [credit-terms.md]
+R4. Dealer with invoices 1-30 days past due -> LOW, accounts. ONE CARD PER DEALER, not per
+    invoice, because a statement of account covers the account. 1-7 days is a statement,
+    8-30 is a chase email. [credit-terms.md]
+R5. Dealer balance over its credit limit -> HIGH, finance manager. Hold new orders until
+    approved. Disputed invoices still count. [credit-terms.md terms]
+R6. Credit limit blank in the sheet -> LOW/Data, finance manager. [our decision, move 1]
+R7. Invoice noted as disputed -> LOW/Dispute, finance manager. A person calls, never a
+    template. Excluded from R1-R4. [credit-terms.md, what stays human]
+R8. A cost category more than 25% above its prior three-month average, in the last three
+    months -> LOW/Costs, finance manager. [DEFAULT: no cost threshold exists in the
+    documents. Change this if the business has a real one.]
+R9. A revenue category up more than 25% over two months -> GOOD, sales director.
+    [DEFAULT, same caveat.]
+
+Card count on this build: 42 total — 12 HIGH, 12 MEDIUM, 17 LOW, 1 GOOD.
+By rule: R1 1, R2 5, R3 12, R4 14, R5 6, R6 1, R7 1, R8 1, R9 1.
+
+THE PAGES
+Overview: three number tiles with a source line under each, C1, and the top four cards.
+Needs attention: every card, high to low then oldest first; a "The rules" panel listing
+  R1-R9 with their source and card count; a Handled section (ticks in localStorage).
+Revenue: filters channel + category; C1 and C2; monthly table, click a month for its
+  channel and category split.
+Receivables: filters bucket + region + dealer search; four stat boxes; C3; dealer table
+  with a credit-limit usage bar, click a dealer for its invoices.
+Cash: closing balance line, receipts stacked by source, 12-row table, click for movement.
+Costs: category filter; C4 with the R8 spike bars; monthly table, click for the
+  category breakdown and each category's share.
+Marketing: filters campaign + platform; C5 and the CTR chart; campaign table, click for
+  the weekly rows.
+Posts: filters platform + format; reach by platform; post table, click for the breakdown.
+The plan: this text, and the Monday instruction.
+
+WHAT THE PAGE NEVER DOES
+No fetch, no external script, no external font, no login, no send. Every button either
+navigates inside the page, copies a prompt to the clipboard, or ticks a box that lives in
+that browser's localStorage on that laptop. It opens with Wi-Fi off.
+
+HOW TO REBUILD
+1. New chat inside the Project. Upload the new version of the sheet.
+2. Paste this file. Say: "Rebuild the operations app from this plan. Report any column
+   that has changed before you build. Same pages, same rules, same file name."
+3. Check N1, N2, N3 against the sheet by hand, then open one queue card and check its
+   number and its rule against the AR aging tab.
+4. Replace kayu-operations.html in the Project with the new one. Keep the file name.
+
+OWNER
+&lt;name>, finance manager. Refresh day: Monday.
+Nothing here updates on its own. The page is a snapshot of one upload.
+`;
+
+/* ---------- helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uniq=a=>[...new Set(a)];
+const sum=(a,f)=>a.reduce((s,x)=>s+(f?f(x):x),0);
+const RM=v=>(v<0?'−':'')+'RM '+Math.abs(Math.round(v)).toLocaleString('en-US');
+const RM2=v=>'RM '+v.toFixed(2);
+const N=v=>Math.round(v).toLocaleString('en-US');
+const PC=v=>(v>=0?'+':'−')+Math.abs(v).toFixed(1)+'%';
+const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MON=m=>MN[+m.split('-')[1]-1]+' '+m.split('-')[0].slice(2);
+const MONL=m=>MN[+m.split('-')[1]-1]+' '+m.split('-')[0];
+const DAY=d=>{const p=d.split('-');return +p[2]+' '+MN[+p[1]-1]+' '+p[0].slice(2)};
+
+const R=D.revenue, C=D.costs, AR=D.ar, CA=D.cash, AD=D.ads, PO=D.posts;
+const months=uniq(R.map(r=>r.m)).sort();
+const LAST=months[months.length-1];
+const CATS=['Sofas','Dining','Bedroom','Office'];
+const CHANS=['Dealers','Showroom PJ','Online'];
+const COSTCATS=uniq(C.map(c=>c.cat)).sort();
+const CAMPS=uniq(AD.map(a=>a.camp)).sort();
+const WEEKS=uniq(AD.map(a=>a.w)).sort();
+
+const isDispute=r=>/disput/i.test(r.note||'');
+const isCredit=r=>r.amt<0;
+
+/* dealer roll-up */
+const DEALERS={};
+AR.forEach(r=>{
+  const d=DEALERS[r.dealer]||(DEALERS[r.dealer]={name:r.dealer,region:r.region,terms:r.terms,
+    limit:r.limit,rows:[],bal:0,overdue:0,oldest:0,disputed:0});
+  d.rows.push(r); d.bal+=r.amt;
+  if(r.days>0) d.overdue+=r.amt;
+  if(isDispute(r)) d.disputed+=r.amt;
+  if(r.days>d.oldest) d.oldest=r.days;
+});
+const DLIST=Object.values(DEALERS).sort((a,b)=>b.overdue-a.overdue||b.bal-a.bal);
+
+/* ---------- the three numbers ---------- */
+const cashLast=CA[CA.length-1];
+const N1=cashLast.close;
+const over60=AR.filter(r=>r.days>60);
+const N2=sum(over60,r=>r.amt);
+const offBy=m=>sum(R.filter(r=>r.m===m&&r.cat==='Office'),r=>r.rev);
+const m3=months[months.length-4];
+const N3a=offBy(LAST), N3b=offBy(m3), N3=(N3a-N3b)/N3b*100;
+
+/* ---------- rules ---------- */
+const RULES=[
+ {id:'R1',t:'Undisputed invoice more than 90 days past due → <b>HIGH</b>, managing director. Director letter; consider credit insurance or legal.',src:'credit-terms.md, chase sequence'},
+ {id:'R2',t:'Undisputed invoice 61–90 days past due → <b>HIGH</b>, finance manager and sales director. Meeting or call with the owner, payment plan if needed.',src:'credit-terms.md, chase sequence'},
+ {id:'R3',t:'Undisputed invoice 31–60 days past due → <b>MEDIUM</b>, finance manager. New shipments on hold, phone call then written notice.',src:'credit-terms.md, chase sequence'},
+ {id:'R4',t:'Dealer with invoices 1–30 days past due → <b>LOW</b>, accounts. One card per dealer, because a statement of account covers the account, not one invoice.',src:'credit-terms.md, chase sequence'},
+ {id:'R5',t:'Dealer balance over its credit limit → <b>HIGH</b>, finance manager. Hold new orders until approved. Disputed invoices still count against the limit.',src:'credit-terms.md, terms'},
+ {id:'R6',t:'Credit limit blank in the sheet → <b>LOW · Data</b>, finance manager. Blank is treated as <i>unknown</i>, never as zero, so it can never fire R5.',src:'our decision in move 1'},
+ {id:'R7',t:'Invoice noted as disputed → <b>LOW · Dispute</b>, finance manager. Never chased by template; a person calls. Excluded from R1–R4.',src:'credit-terms.md, what stays human'},
+ {id:'R8',t:'A cost category more than 25% above its prior three-month average, in the last three months → <b>LOW · Costs</b>, finance manager.',src:'DEFAULT — no threshold in the documents'},
+ {id:'R9',t:'A revenue category up more than 25% over two months → <b>GOOD</b>, sales director. Worth repeating, not fixing.',src:'DEFAULT — no threshold in the documents'}
+];
+const RULE=id=>RULES.find(r=>r.id===id);
+
+function buildCards(){
+  const cards=[];
+  const add=c=>cards.push(c);
+  /* R1-R3: one card per overdue undisputed invoice past 30 days */
+  AR.filter(r=>r.days>30&&!isDispute(r)&&!isCredit(r)).forEach(r=>{
+    let rule,sev,who,step;
+    if(r.days>90){rule='R1';sev='HIGH';who='Managing director';step='Director letter. Consider a credit insurance claim or legal.';}
+    else if(r.days>60){rule='R2';sev='HIGH';who='Finance manager + sales director';step='Meeting or call with the owner. Offer a payment plan if needed.';}
+    else {rule='R3';sev='MEDIUM';who='Finance manager';step='New shipments on hold. Phone call, then a written notice of the hold.';}
+    add({sev,rule,tag:'Receivables',who,age:r.days,amt:r.amt,page:'receivables',focus:r.dealer,
+      title:r.dealer+' — '+r.inv+', '+RM(r.amt)+', '+r.days+' days past due',
+      why:step+(r.note?' Sheet note: “'+r.note+'”.':'')+(r.contact?' Last contact '+DAY(r.contact)+'.':' No last contact recorded.'),
+      prompt:'Draft the '+(r.days>90?'director letter':r.days>60?'call agenda and follow-up note':'hold notice')+' for '+r.dealer+', invoice '+r.inv+' for '+RM(r.amt)+', now '+r.days+' days past due (due '+r.ddate+'). Use the tone in credit-terms.md for the '+(r.days>90?'over 90':r.days>60?'61 to 90':'31 to 60')+' day step. Address it to the dealer’s owner. Do not send it.',
+      key:'inv:'+r.inv});
+  });
+  /* R4: one card per dealer with 1-30 day invoices */
+  DLIST.forEach(d=>{
+    const rs=d.rows.filter(r=>r.days>0&&r.days<=30&&!isDispute(r)&&!isCredit(r));
+    if(!rs.length) return;
+    const amt=sum(rs,r=>r.amt), old=Math.max(...rs.map(r=>r.days));
+    add({sev:'LOW',rule:'R4',tag:'Receivables',who:'Accounts',age:old,amt,page:'receivables',focus:d.name,
+      title:d.name+' — '+rs.length+' invoice'+(rs.length>1?'s':'')+' 1–30 days past due, '+RM(amt),
+      why:(old<=7?'Statement of account by email. Assume they forgot.':'Chase email with the invoice numbers and amount, copy to the dealer’s owner. Polite, specific, a date to pay by.')+' Oldest is '+old+' days.',
+      prompt:'Draft the '+(old<=7?'statement of account':'chase email')+' for '+d.name+' covering invoices '+rs.map(r=>r.inv).join(', ')+', total '+RM(amt)+', oldest '+old+' days past due. Use the tone in credit-terms.md for the '+(old<=7?'1 to 7':'8 to 30')+' day step. Do not send it.',
+      key:'d30:'+d.name});
+  });
+  /* R5: over credit limit */
+  DLIST.forEach(d=>{
+    if(d.limit==null||d.bal<=d.limit) return;
+    add({sev:'HIGH',rule:'R5',tag:'Receivables',who:'Finance manager',age:d.oldest,amt:d.bal-d.limit,page:'receivables',focus:d.name,
+      title:d.name+' — balance '+RM(d.bal)+' is over its '+RM(d.limit)+' limit by '+RM(d.bal-d.limit),
+      why:'Orders that would take the balance over the limit are held until the finance manager approves them.'+(d.disputed?' '+RM(d.disputed)+' of this is disputed — it still counts against the limit.':''),
+      prompt:'Summarise '+d.name+'’s account: balance '+RM(d.bal)+' against a credit limit of '+RM(d.limit)+', '+d.rows.length+' open invoices, oldest '+d.oldest+' days past due. Recommend hold or release for the finance manager to decide. Do not decide it.',
+      key:'lim:'+d.name});
+  });
+  /* R6: blank credit limit */
+  DLIST.forEach(d=>{
+    if(d.limit!=null) return;
+    add({sev:'LOW',rule:'R6',tag:'Data',who:'Finance manager',age:0,amt:d.bal,page:'receivables',focus:d.name,
+      title:d.name+' — credit limit is blank in the sheet',
+      why:'Balance is '+RM(d.bal)+'. Blank is treated as unknown, not zero, so this dealer can never trigger the over-limit rule. Set the limit at the January review before the next order.',
+      prompt:'Credit limit for '+d.name+' is blank in the AR aging tab. Current balance '+RM(d.bal)+' across '+d.rows.length+' invoices. Draft a one-line note asking the finance manager to set the limit.',
+      key:'blank:'+d.name});
+  });
+  /* R7: disputes */
+  AR.filter(isDispute).forEach(r=>{
+    add({sev:'LOW',rule:'R7',tag:'Dispute',who:'Finance manager',age:r.days,amt:r.amt,page:'receivables',focus:r.dealer,
+      title:r.dealer+' — '+r.inv+', '+RM(r.amt)+' disputed, '+r.days+' days past due',
+      why:'“'+r.note+'”. A disputed invoice is not chased until the dispute is closed, but it still counts against the credit limit. A person calls — never a template.',
+      prompt:'Prepare call notes for '+r.dealer+' about invoice '+r.inv+' ('+RM(r.amt)+', '+r.days+' days past due): the dispute is “'+r.note+'”. List what to confirm and what to agree. Do not draft a chase email.',
+      key:'disp:'+r.inv});
+  });
+  /* R8: cost spikes in the last three months */
+  const last3=months.slice(-3);
+  COSTCATS.forEach(cat=>{
+    const by={}; C.filter(c=>c.cat===cat).forEach(c=>by[c.m]=c.amt);
+    last3.forEach(m=>{
+      const i=months.indexOf(m); if(i<3) return;
+      const prev=months.slice(i-3,i).map(x=>by[x]).filter(v=>v!=null);
+      if(prev.length<3||by[m]==null) return;
+      const avg=sum(prev)/prev.length;
+      if(by[m]<=avg*1.25) return;
+      add({sev:'LOW',rule:'R8',tag:'Costs',who:'Finance manager',age:(months.length-1-i)*30,amt:by[m]-avg,page:'costs',focus:cat,
+        title:cat+' — '+RM(by[m])+' in '+MONL(m)+', '+PC((by[m]-avg)/avg*100)+' on its prior 3-month average of '+RM(avg),
+        why:'No threshold for costs appears in the documents, so this uses the default: 25% above the prior three-month average. Check the invoices behind it before treating it as a trend.',
+        prompt:'Costs tab: '+cat+' was '+RM(by[m])+' in '+MONL(m)+' against a prior three-month average of '+RM(avg)+'. List what to check to explain the difference and whether it looks one-off or structural.',
+        key:'cost:'+cat+':'+m});
+    });
+  });
+  /* R9: revenue category up over two months */
+  CATS.forEach(cat=>{
+    const v=m=>sum(R.filter(r=>r.m===m&&r.cat===cat),r=>r.rev);
+    const a=v(LAST), b=v(months[months.length-3]);
+    if(b<=0||(a-b)/b<=0.25) return;
+    add({sev:'GOOD',rule:'R9',tag:'Revenue',who:'Sales director',age:0,amt:a-b,page:'revenue',focus:cat,
+      title:cat+' revenue '+RM(a)+' in '+MONL(LAST)+', '+PC((a-b)/b*100)+' on '+MONL(months[months.length-3]),
+      why:'Up more than 25% over two months. Worth understanding and repeating, not fixing. Check the Marketing page for the campaign behind it.',
+      prompt:cat+' revenue went from '+RM(b)+' in '+MONL(months[months.length-3])+' to '+RM(a)+' in '+MONL(LAST)+'. Using the Revenue and Ads tabs, say which channel and which campaign the increase came from, and what to repeat.',
+      key:'rev:'+cat});
+  });
+  const ord={HIGH:0,MEDIUM:1,LOW:2,GOOD:3};
+  cards.sort((a,b)=>ord[a.sev]-ord[b.sev]||b.age-a.age||b.amt-a.amt);
+  return cards;
+}
+const CARDS=buildCards();
+
+/* ---------- handled ticks (this browser only) ---------- */
+const HKEY='kayu-handled-v1';
+let handled={};
+try{handled=JSON.parse(localStorage.getItem(HKEY)||'{}')}catch(e){handled={}}
+function setHandled(k,v){handled[k]=v;if(!v)delete handled[k];try{localStorage.setItem(HKEY,JSON.stringify(handled))}catch(e){}}
+const openCards=()=>CARDS.filter(c=>!handled[c.key]);
+
+/* ---------- charts ---------- */
+let CID=0; const TIPS={};
+const niceStep=x=>{const p=Math.pow(10,Math.floor(Math.log10(x)||0));const f=x/p;return (f<=1?1:f<=2?2:f<=5?5:10)*p};
+function chart(cfg){
+  const id='c'+(++CID); TIPS[id]=cfg.tips||[];
+  const W=900,H=cfg.h||250,PL=cfg.pl||72,PR=14,PT=12,PB=30;
+  const cats=cfg.cats,n=cats.length,pw=W-PL-PR,ph=H-PT-PB;
+  let max=0;
+  if(cfg.stacked){for(let i=0;i<n;i++){let s=0;cfg.series.forEach(se=>s+=(se.vals[i]||0));if(s>max)max=s}}
+  else cfg.series.forEach(se=>se.vals.forEach(v=>{if(v!=null&&v>max)max=v}));
+  if(max<=0)max=1;
+  let step=niceStep(max/4); max=Math.ceil(max/step)*step;
+  const y=v=>PT+ph-(v/max)*ph, bw=pw/n;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(cfg.title||'chart')+'">';
+  for(let g=0;g<=4;g++){const v=max*g/4;
+    s+='<line class="grid" x1="'+PL+'" x2="'+(W-PR)+'" y1="'+y(v)+'" y2="'+y(v)+'"/>';
+    s+='<text x="'+(PL-8)+'" y="'+(y(v)+4)+'" text-anchor="end">'+esc((cfg.yfmt||N)(v))+'</text>';}
+  const every=n<=14?1:Math.ceil(n/12);
+  cats.forEach((c,i)=>{if(i%every)return;
+    s+='<text x="'+(PL+bw*(i+.5))+'" y="'+(H-10)+'" text-anchor="middle">'+esc(c)+'</text>';});
+  if(cfg.type==='line'){
+    cfg.series.forEach(se=>{
+      const pts=se.vals.map((v,i)=>v==null?null:[PL+bw*(i+.5),y(v)]).filter(Boolean);
+      s+='<polyline fill="none" stroke="'+se.color+'" stroke-width="'+(se.thick?2.6:1.8)+'" stroke-linejoin="round" points="'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')+'"/>';
+      pts.forEach(p=>{s+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="2.6" fill="'+se.color+'"/>'});
+    });
+  } else {
+    const k=cfg.stacked?1:cfg.series.length, iw=bw*.66/k;
+    cats.forEach((c,i)=>{
+      if(cfg.stacked){let acc=0;
+        cfg.series.forEach(se=>{const v=se.vals[i]||0;if(v<=0)return;
+          const h=ph*(v/max);acc+=h;
+          s+='<rect x="'+(PL+bw*i+bw*.17)+'" y="'+(PT+ph-acc)+'" width="'+(bw*.66)+'" height="'+h+'" fill="'+se.color+'"/>';});
+      } else {
+        cfg.series.forEach((se,j)=>{const v=se.vals[i]||0;if(v<=0)return;
+          const h=ph*(v/max), col=(se.colorAt?se.colorAt(i):se.color);
+          s+='<rect x="'+(PL+bw*i+bw*.17+iw*j)+'" y="'+(PT+ph-h)+'" width="'+(iw-1)+'" height="'+h+'" fill="'+col+'"/>';});
+      }
+    });
+  }
+  cats.forEach((c,i)=>{s+='<rect class="hb" data-c="'+id+'" data-i="'+i+'" x="'+(PL+bw*i)+'" y="'+PT+'" width="'+bw+'" height="'+ph+'"/>';});
+  s+='</svg>';
+  if(cfg.series.length>1||cfg.legend)
+    s+='<div class="legend">'+cfg.series.map(se=>'<span><i style="background:'+se.color+'"></i>'+esc(se.name)+'</span>').join('')+'</div>';
+  return s;
+}
+document.addEventListener('mousemove',e=>{
+  const t=$('#tip'), hb=e.target.closest?e.target.closest('.hb'):null;
+  if(!hb){t.style.display='none';return}
+  const html=(TIPS[hb.dataset.c]||[])[+hb.dataset.i];
+  if(!html){t.style.display='none';return}
+  t.innerHTML=html;t.style.display='block';
+  const r=t.getBoundingClientRect();
+  t.style.left=Math.min(e.clientX+14,innerWidth-r.width-10)+'px';
+  t.style.top=Math.max(8,e.clientY-r.height-12)+'px';
+});
+const swatch=c=>'<i style="background:'+c+'"></i>';
+
+/* ---------- table ---------- */
+function mountTable(host,cols,rows,opts){
+  opts=opts||{};
+  let sk=opts.sort||cols[0].k, sd=opts.dir||1;
+  function draw(){
+    const rs=rows.slice().sort((a,b)=>{
+      const x=a[sk],y=b[sk];
+      if(typeof x==='number'&&typeof y==='number')return (x-y)*sd;
+      return String(x).localeCompare(String(y))*sd;});
+    host.innerHTML='<div class="tbl"><table><thead><tr>'+
+      cols.map(c=>'<th class="'+(c.r?'r ':'')+(c.k===sk?'on':'')+'" data-k="'+c.k+'">'+esc(c.label)+'</th>').join('')+
+      '</tr></thead><tbody>'+rs.map((r,i)=>
+        '<tr class="row" data-i="'+i+'">'+cols.map(c=>'<td class="'+(c.r?'r':'')+'">'+(c.fmt?c.fmt(r[c.k],r):esc(r[c.k]))+'</td>').join('')+'</tr>'+
+        (opts.detail?'<tr class="det" data-d="'+i+'" hidden><td colspan="'+cols.length+'"></td></tr>':'')
+      ).join('')+'</tbody></table></div>'+
+      (opts.foot?'<div class="sub" style="margin:8px 0 0">'+opts.foot+'</div>':'');
+    host._rows=rs;
+  }
+  draw();
+  host.onclick=e=>{
+    const th=e.target.closest('th');
+    if(th&&host.contains(th)){const k=th.dataset.k;
+      if(k===sk)sd=-sd; else {sk=k; sd=cols.find(c=>c.k===k).r?-1:1;}
+      draw(); return;}
+    const tr=e.target.closest('tr.row');
+    if(tr&&opts.detail){
+      const i=tr.dataset.i, d=host.querySelector('tr.det[data-d="'+i+'"]');
+      if(d.hidden){d.querySelector('td').innerHTML=opts.detail(host._rows[i]);d.hidden=false;tr.classList.add('sel');}
+      else{d.hidden=true;tr.classList.remove('sel');}
+    }
+  };
+  return {redraw:draw};
+}
+
+/* ---------- card rendering ---------- */
+function cardHTML(c){
+  const done=!!handled[c.key];
+  return '<div class="card '+c.sev+(done?' done':'')+'" data-k="'+esc(c.key)+'">'+
+    '<div class="h"><b class="'+c.sev+'">'+c.sev+'</b><span class="chip">'+esc(c.tag)+'</span>'+
+      '<span>'+esc(c.who)+'</span><span style="margin-left:auto">'+c.rule+'</span></div>'+
+    '<div class="ti">'+esc(c.title)+'</div>'+
+    '<p>'+esc(c.why)+'</p>'+
+    '<div class="rule">'+c.rule+': '+RULE(c.rule).t.replace(/<[^>]+>/g,'')+'</div>'+
+    '<div class="act">'+
+      '<button class="btn sm" data-go="'+esc(c.page)+'" data-focus="'+esc(c.focus||'')+'">Open →</button>'+
+      '<button class="btn sm" data-copy="'+esc(c.prompt)+'">Copy the prompt</button>'+
+      '<label><input type="checkbox" data-tick="'+esc(c.key)+'"'+(done?' checked':'')+'> Handled</label>'+
+    '</div></div>';
+}
+
+/* ---------- pages ---------- */
+const PAGES={};
+const state={rev:{ch:'All',cat:'All'},ar:{bucket:'All',region:'All',q:''},
+  costs:{cat:'All'},mkt:{camp:'All',plat:'All'},posts:{plat:'All',fmt:'All'}};
+
+function revSeriesByChannel(){
+  return CHANS.map((ch,i)=>({name:ch,color:['var(--s1)','var(--s2)','var(--s3)'][i],
+    vals:months.map(m=>sum(R.filter(r=>r.m===m&&r.ch===ch),r=>r.rev))}));
+}
+function revTips(series){
+  return months.map((m,i)=>'<b>'+MONL(m)+'</b><br>'+series.map(se=>
+    swatch(se.color)+esc(se.name)+': '+RM(se.vals[i])).join('<br>')+
+    '<br><span style="opacity:.7">Total '+RM(sum(series,se=>se.vals[i]))+'</span>');
+}
+
+PAGES.overview=()=>{
+  const se=revSeriesByChannel();
+  const open=openCards();
+  const cnt=s=>open.filter(c=>c.sev===s).length;
+  const top=open.slice(0,4);
+  return {title:'Overview',lead:'Kayu &amp; Co. Furniture Sdn Bhd — the three numbers, then what needs a person.',
+  sub:'Built from '+esc(D.meta.source)+'. Receivables as at '+DAY(D.meta.asat)+'. Revenue, costs and cash '+MONL(months[0])+' to '+MONL(LAST)+'.',
+  html:
+  '<div class="tiles">'+
+  '<div class="tile"><div class="t">Cash closing balance</div><div class="v">'+RM(N1)+'</div>'+
+    '<div class="kv">'+MONL(LAST)+'. '+PC((N1-CA[CA.length-2].close)/CA[CA.length-2].close*100)+' on '+MONL(CA[CA.length-2].m)+'</div>'+
+    '<div class="sc">Cash tab, <b>Closing balance</b>, row for '+LAST+'. One cell. Opening '+RM(cashLast.open)+' + receipts '+RM(cashLast.rd+cashLast.rs)+' − payments '+RM(cashLast.sup+cashLast.pay+cashLast.oth)+'.</div></div>'+
+  '<div class="tile"><div class="t">Receivables past 60 days</div><div class="v">'+RM(N2)+'</div>'+
+    '<div class="kv">'+over60.length+' invoices, '+uniq(over60.map(r=>r.dealer)).length+' dealers</div>'+
+    '<div class="sc">AR aging tab, sum of <b>Amount</b> where <b>Days overdue</b> &gt; 60, as at '+DAY(D.meta.asat)+'. Includes the disputed '+RM(sum(over60.filter(isDispute),r=>r.amt))+' — it is still money owed, it just is not chased.</div></div>'+
+  '<div class="tile"><div class="t">Office revenue vs three months ago</div><div class="v">'+PC(N3)+'</div>'+
+    '<div class="kv">'+RM(N3a)+' in '+MONL(LAST)+' vs '+RM(N3b)+' in '+MONL(m3)+'</div>'+
+    '<div class="sc">Revenue tab, sum of <b>Revenue</b> where <b>Category</b> = Office, all three channels, for '+LAST+' and '+m3+'. 6 rows each.</div></div>'+
+  '</div>'+
+  '<div class="cols2"><div>'+
+    '<div class="panel"><div class="ph"><h2>Revenue by month, by channel</h2></div>'+
+    '<div class="d">'+MONL(months[0])+' to '+MONL(LAST)+', RM. Hover a month for the split.</div>'+
+    chart({type:'bar',stacked:true,cats:months.map(MON),series:se,tips:revTips(se),yfmt:v=>'RM '+N(v/1000)+'k',h:260})+
+    '<div class="sub" style="margin-top:10px">Source: Revenue tab, Revenue column summed by Month and Channel. 144 rows.</div></div>'+
+  '</div><div>'+
+    '<div class="panel"><div class="ph"><h2>Needs your attention</h2></div>'+
+    '<div class="d">'+open.length+' open · '+cnt('HIGH')+' high · '+cnt('MEDIUM')+' medium · oldest '+(open.length?Math.max(...open.map(c=>c.age)):0)+' days</div>'+
+    (top.length?top.map(cardHTML).join(''):'<p class="sub">Nothing open. Every card is ticked.</p>')+
+    '<button class="btn" data-go="queue">See all '+open.length+' →</button></div>'+
+  '</div></div>'};
+};
+
+PAGES.queue=()=>{
+  const open=openCards(), done=CARDS.filter(c=>handled[c.key]);
+  return {title:'Needs attention',lead:'Every card comes from a rule. The rules are printed below.',
+  sub:'Receivables as at '+DAY(D.meta.asat)+'. Ticks are stored in this browser only — nothing is sent anywhere.',
+  html:
+  '<div class="stat4">'+
+   '<div><small>Open</small><b>'+open.length+'</b></div>'+
+   '<div><small>High</small><b>'+open.filter(c=>c.sev==='HIGH').length+'</b></div>'+
+   '<div><small>Medium</small><b>'+open.filter(c=>c.sev==='MEDIUM').length+'</b></div>'+
+   '<div><small>Oldest</small><b>'+(open.length?Math.max(...open.map(c=>c.age))+' d':'—')+'</b></div></div>'+
+  '<div class="cols2"><div>'+
+    '<div class="panel"><h2>Open</h2><div class="d">Highest severity first, then oldest.</div>'+
+    (open.length?open.map(cardHTML).join(''):'<p class="sub">Nothing open.</p>')+'</div>'+
+    (done.length?'<div class="panel"><h2>Handled</h2><div class="d">'+done.length+' ticked on this laptop. Untick to bring one back.</div>'+done.map(cardHTML).join('')+'</div>':'')+
+  '</div><div>'+
+    '<div class="panel"><h2>The rules</h2><div class="d">One line each. Thresholds come from credit-terms.md unless marked DEFAULT.</div>'+
+    '<ul class="rules" style="padding-left:18px;margin:0">'+RULES.map(r=>{
+      const n=CARDS.filter(c=>c.rule===r.id).length;
+      return '<li><b>'+r.id+'</b> · '+r.t+'<br><span style="font-size:11px;color:var(--ink3)">Source: '+esc(r.src)+' · '+n+' card'+(n===1?'':'s')+'</span></li>';}).join('')+'</ul>'+
+    '<div class="note">Nothing on this page sends anything. “Copy the prompt” puts a request on your clipboard for you to paste into a chat; a person still writes and sends the email.</div></div>'+
+  '</div></div>'};
+};
+
+PAGES.revenue=()=>{
+  const f=state.rev;
+  const rows=R.filter(r=>(f.ch==='All'||r.ch===f.ch)&&(f.cat==='All'||r.cat===f.cat));
+  const byMonth=m=>sum(rows.filter(r=>r.m===m),r=>r.rev);
+  const catSeries=CATS.map((c,i)=>({name:c,color:c==='Office'?'var(--accent)':['var(--mut)','var(--s1)','var(--s3)','var(--s2)'][i],
+    thick:c==='Office',
+    vals:months.map(m=>sum(R.filter(r=>r.m===m&&r.cat===c&&(f.ch==='All'||r.ch===f.ch)),r=>r.rev))}));
+  const se=revSeriesByChannel();
+  const tbl=[];
+  months.forEach(m=>{const rs=rows.filter(r=>r.m===m);
+    tbl.push({m,ml:MONL(m),units:sum(rs,r=>r.u),rev:sum(rs,r=>r.rev),
+      avg:sum(rs,r=>r.u)?sum(rs,r=>r.rev)/sum(rs,r=>r.u):0,rows:rs});});
+  return {title:'Revenue',lead:'144 rows, '+MONL(months[0])+' to '+MONL(LAST)+'. Click a month for its channel and category split.',
+  sub:'Source: Revenue tab. Units is a count, Revenue is RM.',
+  html:
+  '<div class="filters"><span class="lbl">Channel</span><select data-s="rev.ch">'+
+    ['All'].concat(CHANS).map(c=>'<option'+(c===f.ch?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="lbl">Category</span><select data-s="rev.cat">'+
+    ['All'].concat(CATS).map(c=>'<option'+(c===f.cat?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="chip i">'+rows.length+' of 144 rows · '+RM(sum(rows,r=>r.rev))+' total</span></div>'+
+  '<div class="panel"><h2>C1 · Revenue by month, stacked by channel</h2><div class="d">'+MONL(months[0])+' to '+MONL(LAST)+', RM. All channels, ignores the channel filter on purpose — the stack is the split.</div>'+
+   chart({type:'bar',stacked:true,cats:months.map(MON),series:se,tips:revTips(se),yfmt:v=>'RM '+N(v/1000)+'k',h:250})+'</div>'+
+  '<div class="panel"><h2>C2 · Revenue by category, by month</h2><div class="d">'+MONL(months[0])+' to '+MONL(LAST)+', RM. Office in orange — it is the one that moved.'+(f.ch!=='All'?' Filtered to '+esc(f.ch)+'.':'')+'</div>'+
+   chart({type:'line',cats:months.map(MON),series:catSeries,yfmt:v=>'RM '+N(v/1000)+'k',h:250,
+     tips:months.map((m,i)=>'<b>'+MONL(m)+'</b><br>'+catSeries.map(s=>swatch(s.color)+esc(s.name)+': '+RM(s.vals[i])).join('<br>'))})+'</div>'+
+  '<div class="panel"><h2>By month</h2><div class="d">Click a row for the channel and category lines behind it. Click a header to sort.</div><div id="t-rev"></div></div>',
+  after(){
+    mountTable($('#t-rev'),[
+      {k:'ml',label:'Month'},{k:'units',label:'Units',r:1,fmt:N},
+      {k:'rev',label:'Revenue',r:1,fmt:RM},{k:'avg',label:'Avg per unit',r:1,fmt:RM2}],
+      tbl,{sort:'m',dir:1,detail:r=>
+        '<table><thead><tr><th>Channel</th><th>Category</th><th class="r">Units</th><th class="r">Revenue</th></tr></thead><tbody>'+
+        r.rows.slice().sort((a,b)=>b.rev-a.rev).map(x=>'<tr><td>'+esc(x.ch)+'</td><td>'+esc(x.cat)+'</td><td class="r">'+N(x.u)+'</td><td class="r">'+RM(x.rev)+'</td></tr>').join('')+
+        '</tbody></table>'});
+  }};
+};
+
+PAGES.receivables=()=>{
+  const f=state.ar;
+  const buckets=['Current','1-30','31-60','61-90','90+'];
+  const bvals=buckets.map(b=>sum(AR.filter(r=>r.bucket===b),r=>r.amt));
+  let ds=DLIST.filter(d=>(f.region==='All'||d.region===f.region)&&
+    (f.bucket==='All'||d.rows.some(r=>r.bucket===f.bucket))&&
+    (!f.q||d.name.toLowerCase().includes(f.q.toLowerCase())));
+  const regions=uniq(DLIST.map(d=>d.region)).sort();
+  return {title:'Receivables',lead:'83 invoices, 40 dealers, as at '+DAY(D.meta.asat)+'. Click a dealer for its invoices.',
+  sub:'Source: AR aging tab. The credit note CN-0231 (−RM 4,800, Port Dickson Home) is netted into its dealer balance and into the Current bucket. Shah Alam Home Depot’s limit is blank — shown as unknown, never as zero.',
+  html:
+  '<div class="stat4">'+
+   '<div><small>Total outstanding</small><b>'+RM(sum(AR,r=>r.amt))+'</b></div>'+
+   '<div><small>Past due</small><b>'+RM(sum(AR.filter(r=>r.days>0),r=>r.amt))+'</b></div>'+
+   '<div><small>Past 60 days</small><b>'+RM(N2)+'</b></div>'+
+   '<div><small>Dealers past 30 days</small><b>'+uniq(AR.filter(r=>r.days>30).map(r=>r.dealer)).length+'</b></div></div>'+
+  '<div class="filters"><span class="lbl">Bucket</span><select data-s="ar.bucket">'+
+    ['All'].concat(buckets).map(b=>'<option'+(b===f.bucket?' selected':'')+'>'+b+'</option>').join('')+'</select>'+
+   '<span class="lbl">Region</span><select data-s="ar.region">'+
+    ['All'].concat(regions).map(b=>'<option'+(b===f.region?' selected':'')+'>'+b+'</option>').join('')+'</select>'+
+   '<input data-s="ar.q" placeholder="Find a dealer" value="'+esc(f.q)+'">'+
+   '<span class="chip i">'+ds.length+' dealers shown</span></div>'+
+  '<div class="panel"><h2>C3 · Aging by bucket</h2><div class="d">RM outstanding as at '+DAY(D.meta.asat)+', all 83 invoices. Not filtered.</div>'+
+   chart({type:'bar',cats:buckets,series:[{name:'Outstanding',color:'var(--s1)',
+     colorAt:i=>i>=3?'var(--critical)':i===2?'var(--warn)':'var(--s1)',vals:bvals}],
+     yfmt:v=>'RM '+N(v/1000)+'k',h:230,
+     tips:buckets.map((b,i)=>{const rs=AR.filter(r=>r.bucket===b);
+       return '<b>'+b+(b==='Current'?'':' days')+'</b><br>'+RM(bvals[i])+'<br>'+rs.length+' invoices, '+uniq(rs.map(r=>r.dealer)).length+' dealers'+
+       (b==='Current'?'<br><span style="opacity:.7">net of the −RM 4,800 credit note</span>':'')})})+'</div>'+
+  '<div class="panel"><h2>Dealers</h2><div class="d">Sorted by amount past due. Click a dealer for its invoices. Click a header to sort.</div><div id="t-ar"></div></div>',
+  after(){
+    mountTable($('#t-ar'),[
+      {k:'name',label:'Dealer'},{k:'region',label:'Region'},{k:'terms',label:'Terms',r:1,fmt:v=>v+' d'},
+      {k:'bal',label:'Balance',r:1,fmt:RM},
+      {k:'limitS',label:'Credit limit',r:1,fmt:(v,r)=>r.limit==null?'<span class="chip w">unknown</span>':RM(r.limit)},
+      {k:'used',label:'Used',r:1,fmt:(v,r)=>r.limit==null?'<span style="color:var(--ink3)">—</span>':
+        '<div class="bar" style="min-width:70px"><i class="'+(v>100?'over':'')+'" style="width:'+Math.min(100,v)+'%"></i></div><span style="font-size:11px">'+v.toFixed(0)+'%</span>'},
+      {k:'overdue',label:'Past due',r:1,fmt:RM},{k:'oldest',label:'Oldest',r:1,fmt:v=>v?v+' d':'—'}],
+      ds.map(d=>Object.assign({},d,{limitS:d.limit==null?-1:d.limit,used:d.limit==null?-1:d.bal/d.limit*100})),
+      {sort:'overdue',dir:-1,detail:d=>{
+        const rs=DEALERS[d.name].rows.slice().sort((a,b)=>b.days-a.days);
+        return (d.limit==null?'<div class="note">Credit limit is blank in the sheet. Treated as unknown — this dealer can never trigger the over-limit rule until someone sets it.</div>':
+                d.bal>d.limit?'<div class="note">Over its limit by '+RM(d.bal-d.limit)+'. New orders held until the finance manager approves.</div>':'')+
+        '<table><thead><tr><th>Invoice</th><th>Invoice date</th><th>Due</th><th class="r">Amount</th><th class="r">Days</th><th>Bucket</th><th>Last contact</th><th>Note</th></tr></thead><tbody>'+
+        rs.map(r=>'<tr><td>'+esc(r.inv)+'</td><td>'+DAY(r.idate)+'</td><td>'+DAY(r.ddate)+'</td><td class="r">'+RM(r.amt)+'</td><td class="r">'+(r.days||'—')+'</td><td>'+esc(r.bucket)+'</td><td>'+(r.contact?DAY(r.contact):'—')+'</td><td>'+(isDispute(r)?'<span class="chip w">dispute</span> ':'')+(isCredit(r)?'<span class="chip i">credit note</span> ':'')+esc(r.note)+'</td></tr>').join('')+
+        '</tbody></table>'}});
+  }};
+};
+
+PAGES.cash=()=>{
+  const inS=[{name:'Receipts from dealers',color:'var(--s1)',vals:CA.map(c=>c.rd)},
+             {name:'Receipts showroom + online',color:'var(--s3)',vals:CA.map(c=>c.rs)}];
+  const close=[{name:'Closing balance',color:'var(--accent)',thick:1,vals:CA.map(c=>c.close)}];
+  return {title:'Cash',lead:'12 months, one row each. The bank, not the invoice book.',
+  sub:'Source: Cash tab. Closing = Opening + both receipt columns − suppliers − payroll − other.',
+  html:
+  '<div class="panel"><h2>Closing balance by month</h2><div class="d">'+MONL(months[0])+' to '+MONL(LAST)+', RM.</div>'+
+   chart({type:'line',cats:CA.map(c=>MON(c.m)),series:close,yfmt:v=>'RM '+N(v/1000)+'k',h:230,legend:1,
+     tips:CA.map(c=>'<b>'+MONL(c.m)+'</b><br>Opening '+RM(c.open)+'<br>Receipts '+RM(c.rd+c.rs)+'<br>Payments '+RM(c.sup+c.pay+c.oth)+'<br><b>Closing '+RM(c.close)+'</b>')})+'</div>'+
+  '<div class="panel"><h2>Receipts by source</h2><div class="d">Dealers vs showroom and online, RM. Two thirds of revenue is dealer credit — this is where it lands.</div>'+
+   chart({type:'bar',stacked:true,cats:CA.map(c=>MON(c.m)),series:inS,yfmt:v=>'RM '+N(v/1000)+'k',h:230,
+     tips:CA.map(c=>'<b>'+MONL(c.m)+'</b><br>'+swatch('var(--s1)')+'Dealers: '+RM(c.rd)+'<br>'+swatch('var(--s3)')+'Showroom + online: '+RM(c.rs)+'<br><span style="opacity:.7">Total '+RM(c.rd+c.rs)+'</span>')})+'</div>'+
+  '<div class="panel"><h2>The 12 rows</h2><div class="d">Click a month for the movement. Click a header to sort.</div><div id="t-cash"></div></div>',
+  after(){
+    mountTable($('#t-cash'),[
+      {k:'ml',label:'Month'},{k:'open',label:'Opening',r:1,fmt:RM},
+      {k:'inn',label:'Receipts',r:1,fmt:RM},{k:'out',label:'Payments',r:1,fmt:RM},
+      {k:'net',label:'Net',r:1,fmt:v=>'<span style="color:'+(v<0?'var(--critical)':'var(--good)')+'">'+RM(v)+'</span>'},
+      {k:'close',label:'Closing',r:1,fmt:RM}],
+      CA.map(c=>Object.assign({},c,{ml:MONL(c.m),inn:c.rd+c.rs,out:c.sup+c.pay+c.oth,net:c.rd+c.rs-c.sup-c.pay-c.oth})),
+      {sort:'m',dir:1,detail:c=>'<table><tbody>'+
+        [['Receipts from dealers',c.rd],['Receipts showroom and online',c.rs],
+         ['Payments to suppliers',-c.sup],['Payroll',-c.pay],['Other payments',-c.oth]]
+        .map(x=>'<tr><td>'+x[0]+'</td><td class="r">'+RM(x[1])+'</td></tr>').join('')+
+        '<tr><td><b>Net movement</b></td><td class="r"><b>'+RM(c.net)+'</b></td></tr></tbody></table>'});
+  }};
+};
+
+PAGES.costs=()=>{
+  const f=state.costs;
+  const byCat=(cat,m)=>sum(C.filter(c=>c.m===m&&(cat==='All'||c.cat===cat)),c=>c.amt);
+  const vals=months.map(m=>byCat(f.cat,m));
+  const avg3=i=>i<3?null:(vals[i-1]+vals[i-2]+vals[i-3])/3;
+  const spike=i=>{const a=avg3(i);return a!=null&&vals[i]>a*1.25};
+  const rows=months.map((m,i)=>({m,ml:MONL(m),amt:vals[i],avg:avg3(i)||0,
+    d:avg3(i)?(vals[i]-avg3(i))/avg3(i)*100:0,flag:spike(i)?'yes':'',
+    rows:C.filter(c=>c.m===m&&(f.cat==='All'||c.cat===f.cat))}));
+  return {title:'Costs',lead:'99 rows, nine categories, 12 months. The default spike rule is drawn on the chart.',
+  sub:'Source: Costs tab. No total row anywhere in the tab — checked. Amounts are RM.',
+  html:
+  '<div class="filters"><span class="lbl">Category</span><select data-s="costs.cat">'+
+    ['All'].concat(COSTCATS).map(c=>'<option'+(c===f.cat?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="chip w">Red bar = more than 25% above the prior three-month average (R8, our default)</span></div>'+
+  '<div class="panel"><h2>C4 · '+esc(f.cat==='All'?'All costs':f.cat)+' by month</h2><div class="d">'+MONL(months[0])+' to '+MONL(LAST)+', RM. Hover for the comparison against the prior three months.</div>'+
+   chart({type:'bar',cats:months.map(MON),series:[{name:'Amount',color:'var(--s1)',
+     colorAt:i=>spike(i)?'var(--critical)':'var(--s1)',vals}],yfmt:v=>'RM '+N(v/1000)+'k',h:250,
+     tips:months.map((m,i)=>'<b>'+MONL(m)+'</b><br>'+RM(vals[i])+
+       (avg3(i)?'<br>Prior 3-month average '+RM(avg3(i))+'<br>'+PC((vals[i]-avg3(i))/avg3(i)*100)+(spike(i)?' <b>— over the 25% default</b>':''):'<br><span style="opacity:.7">no prior three months</span>'))})+'</div>'+
+  '<div class="panel"><h2>By month</h2><div class="d">Click a month for the category breakdown. Click a header to sort.</div><div id="t-cost"></div></div>',
+  after(){
+    mountTable($('#t-cost'),[
+      {k:'ml',label:'Month'},{k:'amt',label:'Amount',r:1,fmt:RM},
+      {k:'avg',label:'Prior 3-mo avg',r:1,fmt:v=>v?RM(v):'—'},
+      {k:'d',label:'vs average',r:1,fmt:(v,r)=>r.avg?'<span style="color:'+(r.flag?'var(--critical)':'var(--ink2)')+'">'+PC(v)+'</span>':'—'},
+      {k:'flag',label:'R8',fmt:v=>v?'<span class="chip c">spike</span>':''}],
+      rows,{sort:'m',dir:1,detail:r=>'<table><thead><tr><th>Cost category</th><th class="r">Amount</th><th class="r">Share</th></tr></thead><tbody>'+
+        r.rows.slice().sort((a,b)=>b.amt-a.amt).map(x=>'<tr><td>'+esc(x.cat)+'</td><td class="r">'+RM(x.amt)+'</td><td class="r">'+(x.amt/sum(r.rows,y=>y.amt)*100).toFixed(1)+'%</td></tr>').join('')+
+        '</tbody></table>'});
+  }};
+};
+
+PAGES.marketing=()=>{
+  const f=state.mkt;
+  const rows=AD.filter(a=>(f.camp==='All'||a.camp===f.camp)&&(f.plat==='All'||a.plat===f.plat));
+  const cols=['var(--s1)','var(--s2)','var(--s3)','var(--s4)','var(--s5)'];
+  const camps=f.camp==='All'?CAMPS:[f.camp];
+  const cplS=camps.map((c,i)=>({name:c,color:cols[CAMPS.indexOf(c)%5],
+    vals:WEEKS.map(w=>{const r=AD.filter(a=>a.w===w&&a.camp===c);
+      return r.length&&sum(r,x=>x.leads)?sum(r,x=>x.spend)/sum(r,x=>x.leads):null})}));
+  const ctrS=camps.map(c=>({name:c,color:cols[CAMPS.indexOf(c)%5],
+    vals:WEEKS.map(w=>{const r=AD.filter(a=>a.w===w&&a.camp===c);
+      return r.length&&sum(r,x=>x.imp)?sum(r,x=>x.clicks)/sum(r,x=>x.imp)*100:null})}));
+  const per=CAMPS.map(c=>{const r=AD.filter(a=>a.camp===c);
+    return {camp:c,plat:uniq(r.map(x=>x.plat)).join(', '),spend:sum(r,x=>x.spend),leads:sum(r,x=>x.leads),
+      cpl:sum(r,x=>x.leads)?sum(r,x=>x.spend)/sum(r,x=>x.leads):0,
+      ctr:sum(r,x=>x.imp)?sum(r,x=>x.clicks)/sum(r,x=>x.imp)*100:0,rows:r};});
+  return {title:'Marketing',lead:'97 weekly rows, five campaigns, Mar to Aug 2026. Click a campaign for its weeks.',
+  sub:'Source: Ads tab. CTR is a percent in the sheet (0.72 to 3.13), not a fraction — checked. Cost per lead is Spend ÷ Leads.',
+  html:
+  '<div class="filters"><span class="lbl">Campaign</span><select data-s="mkt.camp">'+
+    ['All'].concat(CAMPS).map(c=>'<option'+(c===f.camp?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="lbl">Platform</span><select data-s="mkt.plat">'+
+    ['All'].concat(uniq(AD.map(a=>a.plat)).sort()).map(c=>'<option'+(c===f.plat?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="chip i">'+rows.length+' weeks-rows · spend '+RM(sum(rows,r=>r.spend))+' · '+N(sum(rows,r=>r.leads))+' leads</span></div>'+
+  '<div class="panel"><h2>C5 · Cost per lead by campaign, weekly</h2><div class="d">'+DAY(WEEKS[0])+' to '+DAY(WEEKS[WEEKS.length-1])+', RM per lead. Lower is better.</div>'+
+   chart({type:'line',cats:WEEKS.map(w=>DAY(w).slice(0,6)),series:cplS,yfmt:v=>'RM '+v.toFixed(0),h:250,legend:1,
+     tips:WEEKS.map((w,i)=>'<b>Week of '+DAY(w)+'</b><br>'+cplS.map(s=>s.vals[i]==null?'':swatch(s.color)+esc(s.name)+': '+RM2(s.vals[i])).filter(Boolean).join('<br>'))})+'</div>'+
+  '<div class="panel"><h2>Click-through rate by campaign, weekly</h2><div class="d">Percent. Office Range B2B is the one that steps up from July — the same weeks Office revenue moves.</div>'+
+   chart({type:'line',cats:WEEKS.map(w=>DAY(w).slice(0,6)),series:ctrS,yfmt:v=>v.toFixed(1)+'%',h:230,legend:1,
+     tips:WEEKS.map((w,i)=>'<b>Week of '+DAY(w)+'</b><br>'+ctrS.map(s=>s.vals[i]==null?'':swatch(s.color)+esc(s.name)+': '+s.vals[i].toFixed(2)+'%').filter(Boolean).join('<br>'))})+'</div>'+
+  '<div class="panel"><h2>Campaigns</h2><div class="d">Whole period. Click a campaign for its weeks. Click a header to sort.</div><div id="t-mkt"></div></div>',
+  after(){
+    mountTable($('#t-mkt'),[
+      {k:'camp',label:'Campaign'},{k:'plat',label:'Platform'},
+      {k:'spend',label:'Spend',r:1,fmt:RM},{k:'leads',label:'Leads',r:1,fmt:N},
+      {k:'cpl',label:'Cost per lead',r:1,fmt:RM2},{k:'ctr',label:'CTR',r:1,fmt:v=>v.toFixed(2)+'%'}],
+      per,{sort:'spend',dir:-1,detail:c=>'<table><thead><tr><th>Week</th><th class="r">Spend</th><th class="r">Impressions</th><th class="r">Clicks</th><th class="r">Leads</th><th class="r">CTR</th><th class="r">Cost per lead</th></tr></thead><tbody>'+
+        c.rows.slice().sort((a,b)=>a.w<b.w?-1:1).map(r=>'<tr><td>'+DAY(r.w)+'</td><td class="r">'+RM(r.spend)+'</td><td class="r">'+N(r.imp)+'</td><td class="r">'+N(r.clicks)+'</td><td class="r">'+N(r.leads)+'</td><td class="r">'+r.ctr.toFixed(2)+'%</td><td class="r">'+RM2(r.cpl)+'</td></tr>').join('')+
+        '</tbody></table>'});
+  }};
+};
+
+PAGES.posts=()=>{
+  const f=state.posts;
+  const rows=PO.filter(p=>(f.plat==='All'||p.plat===f.plat)&&(f.fmt==='All'||p.fmt===f.fmt))
+    .map(p=>Object.assign({},p,{eng:p.likes+p.comments+p.saves+p.shares,
+      er:p.reach?(p.likes+p.comments+p.saves+p.shares)/p.reach*100:0,dl:DAY(p.d)}));
+  const plats=uniq(PO.map(p=>p.plat)).sort();
+  const pv=plats.map(pl=>sum(PO.filter(p=>p.plat===pl),p=>p.reach));
+  return {title:'Posts',lead:'48 organic posts, Jun to Aug 2026. Click a post for its numbers.',
+  sub:'Source: Posts tab. Engagement = likes + comments + saves + shares. Engagement rate is that over reach.',
+  html:
+  '<div class="filters"><span class="lbl">Platform</span><select data-s="posts.plat">'+
+    ['All'].concat(plats).map(c=>'<option'+(c===f.plat?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="lbl">Format</span><select data-s="posts.fmt">'+
+    ['All'].concat(uniq(PO.map(p=>p.fmt)).sort()).map(c=>'<option'+(c===f.fmt?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="chip i">'+rows.length+' posts · '+N(sum(rows,r=>r.reach))+' reach</span></div>'+
+  '<div class="panel"><h2>Reach by platform</h2><div class="d">Total reach, Jun to Aug 2026. All 48 posts, not filtered.</div>'+
+   chart({type:'bar',cats:plats,series:[{name:'Reach',color:'var(--s1)',vals:pv}],h:210,
+     tips:plats.map((pl,i)=>{const r=PO.filter(p=>p.plat===pl);
+       return '<b>'+pl+'</b><br>'+N(pv[i])+' reach<br>'+r.length+' posts<br>median '+N(r.map(p=>p.reach).sort((a,b)=>a-b)[Math.floor(r.length/2)])+' per post'})})+'</div>'+
+  '<div class="panel"><h2>Posts</h2><div class="d">Sorted by reach. Click a post for the full breakdown. Click a header to sort.</div><div id="t-post"></div></div>',
+  after(){
+    mountTable($('#t-post'),[
+      {k:'dl',label:'Date'},{k:'plat',label:'Platform'},{k:'fmt',label:'Format'},
+      {k:'hook',label:'Hook',fmt:v=>esc(v.length>62?v.slice(0,60)+'…':v)},
+      {k:'reach',label:'Reach',r:1,fmt:N},{k:'eng',label:'Engagement',r:1,fmt:N},
+      {k:'er',label:'Rate',r:1,fmt:v=>v.toFixed(1)+'%'},{k:'clicks',label:'Link clicks',r:1,fmt:N}],
+      rows,{sort:'reach',dir:-1,detail:p=>'<div style="margin-bottom:8px"><b>'+esc(p.hook)+'</b></div>'+
+        '<table><tbody>'+[['Reach',p.reach],['Likes',p.likes],['Comments',p.comments],['Saves',p.saves],['Shares',p.shares],['Link clicks',p.clicks]]
+        .map(x=>'<tr><td>'+x[0]+'</td><td class="r">'+N(x[1])+'</td></tr>').join('')+'</tbody></table>'});
+  }};
+};
+
+PAGES.plan=()=>({title:'The plan',lead:'How this page was built, and how to rebuild it next Monday.',
+  sub:'Same text as dashboard-plan.txt, kept next to the sheet.',
+  html:'<div class="panel"><div class="note"><b>Monday, in one line:</b> new chat inside the Project, upload the new sheet, paste <code>dashboard-plan.txt</code>, say “rebuild from the plan”. Then check the three numbers by hand and replace this file.</div>'+
+   '<pre class="plan">'+(PLAN_TEXT.trim()?PLAN_TEXT:'dashboard-plan.txt was not embedded at build time.')+'</pre></div>'});
+
+/* ---------- router ---------- */
+const NAV=[
+  ['nav1',[['overview','Overview'],['queue','Needs attention']]],
+  ['nav2',[['revenue','Revenue'],['receivables','Receivables'],['cash','Cash'],['costs','Costs'],['marketing','Marketing'],['posts','Posts']]],
+  ['nav3',[['plan','The plan']]]
+];
+let current='overview';
+function drawNav(){
+  const open=openCards();
+  NAV.forEach(([id,items])=>{
+    $('#'+id).innerHTML=items.map(([k,l])=>{
+      let badge='';
+      if(k==='queue')badge='<span class="n'+(open.some(c=>c.sev==='HIGH')?' hot':'')+'">'+open.length+'</span>';
+      return '<button data-go="'+k+'" class="'+(k===current?'on':'')+'">'+l+badge+'</button>';}).join('');
+  });
+}
+function render(){
+  const p=PAGES[current]();
+  $('#view').innerHTML='<div class="crumb">'+(current==='overview'?'Workspace':current==='plan'?'Monday':'Operations')+' › '+esc(p.title)+'</div>'+
+    '<h1>'+p.title+'</h1><p class="lead">'+p.lead+'</p><p class="sub">'+p.sub+'</p>'+p.html;
+  drawNav();
+  if(p.after)p.after();
+  window.scrollTo(0,0);
+}
+function go(page,focus){
+  current=page;
+  if(focus){
+    if(page==='receivables'){state.ar={bucket:'All',region:'All',q:focus}}
+    if(page==='costs'&&COSTCATS.includes(focus)){state.costs.cat=focus}
+    if(page==='revenue'&&CATS.includes(focus)){state.rev.cat=focus}
+  }
+  render();
+}
+document.addEventListener('click',e=>{
+  const g=e.target.closest('[data-go]');
+  if(g){go(g.dataset.go,g.dataset.focus||'');return}
+  const cp=e.target.closest('[data-copy]');
+  if(cp){const t=cp.dataset.copy;
+    const done=()=>{const o=cp.textContent;cp.textContent='Copied';setTimeout(()=>cp.textContent=o,1200)};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done,done);
+    else{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy')}catch(err){}ta.remove();done()}
+    return}
+});
+document.addEventListener('change',e=>{
+  const t=e.target.closest('[data-tick]');
+  if(t){setHandled(t.dataset.tick,t.checked);render();return}
+  const s=e.target.closest('[data-s]');
+  if(s){const [a,b]=s.dataset.s.split('.');state[a][b]=s.value;render();
+    const el=document.querySelector('[data-s="'+s.dataset.s+'"]');if(el&&el.tagName==='INPUT'){el.focus();el.setSelectionRange(el.value.length,el.value.length)}}
+});
+document.addEventListener('input',e=>{
+  const s=e.target.closest('input[data-s]');
+  if(s){const [a,b]=s.dataset.s.split('.');state[a][b]=s.value;render();
+    const el=document.querySelector('input[data-s="'+s.dataset.s+'"]');if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length)}}
+});
+render();
+</script></body></html>

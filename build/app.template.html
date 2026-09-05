@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kayu &amp; Co. Operations</title>
+<style>
+:root{
+--bg:#F2EFE7;--panel:#FFFFFF;--soft:#FAF9F5;--hover:#F5F2EA;--sel:#F0EDE3;--track:#EFECE4;
+--line:#DCD7CB;--grid:#ECE8DE;
+--ink:#0E0E0E;--ink2:#52514E;--ink3:#8A877F;
+--accent:#FF4519;
+--s1:#2A78D6;--s2:#EB6834;--s3:#1BAF7A;--s4:#7A5AD6;--s5:#B98C00;--mut:#C9C4B8;
+--good:#0CA30C;--warn:#FAB219;--critical:#D03B3B;
+--cc-bg:#FDECEC;--cc-bd:#F3C4C4;--cc-fg:#8E2323;
+--cw-bg:#FFF7E0;--cw-bd:#F3DFA0;--cw-fg:#7A5A00;
+--cg-bg:#E9F7E9;--cg-bd:#BFE3BF;--cg-fg:#1F6B1F;
+--ci-bg:#EEF4FC;--ci-bd:#C6D9F3;--ci-fg:#1E4D8C;
+--hi-bg:#FFF6F6;--hi-bd:#F3C4C4;--md-bg:#FFFBEC;--md-bd:#F3DFA0;--gd-bg:#F4FBF4;--gd-bd:#CFE8CF;
+--tipbg:#0E0E0E;--tipfg:#FFFFFF;--hb:rgba(14,14,14,.05)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+--bg:#16140F;--panel:#1F1C16;--soft:#262219;--hover:#2A2519;--sel:#302A1E;--track:#2B271F;
+--line:#3A352B;--grid:#2C2820;
+--ink:#F2EFE7;--ink2:#B7B1A2;--ink3:#8B8576;
+--accent:#FF6338;
+--s1:#5B9DF0;--s2:#F2905E;--s3:#3FCB98;--s4:#A78BEA;--s5:#D8B23F;--mut:#5C574A;
+--good:#43C24A;--warn:#E8AE33;--critical:#E75C5C;
+--cc-bg:#2E1A1A;--cc-bd:#5C3030;--cc-fg:#F2A8A8;
+--cw-bg:#2B2412;--cw-bd:#5A4B22;--cw-fg:#E8CB7A;
+--cg-bg:#16281B;--cg-bd:#2F5233;--cg-fg:#8FD79A;
+--ci-bg:#16223A;--ci-bd:#2C4470;--ci-fg:#9FC2F0;
+--hi-bg:#2A1616;--hi-bd:#5C3030;--md-bg:#272012;--md-bd:#544721;--gd-bg:#152317;--gd-bd:#2C4C30;
+--tipbg:#0B0A07;--tipfg:#F2EFE7;--hb:rgba(242,239,231,.07)}}
+:root[data-theme="dark"]{
+--bg:#16140F;--panel:#1F1C16;--soft:#262219;--hover:#2A2519;--sel:#302A1E;--track:#2B271F;
+--line:#3A352B;--grid:#2C2820;
+--ink:#F2EFE7;--ink2:#B7B1A2;--ink3:#8B8576;
+--accent:#FF6338;
+--s1:#5B9DF0;--s2:#F2905E;--s3:#3FCB98;--s4:#A78BEA;--s5:#D8B23F;--mut:#5C574A;
+--good:#43C24A;--warn:#E8AE33;--critical:#E75C5C;
+--cc-bg:#2E1A1A;--cc-bd:#5C3030;--cc-fg:#F2A8A8;
+--cw-bg:#2B2412;--cw-bd:#5A4B22;--cw-fg:#E8CB7A;
+--cg-bg:#16281B;--cg-bd:#2F5233;--cg-fg:#8FD79A;
+--ci-bg:#16223A;--ci-bd:#2C4470;--ci-fg:#9FC2F0;
+--hi-bg:#2A1616;--hi-bd:#5C3030;--md-bg:#272012;--md-bd:#544721;--gd-bg:#152317;--gd-bd:#2C4C30;
+--tipbg:#0B0A07;--tipfg:#F2EFE7;--hb:rgba(242,239,231,.07)}
+*{box-sizing:border-box}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+.app{display:grid;grid-template-columns:236px 1fr;min-height:100vh}
+aside{background:var(--panel);border-right:1px solid var(--line);padding:16px 12px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;margin-bottom:14px;font-weight:600}
+.brand i{width:26px;height:26px;border-radius:50%;background:var(--accent);display:inline-block;flex:0 0 auto}
+.grp{font-size:11px;letter-spacing:.06em;color:var(--ink3);text-transform:uppercase;margin:16px 10px 6px}
+nav button{display:flex;width:100%;text-align:left;gap:10px;align-items:center;padding:9px 10px;border:1px solid transparent;border-radius:8px;background:none;color:var(--ink);font:inherit;cursor:pointer}
+nav button:hover{background:var(--hover)}
+nav button.on{border-color:var(--line);background:var(--soft);font-weight:600}
+nav button .n{margin-left:auto;font-size:12px;color:var(--ink2);background:var(--track);border-radius:10px;padding:1px 8px}
+nav button .n.hot{background:var(--cc-bg);color:var(--cc-fg)}
+main{padding:22px 30px 60px;min-width:0}
+.crumb{font-size:12px;color:var(--ink2);margin-bottom:12px}
+h1{font-size:29px;margin:0 0 4px;letter-spacing:-.3px}
+.lead{color:var(--ink2);margin:0 0 4px}
+.sub{color:var(--ink3);font-size:12px;margin:0 0 18px}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink)}
+.btn:hover{background:var(--soft)}
+.btn.sm{padding:4px 9px;font-size:12px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.tile .t{font-size:15px;font-weight:600}
+.tile .v{font-size:31px;font-weight:700;letter-spacing:-.5px;margin:10px 0 2px;font-variant-numeric:tabular-nums}
+.tile .sc{font-size:11px;color:var(--ink3);line-height:1.4;margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 8px;border-radius:20px;border:1px solid var(--line);color:var(--ink2);white-space:nowrap}
+.chip.c{background:var(--cc-bg);border-color:var(--cc-bd);color:var(--cc-fg)}
+.chip.w{background:var(--cw-bg);border-color:var(--cw-bd);color:var(--cw-fg)}
+.chip.g{background:var(--cg-bg);border-color:var(--cg-bd);color:var(--cg-fg)}
+.chip.i{background:var(--ci-bg);border-color:var(--ci-bd);color:var(--ci-fg)}
+.cols2{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px;min-width:0}
+.panel h2{font-size:18px;margin:0 0 2px}
+.panel .d{color:var(--ink2);font-size:12px;margin-bottom:12px}
+.stat4{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:8px;margin-bottom:14px;background:var(--panel)}
+.stat4 div{padding:9px 12px;border-right:1px solid var(--line)}
+.stat4 div:last-child{border:0}
+.stat4 small{display:block;color:var(--ink2);font-size:11px}
+.stat4 b{font-size:18px;font-variant-numeric:tabular-nums}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;background:var(--panel)}
+.card.HIGH{background:var(--hi-bg);border-color:var(--hi-bd)}
+.card.MEDIUM{background:var(--md-bg);border-color:var(--md-bd)}
+.card.GOOD{background:var(--gd-bg);border-color:var(--gd-bd)}
+.card.done{opacity:.55}
+.card .h{display:flex;gap:10px;align-items:center;font-size:11px;color:var(--ink2);margin-bottom:5px;flex-wrap:wrap}
+.card .h b{letter-spacing:.06em}
+.card .h b.HIGH{color:var(--cc-fg)}.card .h b.MEDIUM{color:var(--cw-fg)}.card .h b.GOOD{color:var(--cg-fg)}.card .h b.LOW{color:var(--ink2)}
+.card .ti{font-weight:600;margin-bottom:3px}
+.card p{margin:0 0 8px;color:var(--ink2);font-size:13px}
+.card .rule{font-size:11px;color:var(--ink3);margin-bottom:8px}
+.card .act{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.card label{font-size:12px;color:var(--ink2);margin-left:auto;display:flex;gap:6px;align-items:center;cursor:pointer}
+.filters{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.filters select,.filters input{font:inherit;font-size:13px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink)}
+.filters .lbl{font-size:12px;color:var(--ink2)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;cursor:pointer;user-select:none;white-space:nowrap}
+th.on:after{content:" \25BE"}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
+tr.row{cursor:pointer}tr.row:hover td{background:var(--soft)}tr.sel td{background:var(--sel)}
+tr.det td{background:var(--soft);padding:12px 14px}
+.tbl{overflow-x:auto}
+svg{width:100%;height:auto;display:block}
+svg text{font-size:11px;fill:var(--ink2)}
+svg .grid{stroke:var(--grid)}svg .ax{stroke:var(--line)}
+svg .hb{fill:transparent}svg .hb:hover{fill:var(--hb)}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--ink2);margin-top:8px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.tip{position:fixed;pointer-events:none;background:var(--tipbg);color:var(--tipfg);font-size:12px;padding:8px 10px;border-radius:8px;display:none;z-index:9;max-width:280px;line-height:1.45}
+.tip b{font-size:13px}.tip i{display:inline-block;width:10px;height:2px;margin-right:6px;vertical-align:middle}
+pre.plan{white-space:pre-wrap;font:12.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:16px;overflow-x:auto}
+.note{font-size:12.5px;color:var(--ink2);border-left:3px solid var(--accent);padding:5px 10px;margin:10px 0}
+.rules li{margin-bottom:6px;font-size:13px;color:var(--ink2)}
+.rules li b{color:var(--ink)}
+.kv{font-size:13px;color:var(--ink2)}.kv b{color:var(--ink);font-variant-numeric:tabular-nums}
+.bar{height:8px;background:var(--track);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--s1)}
+.bar i.over{background:var(--critical)}
+@media(max-width:1000px){.app{grid-template-columns:1fr}aside{position:static;height:auto}.tiles,.stat4{grid-template-columns:1fr 1fr}.cols2{grid-template-columns:1fr}}
+</style></head><body>
+<div class="tip" id="tip"></div>
+<div class="app">
+<aside>
+  <div class="brand"><i></i>Kayu &amp; Co.</div>
+  <div class="grp">Workspace</div><nav id="nav1"></nav>
+  <div class="grp">Operations</div><nav id="nav2"></nav>
+  <div class="grp">Monday</div><nav id="nav3"></nav>
+</aside>
+<main id="view"></main>
+</div>
+<script>
+const D = /*__DATA__*/null;
+const PLAN_TEXT = `__PLANTEXT__`;
+
+/* ---------- helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uniq=a=>[...new Set(a)];
+const sum=(a,f)=>a.reduce((s,x)=>s+(f?f(x):x),0);
+const RM=v=>(v<0?'−':'')+'RM '+Math.abs(Math.round(v)).toLocaleString('en-US');
+const RM2=v=>'RM '+v.toFixed(2);
+const N=v=>Math.round(v).toLocaleString('en-US');
+const PC=v=>(v>=0?'+':'−')+Math.abs(v).toFixed(1)+'%';
+const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MON=m=>MN[+m.split('-')[1]-1]+' '+m.split('-')[0].slice(2);
+const MONL=m=>MN[+m.split('-')[1]-1]+' '+m.split('-')[0];
+const DAY=d=>{const p=d.split('-');return +p[2]+' '+MN[+p[1]-1]+' '+p[0].slice(2)};
+
+const R=D.revenue, C=D.costs, AR=D.ar, CA=D.cash, AD=D.ads, PO=D.posts;
+const months=uniq(R.map(r=>r.m)).sort();
+const LAST=months[months.length-1];
+const CATS=['Sofas','Dining','Bedroom','Office'];
+const CHANS=['Dealers','Showroom PJ','Online'];
+const COSTCATS=uniq(C.map(c=>c.cat)).sort();
+const CAMPS=uniq(AD.map(a=>a.camp)).sort();
+const WEEKS=uniq(AD.map(a=>a.w)).sort();
+
+const isDispute=r=>/disput/i.test(r.note||'');
+const isCredit=r=>r.amt<0;
+
+/* dealer roll-up */
+const DEALERS={};
+AR.forEach(r=>{
+  const d=DEALERS[r.dealer]||(DEALERS[r.dealer]={name:r.dealer,region:r.region,terms:r.terms,
+    limit:r.limit,rows:[],bal:0,overdue:0,oldest:0,disputed:0});
+  d.rows.push(r); d.bal+=r.amt;
+  if(r.days>0) d.overdue+=r.amt;
+  if(isDispute(r)) d.disputed+=r.amt;
+  if(r.days>d.oldest) d.oldest=r.days;
+});
+const DLIST=Object.values(DEALERS).sort((a,b)=>b.overdue-a.overdue||b.bal-a.bal);
+
+/* ---------- the three numbers ---------- */
+const cashLast=CA[CA.length-1];
+const N1=cashLast.close;
+const over60=AR.filter(r=>r.days>60);
+const N2=sum(over60,r=>r.amt);
+const offBy=m=>sum(R.filter(r=>r.m===m&&r.cat==='Office'),r=>r.rev);
+const m3=months[months.length-4];
+const N3a=offBy(LAST), N3b=offBy(m3), N3=(N3a-N3b)/N3b*100;
+
+/* ---------- rules ---------- */
+const RULES=[
+ {id:'R1',t:'Undisputed invoice more than 90 days past due → <b>HIGH</b>, managing director. Director letter; consider credit insurance or legal.',src:'credit-terms.md, chase sequence'},
+ {id:'R2',t:'Undisputed invoice 61–90 days past due → <b>HIGH</b>, finance manager and sales director. Meeting or call with the owner, payment plan if needed.',src:'credit-terms.md, chase sequence'},
+ {id:'R3',t:'Undisputed invoice 31–60 days past due → <b>MEDIUM</b>, finance manager. New shipments on hold, phone call then written notice.',src:'credit-terms.md, chase sequence'},
+ {id:'R4',t:'Dealer with invoices 1–30 days past due → <b>LOW</b>, accounts. One card per dealer, because a statement of account covers the account, not one invoice.',src:'credit-terms.md, chase sequence'},
+ {id:'R5',t:'Dealer balance over its credit limit → <b>HIGH</b>, finance manager. Hold new orders until approved. Disputed invoices still count against the limit.',src:'credit-terms.md, terms'},
+ {id:'R6',t:'Credit limit blank in the sheet → <b>LOW · Data</b>, finance manager. Blank is treated as <i>unknown</i>, never as zero, so it can never fire R5.',src:'our decision in move 1'},
+ {id:'R7',t:'Invoice noted as disputed → <b>LOW · Dispute</b>, finance manager. Never chased by template; a person calls. Excluded from R1–R4.',src:'credit-terms.md, what stays human'},
+ {id:'R8',t:'A cost category more than 25% above its prior three-month average, in the last three months → <b>LOW · Costs</b>, finance manager.',src:'DEFAULT — no threshold in the documents'},
+ {id:'R9',t:'A revenue category up more than 25% over two months → <b>GOOD</b>, sales director. Worth repeating, not fixing.',src:'DEFAULT — no threshold in the documents'}
+];
+const RULE=id=>RULES.find(r=>r.id===id);
+
+function buildCards(){
+  const cards=[];
+  const add=c=>cards.push(c);
+  /* R1-R3: one card per overdue undisputed invoice past 30 days */
+  AR.filter(r=>r.days>30&&!isDispute(r)&&!isCredit(r)).forEach(r=>{
+    let rule,sev,who,step;
+    if(r.days>90){rule='R1';sev='HIGH';who='Managing director';step='Director letter. Consider a credit insurance claim or legal.';}
+    else if(r.days>60){rule='R2';sev='HIGH';who='Finance manager + sales director';step='Meeting or call with the owner. Offer a payment plan if needed.';}
+    else {rule='R3';sev='MEDIUM';who='Finance manager';step='New shipments on hold. Phone call, then a written notice of the hold.';}
+    add({sev,rule,tag:'Receivables',who,age:r.days,amt:r.amt,page:'receivables',focus:r.dealer,
+      title:r.dealer+' — '+r.inv+', '+RM(r.amt)+', '+r.days+' days past due',
+      why:step+(r.note?' Sheet note: “'+r.note+'”.':'')+(r.contact?' Last contact '+DAY(r.contact)+'.':' No last contact recorded.'),
+      prompt:'Draft the '+(r.days>90?'director letter':r.days>60?'call agenda and follow-up note':'hold notice')+' for '+r.dealer+', invoice '+r.inv+' for '+RM(r.amt)+', now '+r.days+' days past due (due '+r.ddate+'). Use the tone in credit-terms.md for the '+(r.days>90?'over 90':r.days>60?'61 to 90':'31 to 60')+' day step. Address it to the dealer’s owner. Do not send it.',
+      key:'inv:'+r.inv});
+  });
+  /* R4: one card per dealer with 1-30 day invoices */
+  DLIST.forEach(d=>{
+    const rs=d.rows.filter(r=>r.days>0&&r.days<=30&&!isDispute(r)&&!isCredit(r));
+    if(!rs.length) return;
+    const amt=sum(rs,r=>r.amt), old=Math.max(...rs.map(r=>r.days));
+    add({sev:'LOW',rule:'R4',tag:'Receivables',who:'Accounts',age:old,amt,page:'receivables',focus:d.name,
+      title:d.name+' — '+rs.length+' invoice'+(rs.length>1?'s':'')+' 1–30 days past due, '+RM(amt),
+      why:(old<=7?'Statement of account by email. Assume they forgot.':'Chase email with the invoice numbers and amount, copy to the dealer’s owner. Polite, specific, a date to pay by.')+' Oldest is '+old+' days.',
+      prompt:'Draft the '+(old<=7?'statement of account':'chase email')+' for '+d.name+' covering invoices '+rs.map(r=>r.inv).join(', ')+', total '+RM(amt)+', oldest '+old+' days past due. Use the tone in credit-terms.md for the '+(old<=7?'1 to 7':'8 to 30')+' day step. Do not send it.',
+      key:'d30:'+d.name});
+  });
+  /* R5: over credit limit */
+  DLIST.forEach(d=>{
+    if(d.limit==null||d.bal<=d.limit) return;
+    add({sev:'HIGH',rule:'R5',tag:'Receivables',who:'Finance manager',age:d.oldest,amt:d.bal-d.limit,page:'receivables',focus:d.name,
+      title:d.name+' — balance '+RM(d.bal)+' is over its '+RM(d.limit)+' limit by '+RM(d.bal-d.limit),
+      why:'Orders that would take the balance over the limit are held until the finance manager approves them.'+(d.disputed?' '+RM(d.disputed)+' of this is disputed — it still counts against the limit.':''),
+      prompt:'Summarise '+d.name+'’s account: balance '+RM(d.bal)+' against a credit limit of '+RM(d.limit)+', '+d.rows.length+' open invoices, oldest '+d.oldest+' days past due. Recommend hold or release for the finance manager to decide. Do not decide it.',
+      key:'lim:'+d.name});
+  });
+  /* R6: blank credit limit */
+  DLIST.forEach(d=>{
+    if(d.limit!=null) return;
+    add({sev:'LOW',rule:'R6',tag:'Data',who:'Finance manager',age:0,amt:d.bal,page:'receivables',focus:d.name,
+      title:d.name+' — credit limit is blank in the sheet',
+      why:'Balance is '+RM(d.bal)+'. Blank is treated as unknown, not zero, so this dealer can never trigger the over-limit rule. Set the limit at the January review before the next order.',
+      prompt:'Credit limit for '+d.name+' is blank in the AR aging tab. Current balance '+RM(d.bal)+' across '+d.rows.length+' invoices. Draft a one-line note asking the finance manager to set the limit.',
+      key:'blank:'+d.name});
+  });
+  /* R7: disputes */
+  AR.filter(isDispute).forEach(r=>{
+    add({sev:'LOW',rule:'R7',tag:'Dispute',who:'Finance manager',age:r.days,amt:r.amt,page:'receivables',focus:r.dealer,
+      title:r.dealer+' — '+r.inv+', '+RM(r.amt)+' disputed, '+r.days+' days past due',
+      why:'“'+r.note+'”. A disputed invoice is not chased until the dispute is closed, but it still counts against the credit limit. A person calls — never a template.',
+      prompt:'Prepare call notes for '+r.dealer+' about invoice '+r.inv+' ('+RM(r.amt)+', '+r.days+' days past due): the dispute is “'+r.note+'”. List what to confirm and what to agree. Do not draft a chase email.',
+      key:'disp:'+r.inv});
+  });
+  /* R8: cost spikes in the last three months */
+  const last3=months.slice(-3);
+  COSTCATS.forEach(cat=>{
+    const by={}; C.filter(c=>c.cat===cat).forEach(c=>by[c.m]=c.amt);
+    last3.forEach(m=>{
+      const i=months.indexOf(m); if(i<3) return;
+      const prev=months.slice(i-3,i).map(x=>by[x]).filter(v=>v!=null);
+      if(prev.length<3||by[m]==null) return;
+      const avg=sum(prev)/prev.length;
+      if(by[m]<=avg*1.25) return;
+      add({sev:'LOW',rule:'R8',tag:'Costs',who:'Finance manager',age:(months.length-1-i)*30,amt:by[m]-avg,page:'costs',focus:cat,
+        title:cat+' — '+RM(by[m])+' in '+MONL(m)+', '+PC((by[m]-avg)/avg*100)+' on its prior 3-month average of '+RM(avg),
+        why:'No threshold for costs appears in the documents, so this uses the default: 25% above the prior three-month average. Check the invoices behind it before treating it as a trend.',
+        prompt:'Costs tab: '+cat+' was '+RM(by[m])+' in '+MONL(m)+' against a prior three-month average of '+RM(avg)+'. List what to check to explain the difference and whether it looks one-off or structural.',
+        key:'cost:'+cat+':'+m});
+    });
+  });
+  /* R9: revenue category up over two months */
+  CATS.forEach(cat=>{
+    const v=m=>sum(R.filter(r=>r.m===m&&r.cat===cat),r=>r.rev);
+    const a=v(LAST), b=v(months[months.length-3]);
+    if(b<=0||(a-b)/b<=0.25) return;
+    add({sev:'GOOD',rule:'R9',tag:'Revenue',who:'Sales director',age:0,amt:a-b,page:'revenue',focus:cat,
+      title:cat+' revenue '+RM(a)+' in '+MONL(LAST)+', '+PC((a-b)/b*100)+' on '+MONL(months[months.length-3]),
+      why:'Up more than 25% over two months. Worth understanding and repeating, not fixing. Check the Marketing page for the campaign behind it.',
+      prompt:cat+' revenue went from '+RM(b)+' in '+MONL(months[months.length-3])+' to '+RM(a)+' in '+MONL(LAST)+'. Using the Revenue and Ads tabs, say which channel and which campaign the increase came from, and what to repeat.',
+      key:'rev:'+cat});
+  });
+  const ord={HIGH:0,MEDIUM:1,LOW:2,GOOD:3};
+  cards.sort((a,b)=>ord[a.sev]-ord[b.sev]||b.age-a.age||b.amt-a.amt);
+  return cards;
+}
+const CARDS=buildCards();
+
+/* ---------- handled ticks (this browser only) ---------- */
+const HKEY='kayu-handled-v1';
+let handled={};
+try{handled=JSON.parse(localStorage.getItem(HKEY)||'{}')}catch(e){handled={}}
+function setHandled(k,v){handled[k]=v;if(!v)delete handled[k];try{localStorage.setItem(HKEY,JSON.stringify(handled))}catch(e){}}
+const openCards=()=>CARDS.filter(c=>!handled[c.key]);
+
+/* ---------- charts ---------- */
+let CID=0; const TIPS={};
+const niceStep=x=>{const p=Math.pow(10,Math.floor(Math.log10(x)||0));const f=x/p;return (f<=1?1:f<=2?2:f<=5?5:10)*p};
+function chart(cfg){
+  const id='c'+(++CID); TIPS[id]=cfg.tips||[];
+  const W=900,H=cfg.h||250,PL=cfg.pl||72,PR=14,PT=12,PB=30;
+  const cats=cfg.cats,n=cats.length,pw=W-PL-PR,ph=H-PT-PB;
+  let max=0;
+  if(cfg.stacked){for(let i=0;i<n;i++){let s=0;cfg.series.forEach(se=>s+=(se.vals[i]||0));if(s>max)max=s}}
+  else cfg.series.forEach(se=>se.vals.forEach(v=>{if(v!=null&&v>max)max=v}));
+  if(max<=0)max=1;
+  let step=niceStep(max/4); max=Math.ceil(max/step)*step;
+  const y=v=>PT+ph-(v/max)*ph, bw=pw/n;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(cfg.title||'chart')+'">';
+  for(let g=0;g<=4;g++){const v=max*g/4;
+    s+='<line class="grid" x1="'+PL+'" x2="'+(W-PR)+'" y1="'+y(v)+'" y2="'+y(v)+'"/>';
+    s+='<text x="'+(PL-8)+'" y="'+(y(v)+4)+'" text-anchor="end">'+esc((cfg.yfmt||N)(v))+'</text>';}
+  const every=n<=14?1:Math.ceil(n/12);
+  cats.forEach((c,i)=>{if(i%every)return;
+    s+='<text x="'+(PL+bw*(i+.5))+'" y="'+(H-10)+'" text-anchor="middle">'+esc(c)+'</text>';});
+  if(cfg.type==='line'){
+    cfg.series.forEach(se=>{
+      const pts=se.vals.map((v,i)=>v==null?null:[PL+bw*(i+.5),y(v)]).filter(Boolean);
+      s+='<polyline fill="none" stroke="'+se.color+'" stroke-width="'+(se.thick?2.6:1.8)+'" stroke-linejoin="round" points="'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')+'"/>';
+      pts.forEach(p=>{s+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="2.6" fill="'+se.color+'"/>'});
+    });
+  } else {
+    const k=cfg.stacked?1:cfg.series.length, iw=bw*.66/k;
+    cats.forEach((c,i)=>{
+      if(cfg.stacked){let acc=0;
+        cfg.series.forEach(se=>{const v=se.vals[i]||0;if(v<=0)return;
+          const h=ph*(v/max);acc+=h;
+          s+='<rect x="'+(PL+bw*i+bw*.17)+'" y="'+(PT+ph-acc)+'" width="'+(bw*.66)+'" height="'+h+'" fill="'+se.color+'"/>';});
+      } else {
+        cfg.series.forEach((se,j)=>{const v=se.vals[i]||0;if(v<=0)return;
+          const h=ph*(v/max), col=(se.colorAt?se.colorAt(i):se.color);
+          s+='<rect x="'+(PL+bw*i+bw*.17+iw*j)+'" y="'+(PT+ph-h)+'" width="'+(iw-1)+'" height="'+h+'" fill="'+col+'"/>';});
+      }
+    });
+  }
+  cats.forEach((c,i)=>{s+='<rect class="hb" data-c="'+id+'" data-i="'+i+'" x="'+(PL+bw*i)+'" y="'+PT+'" width="'+bw+'" height="'+ph+'"/>';});
+  s+='</svg>';
+  if(cfg.series.length>1||cfg.legend)
+    s+='<div class="legend">'+cfg.series.map(se=>'<span><i style="background:'+se.color+'"></i>'+esc(se.name)+'</span>').join('')+'</div>';
+  return s;
+}
+document.addEventListener('mousemove',e=>{
+  const t=$('#tip'), hb=e.target.closest?e.target.closest('.hb'):null;
+  if(!hb){t.style.display='none';return}
+  const html=(TIPS[hb.dataset.c]||[])[+hb.dataset.i];
+  if(!html){t.style.display='none';return}
+  t.innerHTML=html;t.style.display='block';
+  const r=t.getBoundingClientRect();
+  t.style.left=Math.min(e.clientX+14,innerWidth-r.width-10)+'px';
+  t.style.top=Math.max(8,e.clientY-r.height-12)+'px';
+});
+const swatch=c=>'<i style="background:'+c+'"></i>';
+
+/* ---------- table ---------- */
+function mountTable(host,cols,rows,opts){
+  opts=opts||{};
+  let sk=opts.sort||cols[0].k, sd=opts.dir||1;
+  function draw(){
+    const rs=rows.slice().sort((a,b)=>{
+      const x=a[sk],y=b[sk];
+      if(typeof x==='number'&&typeof y==='number')return (x-y)*sd;
+      return String(x).localeCompare(String(y))*sd;});
+    host.innerHTML='<div class="tbl"><table><thead><tr>'+
+      cols.map(c=>'<th class="'+(c.r?'r ':'')+(c.k===sk?'on':'')+'" data-k="'+c.k+'">'+esc(c.label)+'</th>').join('')+
+      '</tr></thead><tbody>'+rs.map((r,i)=>
+        '<tr class="row" data-i="'+i+'">'+cols.map(c=>'<td class="'+(c.r?'r':'')+'">'+(c.fmt?c.fmt(r[c.k],r):esc(r[c.k]))+'</td>').join('')+'</tr>'+
+        (opts.detail?'<tr class="det" data-d="'+i+'" hidden><td colspan="'+cols.length+'"></td></tr>':'')
+      ).join('')+'</tbody></table></div>'+
+      (opts.foot?'<div class="sub" style="margin:8px 0 0">'+opts.foot+'</div>':'');
+    host._rows=rs;
+  }
+  draw();
+  host.onclick=e=>{
+    const th=e.target.closest('th');
+    if(th&&host.contains(th)){const k=th.dataset.k;
+      if(k===sk)sd=-sd; else {sk=k; sd=cols.find(c=>c.k===k).r?-1:1;}
+      draw(); return;}
+    const tr=e.target.closest('tr.row');
+    if(tr&&opts.detail){
+      const i=tr.dataset.i, d=host.querySelector('tr.det[data-d="'+i+'"]');
+      if(d.hidden){d.querySelector('td').innerHTML=opts.detail(host._rows[i]);d.hidden=false;tr.classList.add('sel');}
+      else{d.hidden=true;tr.classList.remove('sel');}
+    }
+  };
+  return {redraw:draw};
+}
+
+/* ---------- card rendering ---------- */
+function cardHTML(c){
+  const done=!!handled[c.key];
+  return '<div class="card '+c.sev+(done?' done':'')+'" data-k="'+esc(c.key)+'">'+
+    '<div class="h"><b class="'+c.sev+'">'+c.sev+'</b><span class="chip">'+esc(c.tag)+'</span>'+
+      '<span>'+esc(c.who)+'</span><span style="margin-left:auto">'+c.rule+'</span></div>'+
+    '<div class="ti">'+esc(c.title)+'</div>'+
+    '<p>'+esc(c.why)+'</p>'+
+    '<div class="rule">'+c.rule+': '+RULE(c.rule).t.replace(/<[^>]+>/g,'')+'</div>'+
+    '<div class="act">'+
+      '<button class="btn sm" data-go="'+esc(c.page)+'" data-focus="'+esc(c.focus||'')+'">Open →</button>'+
+      '<button class="btn sm" data-copy="'+esc(c.prompt)+'">Copy the prompt</button>'+
+      '<label><input type="checkbox" data-tick="'+esc(c.key)+'"'+(done?' checked':'')+'> Handled</label>'+
+    '</div></div>';
+}
+
+/* ---------- pages ---------- */
+const PAGES={};
+const state={rev:{ch:'All',cat:'All'},ar:{bucket:'All',region:'All',q:''},
+  costs:{cat:'All'},mkt:{camp:'All',plat:'All'},posts:{plat:'All',fmt:'All'}};
+
+function revSeriesByChannel(){
+  return CHANS.map((ch,i)=>({name:ch,color:['var(--s1)','var(--s2)','var(--s3)'][i],
+    vals:months.map(m=>sum(R.filter(r=>r.m===m&&r.ch===ch),r=>r.rev))}));
+}
+function revTips(series){
+  return months.map((m,i)=>'<b>'+MONL(m)+'</b><br>'+series.map(se=>
+    swatch(se.color)+esc(se.name)+': '+RM(se.vals[i])).join('<br>')+
+    '<br><span style="opacity:.7">Total '+RM(sum(series,se=>se.vals[i]))+'</span>');
+}
+
+PAGES.overview=()=>{
+  const se=revSeriesByChannel();
+  const open=openCards();
+  const cnt=s=>open.filter(c=>c.sev===s).length;
+  const top=open.slice(0,4);
+  return {title:'Overview',lead:'Kayu &amp; Co. Furniture Sdn Bhd — the three numbers, then what needs a person.',
+  sub:'Built from '+esc(D.meta.source)+'. Receivables as at '+DAY(D.meta.asat)+'. Revenue, costs and cash '+MONL(months[0])+' to '+MONL(LAST)+'.',
+  html:
+  '<div class="tiles">'+
+  '<div class="tile"><div class="t">Cash closing balance</div><div class="v">'+RM(N1)+'</div>'+
+    '<div class="kv">'+MONL(LAST)+'. '+PC((N1-CA[CA.length-2].close)/CA[CA.length-2].close*100)+' on '+MONL(CA[CA.length-2].m)+'</div>'+
+    '<div class="sc">Cash tab, <b>Closing balance</b>, row for '+LAST+'. One cell. Opening '+RM(cashLast.open)+' + receipts '+RM(cashLast.rd+cashLast.rs)+' − payments '+RM(cashLast.sup+cashLast.pay+cashLast.oth)+'.</div></div>'+
+  '<div class="tile"><div class="t">Receivables past 60 days</div><div class="v">'+RM(N2)+'</div>'+
+    '<div class="kv">'+over60.length+' invoices, '+uniq(over60.map(r=>r.dealer)).length+' dealers</div>'+
+    '<div class="sc">AR aging tab, sum of <b>Amount</b> where <b>Days overdue</b> &gt; 60, as at '+DAY(D.meta.asat)+'. Includes the disputed '+RM(sum(over60.filter(isDispute),r=>r.amt))+' — it is still money owed, it just is not chased.</div></div>'+
+  '<div class="tile"><div class="t">Office revenue vs three months ago</div><div class="v">'+PC(N3)+'</div>'+
+    '<div class="kv">'+RM(N3a)+' in '+MONL(LAST)+' vs '+RM(N3b)+' in '+MONL(m3)+'</div>'+
+    '<div class="sc">Revenue tab, sum of <b>Revenue</b> where <b>Category</b> = Office, all three channels, for '+LAST+' and '+m3+'. 6 rows each.</div></div>'+
+  '</div>'+
+  '<div class="cols2"><div>'+
+    '<div class="panel"><div class="ph"><h2>Revenue by month, by channel</h2></div>'+
+    '<div class="d">'+MONL(months[0])+' to '+MONL(LAST)+', RM. Hover a month for the split.</div>'+
+    chart({type:'bar',stacked:true,cats:months.map(MON),series:se,tips:revTips(se),yfmt:v=>'RM '+N(v/1000)+'k',h:260})+
+    '<div class="sub" style="margin-top:10px">Source: Revenue tab, Revenue column summed by Month and Channel. 144 rows.</div></div>'+
+  '</div><div>'+
+    '<div class="panel"><div class="ph"><h2>Needs your attention</h2></div>'+
+    '<div class="d">'+open.length+' open · '+cnt('HIGH')+' high · '+cnt('MEDIUM')+' medium · oldest '+(open.length?Math.max(...open.map(c=>c.age)):0)+' days</div>'+
+    (top.length?top.map(cardHTML).join(''):'<p class="sub">Nothing open. Every card is ticked.</p>')+
+    '<button class="btn" data-go="queue">See all '+open.length+' →</button></div>'+
+  '</div></div>'};
+};
+
+PAGES.queue=()=>{
+  const open=openCards(), done=CARDS.filter(c=>handled[c.key]);
+  return {title:'Needs attention',lead:'Every card comes from a rule. The rules are printed below.',
+  sub:'Receivables as at '+DAY(D.meta.asat)+'. Ticks are stored in this browser only — nothing is sent anywhere.',
+  html:
+  '<div class="stat4">'+
+   '<div><small>Open</small><b>'+open.length+'</b></div>'+
+   '<div><small>High</small><b>'+open.filter(c=>c.sev==='HIGH').length+'</b></div>'+
+   '<div><small>Medium</small><b>'+open.filter(c=>c.sev==='MEDIUM').length+'</b></div>'+
+   '<div><small>Oldest</small><b>'+(open.length?Math.max(...open.map(c=>c.age))+' d':'—')+'</b></div></div>'+
+  '<div class="cols2"><div>'+
+    '<div class="panel"><h2>Open</h2><div class="d">Highest severity first, then oldest.</div>'+
+    (open.length?open.map(cardHTML).join(''):'<p class="sub">Nothing open.</p>')+'</div>'+
+    (done.length?'<div class="panel"><h2>Handled</h2><div class="d">'+done.length+' ticked on this laptop. Untick to bring one back.</div>'+done.map(cardHTML).join('')+'</div>':'')+
+  '</div><div>'+
+    '<div class="panel"><h2>The rules</h2><div class="d">One line each. Thresholds come from credit-terms.md unless marked DEFAULT.</div>'+
+    '<ul class="rules" style="padding-left:18px;margin:0">'+RULES.map(r=>{
+      const n=CARDS.filter(c=>c.rule===r.id).length;
+      return '<li><b>'+r.id+'</b> · '+r.t+'<br><span style="font-size:11px;color:var(--ink3)">Source: '+esc(r.src)+' · '+n+' card'+(n===1?'':'s')+'</span></li>';}).join('')+'</ul>'+
+    '<div class="note">Nothing on this page sends anything. “Copy the prompt” puts a request on your clipboard for you to paste into a chat; a person still writes and sends the email.</div></div>'+
+  '</div></div>'};
+};
+
+PAGES.revenue=()=>{
+  const f=state.rev;
+  const rows=R.filter(r=>(f.ch==='All'||r.ch===f.ch)&&(f.cat==='All'||r.cat===f.cat));
+  const byMonth=m=>sum(rows.filter(r=>r.m===m),r=>r.rev);
+  const catSeries=CATS.map((c,i)=>({name:c,color:c==='Office'?'var(--accent)':['var(--mut)','var(--s1)','var(--s3)','var(--s2)'][i],
+    thick:c==='Office',
+    vals:months.map(m=>sum(R.filter(r=>r.m===m&&r.cat===c&&(f.ch==='All'||r.ch===f.ch)),r=>r.rev))}));
+  const se=revSeriesByChannel();
+  const tbl=[];
+  months.forEach(m=>{const rs=rows.filter(r=>r.m===m);
+    tbl.push({m,ml:MONL(m),units:sum(rs,r=>r.u),rev:sum(rs,r=>r.rev),
+      avg:sum(rs,r=>r.u)?sum(rs,r=>r.rev)/sum(rs,r=>r.u):0,rows:rs});});
+  return {title:'Revenue',lead:'144 rows, '+MONL(months[0])+' to '+MONL(LAST)+'. Click a month for its channel and category split.',
+  sub:'Source: Revenue tab. Units is a count, Revenue is RM.',
+  html:
+  '<div class="filters"><span class="lbl">Channel</span><select data-s="rev.ch">'+
+    ['All'].concat(CHANS).map(c=>'<option'+(c===f.ch?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="lbl">Category</span><select data-s="rev.cat">'+
+    ['All'].concat(CATS).map(c=>'<option'+(c===f.cat?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="chip i">'+rows.length+' of 144 rows · '+RM(sum(rows,r=>r.rev))+' total</span></div>'+
+  '<div class="panel"><h2>C1 · Revenue by month, stacked by channel</h2><div class="d">'+MONL(months[0])+' to '+MONL(LAST)+', RM. All channels, ignores the channel filter on purpose — the stack is the split.</div>'+
+   chart({type:'bar',stacked:true,cats:months.map(MON),series:se,tips:revTips(se),yfmt:v=>'RM '+N(v/1000)+'k',h:250})+'</div>'+
+  '<div class="panel"><h2>C2 · Revenue by category, by month</h2><div class="d">'+MONL(months[0])+' to '+MONL(LAST)+', RM. Office in orange — it is the one that moved.'+(f.ch!=='All'?' Filtered to '+esc(f.ch)+'.':'')+'</div>'+
+   chart({type:'line',cats:months.map(MON),series:catSeries,yfmt:v=>'RM '+N(v/1000)+'k',h:250,
+     tips:months.map((m,i)=>'<b>'+MONL(m)+'</b><br>'+catSeries.map(s=>swatch(s.color)+esc(s.name)+': '+RM(s.vals[i])).join('<br>'))})+'</div>'+
+  '<div class="panel"><h2>By month</h2><div class="d">Click a row for the channel and category lines behind it. Click a header to sort.</div><div id="t-rev"></div></div>',
+  after(){
+    mountTable($('#t-rev'),[
+      {k:'ml',label:'Month'},{k:'units',label:'Units',r:1,fmt:N},
+      {k:'rev',label:'Revenue',r:1,fmt:RM},{k:'avg',label:'Avg per unit',r:1,fmt:RM2}],
+      tbl,{sort:'m',dir:1,detail:r=>
+        '<table><thead><tr><th>Channel</th><th>Category</th><th class="r">Units</th><th class="r">Revenue</th></tr></thead><tbody>'+
+        r.rows.slice().sort((a,b)=>b.rev-a.rev).map(x=>'<tr><td>'+esc(x.ch)+'</td><td>'+esc(x.cat)+'</td><td class="r">'+N(x.u)+'</td><td class="r">'+RM(x.rev)+'</td></tr>').join('')+
+        '</tbody></table>'});
+  }};
+};
+
+PAGES.receivables=()=>{
+  const f=state.ar;
+  const buckets=['Current','1-30','31-60','61-90','90+'];
+  const bvals=buckets.map(b=>sum(AR.filter(r=>r.bucket===b),r=>r.amt));
+  let ds=DLIST.filter(d=>(f.region==='All'||d.region===f.region)&&
+    (f.bucket==='All'||d.rows.some(r=>r.bucket===f.bucket))&&
+    (!f.q||d.name.toLowerCase().includes(f.q.toLowerCase())));
+  const regions=uniq(DLIST.map(d=>d.region)).sort();
+  return {title:'Receivables',lead:'83 invoices, 40 dealers, as at '+DAY(D.meta.asat)+'. Click a dealer for its invoices.',
+  sub:'Source: AR aging tab. The credit note CN-0231 (−RM 4,800, Port Dickson Home) is netted into its dealer balance and into the Current bucket. Shah Alam Home Depot’s limit is blank — shown as unknown, never as zero.',
+  html:
+  '<div class="stat4">'+
+   '<div><small>Total outstanding</small><b>'+RM(sum(AR,r=>r.amt))+'</b></div>'+
+   '<div><small>Past due</small><b>'+RM(sum(AR.filter(r=>r.days>0),r=>r.amt))+'</b></div>'+
+   '<div><small>Past 60 days</small><b>'+RM(N2)+'</b></div>'+
+   '<div><small>Dealers past 30 days</small><b>'+uniq(AR.filter(r=>r.days>30).map(r=>r.dealer)).length+'</b></div></div>'+
+  '<div class="filters"><span class="lbl">Bucket</span><select data-s="ar.bucket">'+
+    ['All'].concat(buckets).map(b=>'<option'+(b===f.bucket?' selected':'')+'>'+b+'</option>').join('')+'</select>'+
+   '<span class="lbl">Region</span><select data-s="ar.region">'+
+    ['All'].concat(regions).map(b=>'<option'+(b===f.region?' selected':'')+'>'+b+'</option>').join('')+'</select>'+
+   '<input data-s="ar.q" placeholder="Find a dealer" value="'+esc(f.q)+'">'+
+   '<span class="chip i">'+ds.length+' dealers shown</span></div>'+
+  '<div class="panel"><h2>C3 · Aging by bucket</h2><div class="d">RM outstanding as at '+DAY(D.meta.asat)+', all 83 invoices. Not filtered.</div>'+
+   chart({type:'bar',cats:buckets,series:[{name:'Outstanding',color:'var(--s1)',
+     colorAt:i=>i>=3?'var(--critical)':i===2?'var(--warn)':'var(--s1)',vals:bvals}],
+     yfmt:v=>'RM '+N(v/1000)+'k',h:230,
+     tips:buckets.map((b,i)=>{const rs=AR.filter(r=>r.bucket===b);
+       return '<b>'+b+(b==='Current'?'':' days')+'</b><br>'+RM(bvals[i])+'<br>'+rs.length+' invoices, '+uniq(rs.map(r=>r.dealer)).length+' dealers'+
+       (b==='Current'?'<br><span style="opacity:.7">net of the −RM 4,800 credit note</span>':'')})})+'</div>'+
+  '<div class="panel"><h2>Dealers</h2><div class="d">Sorted by amount past due. Click a dealer for its invoices. Click a header to sort.</div><div id="t-ar"></div></div>',
+  after(){
+    mountTable($('#t-ar'),[
+      {k:'name',label:'Dealer'},{k:'region',label:'Region'},{k:'terms',label:'Terms',r:1,fmt:v=>v+' d'},
+      {k:'bal',label:'Balance',r:1,fmt:RM},
+      {k:'limitS',label:'Credit limit',r:1,fmt:(v,r)=>r.limit==null?'<span class="chip w">unknown</span>':RM(r.limit)},
+      {k:'used',label:'Used',r:1,fmt:(v,r)=>r.limit==null?'<span style="color:var(--ink3)">—</span>':
+        '<div class="bar" style="min-width:70px"><i class="'+(v>100?'over':'')+'" style="width:'+Math.min(100,v)+'%"></i></div><span style="font-size:11px">'+v.toFixed(0)+'%</span>'},
+      {k:'overdue',label:'Past due',r:1,fmt:RM},{k:'oldest',label:'Oldest',r:1,fmt:v=>v?v+' d':'—'}],
+      ds.map(d=>Object.assign({},d,{limitS:d.limit==null?-1:d.limit,used:d.limit==null?-1:d.bal/d.limit*100})),
+      {sort:'overdue',dir:-1,detail:d=>{
+        const rs=DEALERS[d.name].rows.slice().sort((a,b)=>b.days-a.days);
+        return (d.limit==null?'<div class="note">Credit limit is blank in the sheet. Treated as unknown — this dealer can never trigger the over-limit rule until someone sets it.</div>':
+                d.bal>d.limit?'<div class="note">Over its limit by '+RM(d.bal-d.limit)+'. New orders held until the finance manager approves.</div>':'')+
+        '<table><thead><tr><th>Invoice</th><th>Invoice date</th><th>Due</th><th class="r">Amount</th><th class="r">Days</th><th>Bucket</th><th>Last contact</th><th>Note</th></tr></thead><tbody>'+
+        rs.map(r=>'<tr><td>'+esc(r.inv)+'</td><td>'+DAY(r.idate)+'</td><td>'+DAY(r.ddate)+'</td><td class="r">'+RM(r.amt)+'</td><td class="r">'+(r.days||'—')+'</td><td>'+esc(r.bucket)+'</td><td>'+(r.contact?DAY(r.contact):'—')+'</td><td>'+(isDispute(r)?'<span class="chip w">dispute</span> ':'')+(isCredit(r)?'<span class="chip i">credit note</span> ':'')+esc(r.note)+'</td></tr>').join('')+
+        '</tbody></table>'}});
+  }};
+};
+
+PAGES.cash=()=>{
+  const inS=[{name:'Receipts from dealers',color:'var(--s1)',vals:CA.map(c=>c.rd)},
+             {name:'Receipts showroom + online',color:'var(--s3)',vals:CA.map(c=>c.rs)}];
+  const close=[{name:'Closing balance',color:'var(--accent)',thick:1,vals:CA.map(c=>c.close)}];
+  return {title:'Cash',lead:'12 months, one row each. The bank, not the invoice book.',
+  sub:'Source: Cash tab. Closing = Opening + both receipt columns − suppliers − payroll − other.',
+  html:
+  '<div class="panel"><h2>Closing balance by month</h2><div class="d">'+MONL(months[0])+' to '+MONL(LAST)+', RM.</div>'+
+   chart({type:'line',cats:CA.map(c=>MON(c.m)),series:close,yfmt:v=>'RM '+N(v/1000)+'k',h:230,legend:1,
+     tips:CA.map(c=>'<b>'+MONL(c.m)+'</b><br>Opening '+RM(c.open)+'<br>Receipts '+RM(c.rd+c.rs)+'<br>Payments '+RM(c.sup+c.pay+c.oth)+'<br><b>Closing '+RM(c.close)+'</b>')})+'</div>'+
+  '<div class="panel"><h2>Receipts by source</h2><div class="d">Dealers vs showroom and online, RM. Two thirds of revenue is dealer credit — this is where it lands.</div>'+
+   chart({type:'bar',stacked:true,cats:CA.map(c=>MON(c.m)),series:inS,yfmt:v=>'RM '+N(v/1000)+'k',h:230,
+     tips:CA.map(c=>'<b>'+MONL(c.m)+'</b><br>'+swatch('var(--s1)')+'Dealers: '+RM(c.rd)+'<br>'+swatch('var(--s3)')+'Showroom + online: '+RM(c.rs)+'<br><span style="opacity:.7">Total '+RM(c.rd+c.rs)+'</span>')})+'</div>'+
+  '<div class="panel"><h2>The 12 rows</h2><div class="d">Click a month for the movement. Click a header to sort.</div><div id="t-cash"></div></div>',
+  after(){
+    mountTable($('#t-cash'),[
+      {k:'ml',label:'Month'},{k:'open',label:'Opening',r:1,fmt:RM},
+      {k:'inn',label:'Receipts',r:1,fmt:RM},{k:'out',label:'Payments',r:1,fmt:RM},
+      {k:'net',label:'Net',r:1,fmt:v=>'<span style="color:'+(v<0?'var(--critical)':'var(--good)')+'">'+RM(v)+'</span>'},
+      {k:'close',label:'Closing',r:1,fmt:RM}],
+      CA.map(c=>Object.assign({},c,{ml:MONL(c.m),inn:c.rd+c.rs,out:c.sup+c.pay+c.oth,net:c.rd+c.rs-c.sup-c.pay-c.oth})),
+      {sort:'m',dir:1,detail:c=>'<table><tbody>'+
+        [['Receipts from dealers',c.rd],['Receipts showroom and online',c.rs],
+         ['Payments to suppliers',-c.sup],['Payroll',-c.pay],['Other payments',-c.oth]]
+        .map(x=>'<tr><td>'+x[0]+'</td><td class="r">'+RM(x[1])+'</td></tr>').join('')+
+        '<tr><td><b>Net movement</b></td><td class="r"><b>'+RM(c.net)+'</b></td></tr></tbody></table>'});
+  }};
+};
+
+PAGES.costs=()=>{
+  const f=state.costs;
+  const byCat=(cat,m)=>sum(C.filter(c=>c.m===m&&(cat==='All'||c.cat===cat)),c=>c.amt);
+  const vals=months.map(m=>byCat(f.cat,m));
+  const avg3=i=>i<3?null:(vals[i-1]+vals[i-2]+vals[i-3])/3;
+  const spike=i=>{const a=avg3(i);return a!=null&&vals[i]>a*1.25};
+  const rows=months.map((m,i)=>({m,ml:MONL(m),amt:vals[i],avg:avg3(i)||0,
+    d:avg3(i)?(vals[i]-avg3(i))/avg3(i)*100:0,flag:spike(i)?'yes':'',
+    rows:C.filter(c=>c.m===m&&(f.cat==='All'||c.cat===f.cat))}));
+  return {title:'Costs',lead:'99 rows, nine categories, 12 months. The default spike rule is drawn on the chart.',
+  sub:'Source: Costs tab. No total row anywhere in the tab — checked. Amounts are RM.',
+  html:
+  '<div class="filters"><span class="lbl">Category</span><select data-s="costs.cat">'+
+    ['All'].concat(COSTCATS).map(c=>'<option'+(c===f.cat?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="chip w">Red bar = more than 25% above the prior three-month average (R8, our default)</span></div>'+
+  '<div class="panel"><h2>C4 · '+esc(f.cat==='All'?'All costs':f.cat)+' by month</h2><div class="d">'+MONL(months[0])+' to '+MONL(LAST)+', RM. Hover for the comparison against the prior three months.</div>'+
+   chart({type:'bar',cats:months.map(MON),series:[{name:'Amount',color:'var(--s1)',
+     colorAt:i=>spike(i)?'var(--critical)':'var(--s1)',vals}],yfmt:v=>'RM '+N(v/1000)+'k',h:250,
+     tips:months.map((m,i)=>'<b>'+MONL(m)+'</b><br>'+RM(vals[i])+
+       (avg3(i)?'<br>Prior 3-month average '+RM(avg3(i))+'<br>'+PC((vals[i]-avg3(i))/avg3(i)*100)+(spike(i)?' <b>— over the 25% default</b>':''):'<br><span style="opacity:.7">no prior three months</span>'))})+'</div>'+
+  '<div class="panel"><h2>By month</h2><div class="d">Click a month for the category breakdown. Click a header to sort.</div><div id="t-cost"></div></div>',
+  after(){
+    mountTable($('#t-cost'),[
+      {k:'ml',label:'Month'},{k:'amt',label:'Amount',r:1,fmt:RM},
+      {k:'avg',label:'Prior 3-mo avg',r:1,fmt:v=>v?RM(v):'—'},
+      {k:'d',label:'vs average',r:1,fmt:(v,r)=>r.avg?'<span style="color:'+(r.flag?'var(--critical)':'var(--ink2)')+'">'+PC(v)+'</span>':'—'},
+      {k:'flag',label:'R8',fmt:v=>v?'<span class="chip c">spike</span>':''}],
+      rows,{sort:'m',dir:1,detail:r=>'<table><thead><tr><th>Cost category</th><th class="r">Amount</th><th class="r">Share</th></tr></thead><tbody>'+
+        r.rows.slice().sort((a,b)=>b.amt-a.amt).map(x=>'<tr><td>'+esc(x.cat)+'</td><td class="r">'+RM(x.amt)+'</td><td class="r">'+(x.amt/sum(r.rows,y=>y.amt)*100).toFixed(1)+'%</td></tr>').join('')+
+        '</tbody></table>'});
+  }};
+};
+
+PAGES.marketing=()=>{
+  const f=state.mkt;
+  const rows=AD.filter(a=>(f.camp==='All'||a.camp===f.camp)&&(f.plat==='All'||a.plat===f.plat));
+  const cols=['var(--s1)','var(--s2)','var(--s3)','var(--s4)','var(--s5)'];
+  const camps=f.camp==='All'?CAMPS:[f.camp];
+  const cplS=camps.map((c,i)=>({name:c,color:cols[CAMPS.indexOf(c)%5],
+    vals:WEEKS.map(w=>{const r=AD.filter(a=>a.w===w&&a.camp===c);
+      return r.length&&sum(r,x=>x.leads)?sum(r,x=>x.spend)/sum(r,x=>x.leads):null})}));
+  const ctrS=camps.map(c=>({name:c,color:cols[CAMPS.indexOf(c)%5],
+    vals:WEEKS.map(w=>{const r=AD.filter(a=>a.w===w&&a.camp===c);
+      return r.length&&sum(r,x=>x.imp)?sum(r,x=>x.clicks)/sum(r,x=>x.imp)*100:null})}));
+  const per=CAMPS.map(c=>{const r=AD.filter(a=>a.camp===c);
+    return {camp:c,plat:uniq(r.map(x=>x.plat)).join(', '),spend:sum(r,x=>x.spend),leads:sum(r,x=>x.leads),
+      cpl:sum(r,x=>x.leads)?sum(r,x=>x.spend)/sum(r,x=>x.leads):0,
+      ctr:sum(r,x=>x.imp)?sum(r,x=>x.clicks)/sum(r,x=>x.imp)*100:0,rows:r};});
+  return {title:'Marketing',lead:'97 weekly rows, five campaigns, Mar to Aug 2026. Click a campaign for its weeks.',
+  sub:'Source: Ads tab. CTR is a percent in the sheet (0.72 to 3.13), not a fraction — checked. Cost per lead is Spend ÷ Leads.',
+  html:
+  '<div class="filters"><span class="lbl">Campaign</span><select data-s="mkt.camp">'+
+    ['All'].concat(CAMPS).map(c=>'<option'+(c===f.camp?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="lbl">Platform</span><select data-s="mkt.plat">'+
+    ['All'].concat(uniq(AD.map(a=>a.plat)).sort()).map(c=>'<option'+(c===f.plat?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="chip i">'+rows.length+' weeks-rows · spend '+RM(sum(rows,r=>r.spend))+' · '+N(sum(rows,r=>r.leads))+' leads</span></div>'+
+  '<div class="panel"><h2>C5 · Cost per lead by campaign, weekly</h2><div class="d">'+DAY(WEEKS[0])+' to '+DAY(WEEKS[WEEKS.length-1])+', RM per lead. Lower is better.</div>'+
+   chart({type:'line',cats:WEEKS.map(w=>DAY(w).slice(0,6)),series:cplS,yfmt:v=>'RM '+v.toFixed(0),h:250,legend:1,
+     tips:WEEKS.map((w,i)=>'<b>Week of '+DAY(w)+'</b><br>'+cplS.map(s=>s.vals[i]==null?'':swatch(s.color)+esc(s.name)+': '+RM2(s.vals[i])).filter(Boolean).join('<br>'))})+'</div>'+
+  '<div class="panel"><h2>Click-through rate by campaign, weekly</h2><div class="d">Percent. Office Range B2B is the one that steps up from July — the same weeks Office revenue moves.</div>'+
+   chart({type:'line',cats:WEEKS.map(w=>DAY(w).slice(0,6)),series:ctrS,yfmt:v=>v.toFixed(1)+'%',h:230,legend:1,
+     tips:WEEKS.map((w,i)=>'<b>Week of '+DAY(w)+'</b><br>'+ctrS.map(s=>s.vals[i]==null?'':swatch(s.color)+esc(s.name)+': '+s.vals[i].toFixed(2)+'%').filter(Boolean).join('<br>'))})+'</div>'+
+  '<div class="panel"><h2>Campaigns</h2><div class="d">Whole period. Click a campaign for its weeks. Click a header to sort.</div><div id="t-mkt"></div></div>',
+  after(){
+    mountTable($('#t-mkt'),[
+      {k:'camp',label:'Campaign'},{k:'plat',label:'Platform'},
+      {k:'spend',label:'Spend',r:1,fmt:RM},{k:'leads',label:'Leads',r:1,fmt:N},
+      {k:'cpl',label:'Cost per lead',r:1,fmt:RM2},{k:'ctr',label:'CTR',r:1,fmt:v=>v.toFixed(2)+'%'}],
+      per,{sort:'spend',dir:-1,detail:c=>'<table><thead><tr><th>Week</th><th class="r">Spend</th><th class="r">Impressions</th><th class="r">Clicks</th><th class="r">Leads</th><th class="r">CTR</th><th class="r">Cost per lead</th></tr></thead><tbody>'+
+        c.rows.slice().sort((a,b)=>a.w<b.w?-1:1).map(r=>'<tr><td>'+DAY(r.w)+'</td><td class="r">'+RM(r.spend)+'</td><td class="r">'+N(r.imp)+'</td><td class="r">'+N(r.clicks)+'</td><td class="r">'+N(r.leads)+'</td><td class="r">'+r.ctr.toFixed(2)+'%</td><td class="r">'+RM2(r.cpl)+'</td></tr>').join('')+
+        '</tbody></table>'});
+  }};
+};
+
+PAGES.posts=()=>{
+  const f=state.posts;
+  const rows=PO.filter(p=>(f.plat==='All'||p.plat===f.plat)&&(f.fmt==='All'||p.fmt===f.fmt))
+    .map(p=>Object.assign({},p,{eng:p.likes+p.comments+p.saves+p.shares,
+      er:p.reach?(p.likes+p.comments+p.saves+p.shares)/p.reach*100:0,dl:DAY(p.d)}));
+  const plats=uniq(PO.map(p=>p.plat)).sort();
+  const pv=plats.map(pl=>sum(PO.filter(p=>p.plat===pl),p=>p.reach));
+  return {title:'Posts',lead:'48 organic posts, Jun to Aug 2026. Click a post for its numbers.',
+  sub:'Source: Posts tab. Engagement = likes + comments + saves + shares. Engagement rate is that over reach.',
+  html:
+  '<div class="filters"><span class="lbl">Platform</span><select data-s="posts.plat">'+
+    ['All'].concat(plats).map(c=>'<option'+(c===f.plat?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="lbl">Format</span><select data-s="posts.fmt">'+
+    ['All'].concat(uniq(PO.map(p=>p.fmt)).sort()).map(c=>'<option'+(c===f.fmt?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+   '<span class="chip i">'+rows.length+' posts · '+N(sum(rows,r=>r.reach))+' reach</span></div>'+
+  '<div class="panel"><h2>Reach by platform</h2><div class="d">Total reach, Jun to Aug 2026. All 48 posts, not filtered.</div>'+
+   chart({type:'bar',cats:plats,series:[{name:'Reach',color:'var(--s1)',vals:pv}],h:210,
+     tips:plats.map((pl,i)=>{const r=PO.filter(p=>p.plat===pl);
+       return '<b>'+pl+'</b><br>'+N(pv[i])+' reach<br>'+r.length+' posts<br>median '+N(r.map(p=>p.reach).sort((a,b)=>a-b)[Math.floor(r.length/2)])+' per post'})})+'</div>'+
+  '<div class="panel"><h2>Posts</h2><div class="d">Sorted by reach. Click a post for the full breakdown. Click a header to sort.</div><div id="t-post"></div></div>',
+  after(){
+    mountTable($('#t-post'),[
+      {k:'dl',label:'Date'},{k:'plat',label:'Platform'},{k:'fmt',label:'Format'},
+      {k:'hook',label:'Hook',fmt:v=>esc(v.length>62?v.slice(0,60)+'…':v)},
+      {k:'reach',label:'Reach',r:1,fmt:N},{k:'eng',label:'Engagement',r:1,fmt:N},
+      {k:'er',label:'Rate',r:1,fmt:v=>v.toFixed(1)+'%'},{k:'clicks',label:'Link clicks',r:1,fmt:N}],
+      rows,{sort:'reach',dir:-1,detail:p=>'<div style="margin-bottom:8px"><b>'+esc(p.hook)+'</b></div>'+
+        '<table><tbody>'+[['Reach',p.reach],['Likes',p.likes],['Comments',p.comments],['Saves',p.saves],['Shares',p.shares],['Link clicks',p.clicks]]
+        .map(x=>'<tr><td>'+x[0]+'</td><td class="r">'+N(x[1])+'</td></tr>').join('')+'</tbody></table>'});
+  }};
+};
+
+PAGES.plan=()=>({title:'The plan',lead:'How this page was built, and how to rebuild it next Monday.',
+  sub:'Same text as dashboard-plan.txt, kept next to the sheet.',
+  html:'<div class="panel"><div class="note"><b>Monday, in one line:</b> new chat inside the Project, upload the new sheet, paste <code>dashboard-plan.txt</code>, say “rebuild from the plan”. Then check the three numbers by hand and replace this file.</div>'+
+   '<pre class="plan">'+(PLAN_TEXT.trim()?PLAN_TEXT:'dashboard-plan.txt was not embedded at build time.')+'</pre></div>'});
+
+/* ---------- router ---------- */
+const NAV=[
+  ['nav1',[['overview','Overview'],['queue','Needs attention']]],
+  ['nav2',[['revenue','Revenue'],['receivables','Receivables'],['cash','Cash'],['costs','Costs'],['marketing','Marketing'],['posts','Posts']]],
+  ['nav3',[['plan','The plan']]]
+];
+let current='overview';
+function drawNav(){
+  const open=openCards();
+  NAV.forEach(([id,items])=>{
+    $('#'+id).innerHTML=items.map(([k,l])=>{
+      let badge='';
+      if(k==='queue')badge='<span class="n'+(open.some(c=>c.sev==='HIGH')?' hot':'')+'">'+open.length+'</span>';
+      return '<button data-go="'+k+'" class="'+(k===current?'on':'')+'">'+l+badge+'</button>';}).join('');
+  });
+}
+function render(){
+  const p=PAGES[current]();
+  $('#view').innerHTML='<div class="crumb">'+(current==='overview'?'Workspace':current==='plan'?'Monday':'Operations')+' › '+esc(p.title)+'</div>'+
+    '<h1>'+p.title+'</h1><p class="lead">'+p.lead+'</p><p class="sub">'+p.sub+'</p>'+p.html;
+  drawNav();
+  if(p.after)p.after();
+  window.scrollTo(0,0);
+}
+function go(page,focus){
+  current=page;
+  if(focus){
+    if(page==='receivables'){state.ar={bucket:'All',region:'All',q:focus}}
+    if(page==='costs'&&COSTCATS.includes(focus)){state.costs.cat=focus}
+    if(page==='revenue'&&CATS.includes(focus)){state.rev.cat=focus}
+  }
+  render();
+}
+document.addEventListener('click',e=>{
+  const g=e.target.closest('[data-go]');
+  if(g){go(g.dataset.go,g.dataset.focus||'');return}
+  const cp=e.target.closest('[data-copy]');
+  if(cp){const t=cp.dataset.copy;
+    const done=()=>{const o=cp.textContent;cp.textContent='Copied';setTimeout(()=>cp.textContent=o,1200)};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done,done);
+    else{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy')}catch(err){}ta.remove();done()}
+    return}
+});
+document.addEventListener('change',e=>{
+  const t=e.target.closest('[data-tick]');
+  if(t){setHandled(t.dataset.tick,t.checked);render();return}
+  const s=e.target.closest('[data-s]');
+  if(s){const [a,b]=s.dataset.s.split('.');state[a][b]=s.value;render();
+    const el=document.querySelector('[data-s="'+s.dataset.s+'"]');if(el&&el.tagName==='INPUT'){el.focus();el.setSelectionRange(el.value.length,el.value.length)}}
+});
+document.addEventListener('input',e=>{
+  const s=e.target.closest('input[data-s]');
+  if(s){const [a,b]=s.dataset.s.split('.');state[a][b]=s.value;render();
+    const el=document.querySelector('input[data-s="'+s.dataset.s+'"]');if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length)}}
+});
+render();
+</script></body></html>

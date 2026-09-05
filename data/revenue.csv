@@ -1,0 +1,145 @@
+Month,Channel,Category,Units,Revenue (RM)
+2025-09,Dealers,Sofas,135,350600
+2025-09,Dealers,Dining,125,237900
+2025-09,Dealers,Bedroom,111,255600
+2025-09,Dealers,Office,106,148500
+2025-09,Showroom PJ,Sofas,44,113200
+2025-09,Showroom PJ,Dining,37,71200
+2025-09,Showroom PJ,Bedroom,34,78800
+2025-09,Showroom PJ,Office,31,43600
+2025-09,Online,Sofas,30,77200
+2025-09,Online,Dining,32,60800
+2025-09,Online,Bedroom,23,53600
+2025-09,Online,Office,25,34500
+2025-10,Dealers,Sofas,130,337100
+2025-10,Dealers,Dining,126,239400
+2025-10,Dealers,Bedroom,120,276900
+2025-10,Dealers,Office,106,149000
+2025-10,Showroom PJ,Sofas,44,115400
+2025-10,Showroom PJ,Dining,40,75700
+2025-10,Showroom PJ,Bedroom,38,86300
+2025-10,Showroom PJ,Office,35,49100
+2025-10,Online,Sofas,35,92200
+2025-10,Online,Dining,35,66700
+2025-10,Online,Bedroom,27,63200
+2025-10,Online,Office,25,35000
+2025-11,Dealers,Sofas,158,411600
+2025-11,Dealers,Dining,161,305000
+2025-11,Dealers,Bedroom,135,309900
+2025-11,Dealers,Office,132,184100
+2025-11,Showroom PJ,Sofas,47,121000
+2025-11,Showroom PJ,Dining,49,93300
+2025-11,Showroom PJ,Bedroom,40,93000
+2025-11,Showroom PJ,Office,37,51200
+2025-11,Online,Sofas,39,102500
+2025-11,Online,Dining,41,77200
+2025-11,Online,Bedroom,31,70700
+2025-11,Online,Office,30,42600
+2025-12,Dealers,Sofas,177,459000
+2025-12,Dealers,Dining,165,313100
+2025-12,Dealers,Bedroom,143,327800
+2025-12,Dealers,Office,140,195400
+2025-12,Showroom PJ,Sofas,50,130300
+2025-12,Showroom PJ,Dining,50,95700
+2025-12,Showroom PJ,Bedroom,46,105900
+2025-12,Showroom PJ,Office,45,62600
+2025-12,Online,Sofas,48,124400
+2025-12,Online,Dining,46,87300
+2025-12,Online,Bedroom,38,87100
+2025-12,Online,Office,35,49600
+2026-01,Dealers,Sofas,136,353800
+2026-01,Dealers,Dining,134,255300
+2026-01,Dealers,Bedroom,121,279400
+2026-01,Dealers,Office,121,169100
+2026-01,Showroom PJ,Sofas,43,112000
+2026-01,Showroom PJ,Dining,46,88300
+2026-01,Showroom PJ,Bedroom,39,90500
+2026-01,Showroom PJ,Office,35,48600
+2026-01,Online,Sofas,37,96800
+2026-01,Online,Dining,41,77000
+2026-01,Online,Bedroom,34,78900
+2026-01,Online,Office,33,46200
+2026-02,Dealers,Sofas,177,459900
+2026-02,Dealers,Dining,161,306800
+2026-02,Dealers,Bedroom,125,288400
+2026-02,Dealers,Office,141,197000
+2026-02,Showroom PJ,Sofas,52,135600
+2026-02,Showroom PJ,Dining,54,103100
+2026-02,Showroom PJ,Bedroom,45,103100
+2026-02,Showroom PJ,Office,43,60300
+2026-02,Online,Sofas,46,118600
+2026-02,Online,Dining,43,80800
+2026-02,Online,Bedroom,39,88700
+2026-02,Online,Office,37,51500
+2026-03,Dealers,Sofas,165,428400
+2026-03,Dealers,Dining,152,289000
+2026-03,Dealers,Bedroom,133,306700
+2026-03,Dealers,Office,126,176700
+2026-03,Showroom PJ,Sofas,53,137800
+2026-03,Showroom PJ,Dining,52,99100
+2026-03,Showroom PJ,Bedroom,41,94000
+2026-03,Showroom PJ,Office,39,54500
+2026-03,Online,Sofas,46,120600
+2026-03,Online,Dining,47,90100
+2026-03,Online,Bedroom,35,81500
+2026-03,Online,Office,34,48100
+2026-04,Dealers,Sofas,141,365600
+2026-04,Dealers,Dining,121,229300
+2026-04,Dealers,Bedroom,113,259600
+2026-04,Dealers,Office,102,143000
+2026-04,Showroom PJ,Sofas,44,114200
+2026-04,Showroom PJ,Dining,38,71400
+2026-04,Showroom PJ,Bedroom,34,77800
+2026-04,Showroom PJ,Office,34,48200
+2026-04,Online,Sofas,38,98800
+2026-04,Online,Dining,39,73200
+2026-04,Online,Bedroom,30,70100
+2026-04,Online,Office,33,46800
+2026-05,Dealers,Sofas,133,346800
+2026-05,Dealers,Dining,119,225900
+2026-05,Dealers,Bedroom,104,238700
+2026-05,Dealers,Office,105,147500
+2026-05,Showroom PJ,Sofas,39,101500
+2026-05,Showroom PJ,Dining,38,72500
+2026-05,Showroom PJ,Bedroom,34,77300
+2026-05,Showroom PJ,Office,32,44500
+2026-05,Online,Sofas,37,96100
+2026-05,Online,Dining,36,68800
+2026-05,Online,Bedroom,30,68300
+2026-05,Online,Office,33,46200
+2026-06,Dealers,Sofas,114,295600
+2026-06,Dealers,Dining,117,222000
+2026-06,Dealers,Bedroom,100,230400
+2026-06,Dealers,Office,88,122500
+2026-06,Showroom PJ,Sofas,36,94400
+2026-06,Showroom PJ,Dining,33,63600
+2026-06,Showroom PJ,Bedroom,28,64400
+2026-06,Showroom PJ,Office,31,43900
+2026-06,Online,Sofas,35,90300
+2026-06,Online,Dining,34,65300
+2026-06,Online,Bedroom,30,69600
+2026-06,Online,Office,30,42400
+2026-07,Dealers,Sofas,134,349600
+2026-07,Dealers,Dining,126,240100
+2026-07,Dealers,Bedroom,94,215700
+2026-07,Dealers,Office,124,173800
+2026-07,Showroom PJ,Sofas,42,108800
+2026-07,Showroom PJ,Dining,35,66600
+2026-07,Showroom PJ,Bedroom,32,73100
+2026-07,Showroom PJ,Office,42,58600
+2026-07,Online,Sofas,43,112400
+2026-07,Online,Dining,39,74800
+2026-07,Online,Bedroom,32,74400
+2026-07,Online,Office,40,56000
+2026-08,Dealers,Sofas,142,368400
+2026-08,Dealers,Dining,132,250100
+2026-08,Dealers,Bedroom,109,249600
+2026-08,Dealers,Office,148,206800
+2026-08,Showroom PJ,Sofas,38,100000
+2026-08,Showroom PJ,Dining,39,74600
+2026-08,Showroom PJ,Bedroom,33,76900
+2026-08,Showroom PJ,Office,41,56800
+2026-08,Online,Sofas,44,114700
+2026-08,Online,Dining,45,85200
+2026-08,Online,Bedroom,35,81100
+2026-08,Online,Office,46,64300
