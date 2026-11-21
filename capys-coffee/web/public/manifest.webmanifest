@@ -1,0 +1,9 @@
+{
+  "name": "Capy's Coffee",
+  "short_name": "Capy's",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FBF6EF",
+  "theme_color": "#FBF6EF",
+  "icons": [{ "src": "/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
