@@ -55,7 +55,13 @@ Customers order on their own mobile data, so the app has to run on the internet,
 not on a laptop in the truck. It needs a host that keeps one Node process running
 and has a persistent disk for the database:
 
-- **Render / Railway / Fly.io**: deploy this folder with the included `Dockerfile`,
+- **Render (set up in this repo)**: in the Render dashboard choose *New → Blueprint*,
+  connect `bryanhoo108/kayutest`, pick the branch that contains `render.yaml`, enter a
+  `STAFF_PIN`, and press *Apply*. That creates a free test instance in Singapore. The free
+  plan has no persistent disk, so orders reset whenever the instance restarts or sleeps
+  (after 15 idle minutes). For real use, switch to the paid *Starter* plan and add the disk
+  shown in `render.yaml`.
+- **Railway / Fly.io**: deploy this folder with the included `Dockerfile`,
   attach a volume at `/app/data`, and set `STAFF_PIN`.
 - Any VPS: `docker build -t capys . && docker run -d -p 3000:3000 -v capys-data:/app/data -e STAFF_PIN=2580 capys`.
 

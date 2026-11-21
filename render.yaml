@@ -1,0 +1,26 @@
+# Render Blueprint for the Capy's Coffee ordering system (capys-coffee/).
+# Render dashboard → New → Blueprint → pick this repo and branch → enter a STAFF_PIN → Apply.
+services:
+  - type: web
+    name: capys-coffee
+    runtime: docker
+    plan: free            # free test instance; data resets when it restarts. Use "starter" + the disk below for real use.
+    region: singapore
+    branch: claude/cafe-ordering-system-o2pqse
+    dockerfilePath: ./capys-coffee/Dockerfile
+    dockerContext: ./capys-coffee
+    healthCheckPath: /api/health
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - capys-coffee/**
+    envVars:
+      - key: STAFF_PIN
+        sync: false       # Render asks for it when you create the service (4–8 digits)
+      - key: TRUST_PROXY
+        value: "true"
+    # For real use (paid "starter" plan), uncomment so orders survive restarts:
+    # disk:
+    #   name: capys-data
+    #   mountPath: /app/data
+    #   sizeGB: 1
